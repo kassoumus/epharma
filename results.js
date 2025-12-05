@@ -1,197 +1,163 @@
-// ========================================
-// EPHARMA - RESULTS PAGE JAVASCRIPT
-// ========================================
-
-// === DEMO DATA ===
-const pharmacies = [
-    {
-        id: 1,
-        name: "Pharmacie de la République",
-        address: "45 Avenue de la République, 75011 Paris",
-        lat: 48.8656,
-        lng: 2.3798,
-        distance: 0.3,
+lng: 2.3798,
+    distance: 0.3,
         phone: "01 43 55 12 34",
-        hours: "8h00 - 20h00",
-        isOpen: true,
-        hasStock: true,
-        stockQuantity: 15
+            hours: "8h00 - 20h00",
+                isOpen: true,
+                    hasStock: true,
+                        stockQuantity: 15
     },
-    {
-        id: 2,
+{
+    id: 2,
         name: "Pharmacie Saint-Antoine",
-        address: "128 Rue du Faubourg Saint-Antoine, 75012 Paris",
-        lat: 48.8503,
-        lng: 2.3765,
-        distance: 0.5,
-        phone: "01 43 43 21 87",
-        hours: "9h00 - 19h30",
-        isOpen: true,
-        hasStock: true,
-        stockQuantity: 8
-    },
-    {
-        id: 3,
+            address: "128 Rue du Faubourg Saint-Antoine, 75012 Paris",
+                lat: 48.8503,
+                    lng: 2.3765,
+                        distance: 0.5,
+                            phone: "01 43 43 21 87",
+                                hours: "9h00 - 19h30",
+                                    isOpen: true,
+                                        hasStock: true,
+                                            stockQuantity: 8
+},
+{
+    id: 3,
         name: "Pharmacie Voltaire",
-        address: "89 Boulevard Voltaire, 75011 Paris",
-        lat: 48.8575,
-        lng: 2.3798,
-        distance: 0.7,
-        phone: "01 48 05 67 89",
-        hours: "8h30 - 20h30",
-        isOpen: true,
-        hasStock: true,
-        stockQuantity: 12
-    },
-    {
-        id: 4,
+            address: "89 Boulevard Voltaire, 75011 Paris",
+                lat: 48.8575,
+                    lng: 2.3798,
+                        distance: 0.7,
+                            phone: "01 48 05 67 89",
+                                hours: "8h30 - 20h30",
+                                    isOpen: true,
+                                        hasStock: true,
+                                            stockQuantity: 12
+},
+{
+    id: 4,
         name: "Pharmacie Bastille",
-        address: "12 Place de la Bastille, 75011 Paris",
-        lat: 48.8532,
-        lng: 2.3689,
-        distance: 0.9,
-        phone: "01 43 07 45 23",
-        hours: "7h30 - 21h00",
-        isOpen: true,
-        hasStock: true,
-        stockQuantity: 20
-    },
-    {
-        id: 5,
+            address: "12 Place de la Bastille, 75011 Paris",
+                lat: 48.8532,
+                    lng: 2.3689,
+                        distance: 0.9,
+                            phone: "01 43 07 45 23",
+                                hours: "7h30 - 21h00",
+                                    isOpen: true,
+                                        hasStock: true,
+                                            stockQuantity: 20
+},
+{
+    id: 5,
         name: "Pharmacie Charonne",
-        address: "67 Rue de Charonne, 75011 Paris",
-        lat: 48.8534,
-        lng: 2.3821,
-        distance: 1.1,
-        phone: "01 43 71 34 56",
-        hours: "9h00 - 19h00",
-        isOpen: false,
-        hasStock: true,
-        stockQuantity: 5
-    },
-    {
-        id: 6,
+            address: "67 Rue de Charonne, 75011 Paris",
+                lat: 48.8534,
+                    lng: 2.3821,
+                        distance: 1.1,
+                            phone: "01 43 71 34 56",
+                                hours: "9h00 - 19h00",
+                                    isOpen: false,
+                                        hasStock: true,
+                                            stockQuantity: 5
+},
+{
+    id: 6,
         name: "Pharmacie Oberkampf",
-        address: "34 Rue Oberkampf, 75011 Paris",
-        lat: 48.8645,
-        lng: 2.3712,
-        distance: 1.3,
-        phone: "01 48 06 78 90",
-        hours: "8h00 - 20h00",
-        isOpen: true,
-        hasStock: true,
-        stockQuantity: 10
-    },
-    {
-        id: 7,
+            address: "34 Rue Oberkampf, 75011 Paris",
+                lat: 48.8645,
+                    lng: 2.3712,
+                        distance: 1.3,
+                            phone: "01 48 06 78 90",
+                                hours: "8h00 - 20h00",
+                                    isOpen: true,
+                                        hasStock: true,
+                                            stockQuantity: 10
+},
+{
+    id: 7,
         name: "Pharmacie Roquette",
-        address: "156 Rue de la Roquette, 75011 Paris",
-        lat: 48.8556,
-        lng: 2.3834,
-        distance: 1.5,
-        phone: "01 43 79 12 34",
-        hours: "9h00 - 19h30",
-        isOpen: true,
-        hasStock: true,
-        stockQuantity: 7
-    },
-    {
-        id: 8,
+            address: "156 Rue de la Roquette, 75011 Paris",
+                lat: 48.8556,
+                    lng: 2.3834,
+                        distance: 1.5,
+                            phone: "01 43 79 12 34",
+                                hours: "9h00 - 19h30",
+                                    isOpen: true,
+                                        hasStock: true,
+                                            stockQuantity: 7
+},
+{
+    id: 8,
         name: "Pharmacie Nation",
-        address: "2 Place de la Nation, 75012 Paris",
-        lat: 48.8483,
-        lng: 2.3956,
-        distance: 1.8,
-        phone: "01 43 73 45 67",
-        hours: "8h30 - 20h00",
-        isOpen: true,
-        hasStock: true,
-        stockQuantity: 18
-    },
-    {
-        id: 9,
+            address: "2 Place de la Nation, 75012 Paris",
+                lat: 48.8483,
+                    lng: 2.3956,
+                        distance: 1.8,
+                            phone: "01 43 73 45 67",
+                                hours: "8h30 - 20h00",
+                                    isOpen: true,
+                                        hasStock: true,
+                                            stockQuantity: 18
+},
+{
+    id: 9,
         name: "Pharmacie Père Lachaise",
-        address: "78 Boulevard de Ménilmontant, 75020 Paris",
-        lat: 48.8634,
-        lng: 2.3889,
-        distance: 2.0,
-        phone: "01 43 58 90 12",
-        hours: "9h00 - 19h00",
-        isOpen: true,
-        hasStock: true,
-        stockQuantity: 6
-    },
-    {
-        id: 10,
+            address: "78 Boulevard de Ménilmontant, 75020 Paris",
+                lat: 48.8634,
+                    lng: 2.3889,
+                        distance: 2.0,
+                            phone: "01 43 58 90 12",
+                                hours: "9h00 - 19h00",
+                                    isOpen: true,
+                                        hasStock: true,
+                                            stockQuantity: 6
+},
+{
+    id: 10,
         name: "Pharmacie Ledru-Rollin",
-        address: "45 Avenue Ledru-Rollin, 75012 Paris",
-        lat: 48.8489,
-        lng: 2.3723,
-        distance: 2.2,
-        phone: "01 43 43 56 78",
-        hours: "8h00 - 20h30",
-        isOpen: true,
-        hasStock: true,
-        stockQuantity: 14
-    },
-    {
-        id: 11,
+            address: "45 Avenue Ledru-Rollin, 75012 Paris",
+                lat: 48.8489,
+                    lng: 2.3723,
+                        distance: 2.2,
+                            phone: "01 43 43 56 78",
+                                hours: "8h00 - 20h30",
+                                    isOpen: true,
+                                        hasStock: true,
+                                            stockQuantity: 14
+},
+{
+    id: 11,
         name: "Pharmacie Belleville",
-        address: "123 Rue de Belleville, 75020 Paris",
-        lat: 48.8723,
-        lng: 2.3867,
-        distance: 2.5,
-        phone: "01 43 58 23 45",
-        hours: "9h00 - 19h30",
-        isOpen: true,
-        hasStock: true,
-        stockQuantity: 9
-    },
-    {
-        id: 12,
+            address: "123 Rue de Belleville, 75020 Paris",
+                lat: 48.8723,
+                    lng: 2.3867,
+                        distance: 2.5,
+                            phone: "01 43 58 23 45",
+                                hours: "9h00 - 19h30",
+                                    isOpen: true,
+                                        hasStock: true,
+                                            stockQuantity: 9
+},
+{
+    id: 12,
         name: "Pharmacie Daumesnil",
-        address: "234 Avenue Daumesnil, 75012 Paris",
-        lat: 48.8423,
-        lng: 2.3912,
-        distance: 2.8,
-        phone: "01 43 44 67 89",
-        hours: "8h30 - 20h00",
-        isOpen: true,
-        hasStock: true,
-        stockQuantity: 11
-    }
+            address: "234 Avenue Daumesnil, 75012 Paris",
+                lat: 48.8423,
+                    lng: 2.3912,
+                        distance: 2.8,
+                            phone: "01 43 44 67 89",
+                                hours: "8h30 - 20h00",
+                                    isOpen: true,
+                                        hasStock: true,
+                                            stockQuantity: 11
+}
 ];
 
-// === STATE ===
-let map;
-let markers = [];
-let activeFilter = 'all';
-let activePharmacyId = null;
 
-// === INITIALIZE ===
-document.addEventListener('DOMContentLoaded', () => {
-    // Parse URL parameters
-    const urlParams = new URLSearchParams(window.location.search);
-    const medicamentsQuery = urlParams.get('q') || 'Doliprane 1000mg';
-    const location = urlParams.get('loc') || 'Paris';
+initializeMap();
+renderPharmacies(pharmacies);
+initializeFilters();
+initializeSearch();
 
-    // Parse multiple medications (comma-separated)
-    const searchedMedicaments = medicamentsQuery.split(',').map(m => m.trim());
-
-    // Update search inputs
-    document.getElementById('medicamentSearchCompact').value = searchedMedicaments.join(', ');
-    document.getElementById('locationSearchCompact').value = location;
-
-    // Update results info
-    document.getElementById('searchQuery').textContent = searchedMedicaments.join(', ');
-    document.getElementById('searchLocation').textContent = location;
-
-    initializeMap();
-    renderPharmacies(pharmacies);
-    initializeFilters();
-    initializeSearch();
-
-    console.log('🔍 Recherche:', searchedMedicaments);
+console.log('🔍 Recherche:', searchedMedicaments);
 });
 
 // === MAP INITIALIZATION ===
