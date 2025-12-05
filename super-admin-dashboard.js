@@ -108,7 +108,7 @@ function setupEventListeners() {
     document.getElementById('logoutBtn').addEventListener('click', superAdminLogout);
 
     // Search
-    document.getElementById('searchUsers').addEventListener('input', (e) => {
+    document.getElementById('searchUsers').addEventListener('input', () => {
         applyFilters();
     });
 
@@ -119,10 +119,29 @@ function setupEventListeners() {
     // Add user button
     document.getElementById('addUserBtn').addEventListener('click', openAddUserModal);
 
-    role: document.getElementById('roleFilter').value,
+    // Modal close
+    document.getElementById('closeModal').addEventListener('click', closeModal);
+    document.getElementById('cancelBtn').addEventListener('click', closeModal);
+
+    // Form submit
+    document.getElementById('userForm').addEventListener('submit', handleUserFormSubmit);
+
+    // Close modal on outside click
+    document.getElementById('userModal').addEventListener('click', (e) => {
+        if (e.target.id === 'userModal') {
+            closeModal();
+        }
+    });
+}
+
+// === APPLY FILTERS ===
+function applyFilters() {
+    const filters = {
+        search: document.getElementById('searchUsers').value,
+        role: document.getElementById('roleFilter').value,
         status: document.getElementById('statusFilter').value
-};
-loadUsers(filters);
+    };
+    loadUsers(filters);
 }
 
 // === MODAL FUNCTIONS ===
@@ -170,44 +189,74 @@ function deleteUserConfirm(userId) {
         deleteUser(userId);
         loadStatistics();
         applyFilters();
-        function getRoleLabel(role) {
-            const labels = {
-                'pharmacy': 'Pharmacie',
-                'doctor': 'Médecin',
-                'patient': 'Patient',
-                'admin': 'Admin'
-            };
-            return labels[role] || role;
-        }
+    }
+}
 
-        function formatDate(dateString) {
-            if (!dateString) return '-';
-            const date = new Date(dateString);
-            return date.toLocaleDateString('fr-FR');
-        }
+// === FORM SUBMIT ===
+function handleUserFormSubmit(e) {
+    e.preventDefault();
 
-        function updateTime() {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString('fr-FR', {
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            });
-            const dateString = now.toLocaleDateString('fr-FR', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-            document.getElementById('currentTime').innerHTML = `
+    const userData = {
+        name: document.getElementById('userName').value,
+        email: document.getElementById('userEmail').value,
+        role: document.getElementById('userRole').value,
+        status: document.getElementById('userStatus').value
+    };
+
+    if (currentEditingUserId) {
+        // Update existing user
+        updateUser(currentEditingUserId, userData);
+    } else {
+        // Create new user
+        createUser(userData);
+    }
+
+    closeModal();
+    loadStatistics();
+    applyFilters();
+}
+
+// === UTILITY FUNCTIONS ===
+function getRoleLabel(role) {
+    const labels = {
+        'super_admin': 'Super Admin',
+        'admin_support': 'Admin Support',
+        'admin_moderator': 'Admin Modérateur',
+        'pharmacy': 'Pharmacien',
+        'doctor': 'Médecin',
+        'patient': 'Patient'
+    };
+    return labels[role] || role;
+}
+
+function formatDate(dateString) {
+    if (!dateString) return '-';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('fr-FR');
+}
+
+function updateTime() {
+    const now = new Date();
+    const timeString = now.toLocaleTimeString('fr-FR', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    });
+    const dateString = now.toLocaleDateString('fr-FR', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+    document.getElementById('currentTime').innerHTML = `
         <div>${timeString}</div>
         <div style="font-size: 0.75rem; opacity: 0.7;">${dateString}</div>
     `;
-        }
+}
 
-        // Make functions globally accessible
-        window.editUser = editUser;
-        window.toggleStatus = toggleStatus;
-        window.deleteUserConfirm = deleteUserConfirm;
+// Make functions globally accessible
+window.editUser = editUser;
+window.toggleStatus = toggleStatus;
+window.deleteUserConfirm = deleteUserConfirm;
 
-        console.log('👥 Super Admin Dashboard initialized');
+console.log('👥 Super Admin Dashboard initialized');
