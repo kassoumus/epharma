@@ -2860,3 +2860,81 @@ body {
     background: var(--primary-50);
     color: var(--primary-700);
 }
+
+/* === SUPER ADMIN THEME === */
+.super-admin-theme {
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%) !important;
+}
+
+.super-admin-theme .logo-large svg {
+    color: white;
+}
+
+.super-admin-theme h1,
+.super-admin-theme p,
+.super-admin-theme .admin-feature-item {
+    color: white;
+}
+
+.super-admin-theme .admin-feature-item svg {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Super Admin Sidebar */
+.super-admin-sidebar .admin-nav-item.active,
+.super-admin-sidebar .admin-nav-item:hover {
+    background: linear-gradient(135deg, #8b5cf620, #8b5cf610);
+    border-left-color: #8b5cf6;
+}
+
+.super-admin-sidebar .admin-nav-item.active svg,
+.super-admin-sidebar .admin-nav-item:hover svg {
+    color: #8b5cf6;
+}
+
+/* User Status Badges */
+.user-status-active {
+    background: var(--success-50);
+    color: var(--success-700);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+}
+
+.user-status-inactive {
+    background: var(--gray-100);
+    color: var(--gray-700);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+}
+
+/* Role Badges */
+.role-badge {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+}
+
+.role-pharmacy {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.role-doctor {
+    background: #fed7aa;
+    color: #c2410c;
+}
+
+.role-patient {
+    background: #e9d5ff;
+    color: #7c3aed;
+}
+
+.role-admin {
+    background: #fce7f3;
+    color: #be123c;
+}
