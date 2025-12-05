@@ -241,7 +241,29 @@
                             <option value="active">Actif</option>
                             <option value="inactive">Inactif</option>
                         </select>
+                    </div>                
+                <!-- Pharmacy Assignment (for pharmacists) -->
+                <div class="admin-form-row" id="pharmacyAssignmentRow" style="display: none;">
+                    <div class="admin-form-group">
+                        <label for="assignedPharmacy">Pharmacie assignée *</label>
+                        <select id="assignedPharmacy" class="admin-form-input">
+                            <option value="">Sélectionner une pharmacie</option>
+                        </select>
+                        <small class="form-help">Le pharmacien n'aura accès qu'aux données de cette pharmacie</small>
                     </div>
+                </div>
+                
+                <!-- Specialty Selection (for doctors) -->
+                <div class="admin-form-row" id="specialtyRow" style="display: none;">
+                    <div class="admin-form-group">
+                        <label for="doctorSpecialty">Spécialité médicale *</label>
+                        <select id="doctorSpecialty" class="admin-form-input">
+                            <!-- Will be populated by specialties.js -->
+                        </select>
+                        <small class="form-help">Spécialité du médecin</small>
+                    </div>
+                </div>
+                
                 </div>
                 <div class="admin-modal-actions">
                     <button type="button" class="admin-btn-secondary" id="cancelBtn">Annuler</button>
@@ -250,9 +272,13 @@
             </form>
         </div>
     </div>
+    <script src="permissions.js"></script>
+    <script src="specialties.js"></script>
 
     <script src="super-admin.js"></script>
     <script src="super-admin-dashboard.js"></script>
 </body>
 
 </html>
+
+

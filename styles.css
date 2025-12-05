@@ -2938,3 +2938,12 @@ body {
     background: #fce7f3;
     color: #be123c;
 }
+
+/* === FORM HELP TEXT === */
+.form-help {
+    display: block;
+    margin-top: var(--spacing-xs);
+    font-size: var(--font-size-xs);
+    color: var(--gray-600);
+    font-style: italic;
+}
