@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Espace Pharmacie</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="admin-body">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar" id="adminSidebar">
+        <div class="admin-sidebar-header">
+            <div class="logo">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z"
+                        stroke="currentColor" stroke-width="2" />
+                    <path d="M12 8V16M8 12H16" stroke="currentColor" stroke-width="2" />
+                </svg>
+                <span class="logo-text">Epharma</span>
+            </div>
+            <button class="admin-sidebar-toggle" id="sidebarToggle">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M3 12H21M3 6H21M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+            </button>
+        </div>
+
+        <div class="admin-pharmacy-info">
+            <div class="admin-pharmacy-name" id="pharmacyName">Pharmacie de la République</div>
+            <div class="admin-pharmacy-email" id="pharmacyEmail">contact@pharmacie-republique.fr</div>
+        </div>
+
+        <nav class="admin-nav">
+            <a href="admin-dashboard.html" class="admin-nav-item active">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="2" />
+                    <rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="2" />
+                    <rect x="14" y="14" width="7" height="7" stroke="currentColor" stroke-width="2" />
+                    <rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="2" />
+                </svg>
+                <span>Dashboard</span>
+            </a>
+            <a href="admin-stock.html" class="admin-nav-item">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M20 7H4C2.89543 7 2 7.89543 2 9V19C2 20.1046 2.89543 21 4 21H20C21.1046 21 22 20.1046 22 19V9C22 7.89543 21.1046 7 20 7Z"
+                        stroke="currentColor" stroke-width="2" />
+                    <path
+                        d="M16 21V5C16 4.46957 15.7893 3.96086 15.4142 3.58579C15.0391 3.21071 14.5304 3 14 3H10C9.46957 3 8.96086 3.21071 8.58579 3.58579C8.21071 3.96086 8 4.46957 8 5V21"
+                        stroke="currentColor" stroke-width="2" />
+                </svg>
+                <span>Gestion du stock</span>
+            </a>
+            <a href="admin-info.html" class="admin-nav-item">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+                        stroke="currentColor" stroke-width="2" />
+                    <path d="M12 16V12M12 8H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+                <span>Informations</span>
+            </a>
+        </nav>
+
+        <div class="admin-sidebar-footer">
+            <button class="admin-logout-btn" id="logoutBtn">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9M16 17L21 12M21 12L16 7M21 12H9"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+                <span>Déconnexion</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+        <div class="admin-header">
+            <h1 class="admin-page-title">Dashboard</h1>
+            <div class="admin-header-actions">
+                <button class="admin-btn-secondary">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+                            stroke="currentColor" stroke-width="2" />
+                        <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span id="currentTime"></span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="admin-stats-grid">
+            <div class="admin-stat-card">
+                <div class="admin-stat-icon" style="background: linear-gradient(135deg, #3b82f620, #3b82f610);">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M9 11L12 14L22 4M21 12V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H16"
+                            stroke="currentColor" stroke-width="2" />
+                    </svg>
+                </div>
+                <div class="admin-stat-content">
+                    <div class="admin-stat-label">Réservations aujourd'hui</div>
+                    <div class="admin-stat-value" id="statReservations">0</div>
+                    <div class="admin-stat-trend positive">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M12 19V5M5 12L12 5L19 12" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" />
+                        </svg>
+                        <span>+12% vs hier</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-stat-card">
+                <div class="admin-stat-icon" style="background: linear-gradient(135deg, #10b98120, #10b98110);">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M20 7H4C2.89543 7 2 7.89543 2 9V19C2 20.1046 2.89543 21 4 21H20C21.1046 21 22 20.1046 22 19V9C22 7.89543 21.1046 7 20 7Z"
+                            stroke="currentColor" stroke-width="2" />
+                        <path
+                            d="M16 21V5C16 4.46957 15.7893 3.96086 15.4142 3.58579C15.0391 3.21071 14.5304 3 14 3H10C9.46957 3 8.96086 3.21071 8.58579 3.58579C8.21071 3.96086 8 4.46957 8 5V21"
+                            stroke="currentColor" stroke-width="2" />
+                    </svg>
+                </div>
+                <div class="admin-stat-content">
+                    <div class="admin-stat-label">Produits en stock</div>
+                    <div class="admin-stat-value" id="statProducts">0</div>
+                    <div class="admin-stat-info">
+                        <span id="statLowStock">0</span> en stock bas
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-stat-card">
+                <div class="admin-stat-icon" style="background: linear-gradient(135deg, #f59e0b20, #f59e0b10);">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
+                            stroke="currentColor" stroke-width="2" />
+                    </svg>
+                </div>
+                <div class="admin-stat-content">
+                    <div class="admin-stat-label">Note moyenne</div>
+                    <div class="admin-stat-value" id="statRating">4.8</div>
+                    <div class="admin-stat-info">
+                        127 avis clients
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-stat-card">
+                <div class="admin-stat-icon" style="background: linear-gradient(135deg, #8b5cf620, #8b5cf610);">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z"
+                            stroke="currentColor" stroke-width="2" />
+                        <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                </div>
+                <div class="admin-stat-content">
+                    <div class="admin-stat-label">Vues cette semaine</div>
+                    <div class="admin-stat-value" id="statViews">342</div>
+                    <div class="admin-stat-trend positive">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M12 19V5M5 12L12 5L19 12" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" />
+                        </svg>
+                        <span>+8% vs semaine dernière</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Reservations -->
+        <div class="admin-section">
+            <div class="admin-section-header">
+                <h2 class="admin-section-title">Réservations récentes</h2>
+                <a href="#" class="admin-link">Voir tout →</a>
+            </div>
+            <div class="admin-table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Client</th>
+                            <th>Téléphone</th>
+                            <th>Produits</th>
+                            <th>Heure</th>
+                            <th>Statut</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reservationsTable">
+                        <!-- Reservations will be injected here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Alerts -->
+        <div class="admin-section">
+            <div class="admin-section-header">
+                <h2 class="admin-section-title">Alertes</h2>
+            </div>
+            <div class="admin-alerts" id="alertsContainer">
+                <!-- Alerts will be injected here -->
+            </div>
+        </div>
+    </main>
+
+    <script src="admin.js"></script>
+    <script src="admin-dashboard.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Supabase - Epharma</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: #f5f5f5;
+        }
+
+        .test-section {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #6366f1;
+        }
+
+        h2 {
+            color: #333;
+            margin-top: 0;
+        }
+
+        button {
+            background: #6366f1;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 0.5rem 0.5rem 0.5rem 0;
+        }
+
+        button:hover {
+            background: #4f46e5;
+        }
+
+        .result {
+            background: #f0f0f0;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-top: 1rem;
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        .success {
+            color: #10b981;
+        }
+
+        .error {
+            color: #ef4444;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🧪 Test Supabase Integration - Epharma</h1>
+
+    <div class="test-section">
+        <h2>📊 Test 1 : Récupérer les pharmacies</h2>
+        <button onclick="testGetPharmacies()">Tester</button>
+        <div id="result1" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>🏥 Test 2 : Récupérer les centres de santé</h2>
+        <button onclick="testGetHealthCenters()">Tester</button>
+        <div id="result2" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>👨‍⚕️ Test 3 : Récupérer les médecins</h2>
+        <button onclick="testGetDoctors()">Tester</button>
+        <div id="result3" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>🔍 Test 4 : Rechercher par spécialité</h2>
+        <button onclick="testSearchDoctors()">Chercher généralistes</button>
+        <button onclick="testSearchSpecialists()">Chercher spécialistes</button>
+        <div id="result4" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>📅 Test 5 : Créer un rendez-vous</h2>
+        <button onclick="testCreateAppointment()">Créer RDV</button>
+        <div id="result5" class="result"></div>
+    </div>
+
+    <!-- Supabase JS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Notre client Supabase -->
+    <script src="supabase-client.js"></script>
+
+    <script>
+        // Test Functions
+        async function testGetPharmacies() {
+            const result = document.getElementById('result1');
+            result.innerHTML = '⏳ Chargement...';
+
+            try {
+                const pharmacies = await window.supabaseAPI.getPharmacies();
+                result.innerHTML = `<span class="success">✅ Succès!</span>\n\nNombre de pharmacies: ${pharmacies.length}\n\n${JSON.stringify(pharmacies.slice(0, 2), null, 2)}`;
+            } catch (error) {
+                result.innerHTML = `<span class="error">❌ Erreur:</span>\n${error.message}`;
+            }
+        }
+
+        async function testGetHealthCenters() {
+            const result = document.getElementById('result2');
+            result.innerHTML = '⏳ Chargement...';
+
+            try {
+                const centers = await window.supabaseAPI.getHealthCenters();
+                result.innerHTML = `<span class="success">✅ Succès!</span>\n\nNombre de centres: ${centers.length}\n\n${JSON.stringify(centers.slice(0, 2), null, 2)}`;
+            } catch (error) {
+                result.innerHTML = `<span class="error">❌ Erreur:</span>\n${error.message}`;
+            }
+        }
+
+        async function testGetDoctors() {
+            const result = document.getElementById('result3');
+            result.innerHTML = '⏳ Chargement...';
+
+            try {
+                const doctors = await window.supabaseAPI.getDoctors();
+                result.innerHTML = `<span class="success">✅ Succès!</span>\n\nNombre de médecins: ${doctors.length}\n\n${JSON.stringify(doctors.slice(0, 2), null, 2)}`;
+            } catch (error) {
+                result.innerHTML = `<span class="error">❌ Erreur:</span>\n${error.message}`;
+            }
+        }
+
+        async function testSearchDoctors() {
+            const result = document.getElementById('result4');
+            result.innerHTML = '⏳ Chargement...';
+
+            try {
+                const doctors = await window.supabaseAPI.getDoctors({ type: 'generaliste' });
+                result.innerHTML = `<span class="success">✅ Succès!</span>\n\nMédecins généralistes trouvés: ${doctors.length}\n\n${JSON.stringify(doctors, null, 2)}`;
+            } catch (error) {
+                result.innerHTML = `<span class="error">❌ Erreur:</span>\n${error.message}`;
+            }
+        }
+
+        async function testSearchSpecialists() {
+            const result = document.getElementById('result4');
+            result.innerHTML = '⏳ Chargement...';
+
+            try {
+                const doctors = await window.supabaseAPI.getDoctors({ type: 'specialiste' });
+                result.innerHTML = `<span class="success">✅ Succès!</span>\n\nSpécialistes trouvés: ${doctors.length}\n\n${JSON.stringify(doctors.slice(0, 3), null, 2)}`;
+            } catch (error) {
+                result.innerHTML = `<span class="error">❌ Erreur:</span>\n${error.message}`;
+            }
+        }
+
+        async function testCreateAppointment() {
+            const result = document.getElementById('result5');
+            result.innerHTML = '⏳ Création...';
+
+            try {
+                // Get first doctor
+                const doctors = await window.supabaseAPI.getDoctors();
+                if (doctors.length === 0) {
+                    result.innerHTML = '<span class="error">❌ Aucun médecin trouvé</span>';
+                    return;
+                }
+
+                const appointment = await window.supabaseAPI.createAppointment({
+                    doctor_id: doctors[0].id,
+                    patient_name: 'Test Patient',
+                    patient_phone: '06 12 34 56 78',
+                    patient_email: 'test@example.com',
+                    appointment_date: '2025-12-10',
+                    appointment_time: '14:00',
+                    duration: 30,
+                    type: 'Consultation',
+                    reason: 'Test de l\'API',
+                    status: 'pending'
+                });
+
+                result.innerHTML = `<span class="success">✅ Rendez-vous créé!</span>\n\n${JSON.stringify(appointment, null, 2)}`;
+            } catch (error) {
+                result.innerHTML = `<span class="error">❌ Erreur:</span>\n${error.message}`;
+            }
+        }
+    </script>
+</body>
+
+</html>

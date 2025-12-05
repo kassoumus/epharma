@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Recherche de médecins - Epharma">
+    <title>Médecins - Epharma</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z"
+                            stroke="currentColor" stroke-width="2" />
+                        <path d="M12 8V16M8 12H16" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span class="logo-text">Epharma</span>
+                </div>
+                <nav class="nav">
+                    <a href="index.html" class="nav-link">Rechercher</a>
+                    <a href="results.html" class="nav-link">Pharmacies</a>
+                    <a href="health-centers.html" class="nav-link">Centres de santé</a>
+                    <a href="doctors.html" class="nav-link active">Médecins</a>
+                    <div class="nav-dropdown">
+                        <button class="btn-secondary">Espace Pro ▼</button>
+                        <div class="nav-dropdown-menu">
+                            <a href="admin-login.html">Pharmacie</a>
+                            <a href="doctor-login.html">Médecin</a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Search Bar (compact version) -->
+    <section class="search-bar-compact">
+        <div class="container">
+            <div class="search-box-compact">
+                <div class="search-input-wrapper">
+                    <svg class="search-icon" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
+                            stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <input type="text" class="search-input" placeholder="Rechercher un médecin" value="Médecins">
+                </div>
+                <div class="search-divider-compact"></div>
+                <div class="location-input-wrapper">
+                    <svg class="location-icon" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M21 10C21 17 12 23 12 23C12 23 3 17 3 10C3 7.61305 3.94821 5.32387 5.63604 3.63604C7.32387 1.94821 9.61305 1 12 1C14.3869 1 16.6761 1.94821 18.364 3.63604C20.0518 5.32387 21 7.61305 21 10Z"
+                            stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <input type="text" class="location-input" placeholder="Paris" value="Paris">
+                </div>
+                <button class="search-btn-compact">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
+                            stroke="currentColor" stroke-width="2" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section class="results-section">
+        <div class="container-fluid">
+            <div class="results-header">
+                <div class="results-info">
+                    <h1 class="results-title">
+                        <span class="results-count" id="resultsCount">20</span> médecins trouvés
+                    </h1>
+                    <p class="results-subtitle">
+                        Recherche : <strong>Médecins</strong> près de <strong>Paris</strong>
+                    </p>
+                </div>
+
+                <!-- Filters -->
+                <div class="results-filters">
+                    <button class="filter-btn active" data-filter="all">Tous</button>
+                    <button class="filter-btn" data-filter="generaliste">Généralistes</button>
+                    <button class="filter-btn" data-filter="specialiste">Spécialistes</button>
+                    <button class="filter-btn" data-filter="disponible">Disponibles</button>
+                </div>
+            </div>
+
+            <!-- Results Grid -->
+            <div class="results-grid">
+                <!-- Doctors List -->
+                <div class="pharmacy-list" id="doctorsList">
+                    <!-- Doctors will be injected here by JavaScript -->
+                </div>
+
+                <!-- Map -->
+                <div class="map-container">
+                    <div id="map" class="map"></div>
+                    <div class="map-controls">
+                        <button class="map-control-btn" id="centerMapBtn" title="Centrer la carte">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M12 22C12 22 20 18 20 12V5L12 2L4 5V12C4 18 12 22 12 22Z" stroke="currentColor"
+                                    stroke-width="2" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="doctors.js"></script>
+</body>
+
+</html>

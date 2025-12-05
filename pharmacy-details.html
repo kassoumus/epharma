@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Détails de la pharmacie - Epharma">
+    <title>Détails Pharmacie - Epharma</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M12 8V16M8 12H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                    <span class="logo-text">Epharma</span>
+                </div>
+                <nav class="nav">
+                    <a href="index.html" class="nav-link">Rechercher</a>
+                    <a href="results.html" class="nav-link">Pharmacies</a>
+                    <a href="#" class="nav-link">À propos</a>
+                    <button class="btn-secondary">Espace Pharmacie</button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Back Button -->
+    <section class="back-section">
+        <div class="container">
+            <button class="back-btn" onclick="history.back()">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                Retour aux résultats
+            </button>
+        </div>
+    </section>
+
+    <!-- Pharmacy Details -->
+    <section class="pharmacy-details-section">
+        <div class="container">
+            <!-- Header Card -->
+            <div class="pharmacy-details-header">
+                <div class="pharmacy-image">
+                    <div class="pharmacy-image-placeholder" id="pharmacyImage">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z"
+                                stroke="currentColor" stroke-width="2" />
+                            <path d="M12 8V16M8 12H16" stroke="currentColor" stroke-width="2" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="pharmacy-header-info">
+                    <div class="pharmacy-header-top">
+                        <h1 class="pharmacy-details-name" id="pharmacyName">Pharmacie de la République</h1>
+                        <div class="pharmacy-status-badge" id="statusBadge">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
+                                <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" />
+                            </svg>
+                            <span>Ouvert</span>
+                        </div>
+                    </div>
+                    <div class="pharmacy-rating" id="pharmacyRating">
+                        <div class="stars">
+                            ★★★★★
+                        </div>
+                        <span class="rating-text">4.8 (127 avis)</span>
+                    </div>
+                    <div class="pharmacy-distance-badge" id="distanceBadge">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" />
+                            <path d="M2 17L12 22L22 17M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" />
+                        </svg>
+                        <span>0.3 km</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content Grid -->
+            <div class="pharmacy-details-grid">
+                <!-- Left Column -->
+                <div class="pharmacy-details-main">
+                    <!-- Contact Info -->
+                    <div class="details-card">
+                        <h2 class="details-card-title">Informations de contact</h2>
+                        <div class="contact-info">
+                            <div class="contact-item">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path
+                                        d="M21 10C21 17 12 23 12 23C12 23 3 17 3 10C3 7.61305 3.94821 5.32387 5.63604 3.63604C7.32387 1.94821 9.61305 1 12 1C14.3869 1 16.6761 1.94821 18.364 3.63604C20.0518 5.32387 21 7.61305 21 10Z"
+                                        stroke="currentColor" stroke-width="2" />
+                                    <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2" />
+                                </svg>
+                                <div>
+                                    <div class="contact-label">Adresse</div>
+                                    <div class="contact-value" id="pharmacyAddress">45 Avenue de la République, 75011
+                                        Paris</div>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path
+                                        d="M22 16.92V19.92C22.0011 20.4832 21.5544 20.9582 20.9922 20.9924C18.9478 21.1388 16.9006 20.7805 15.0275 19.9477C13.2739 19.1731 11.7101 18.0217 10.4543 16.5789C9.19854 15.1361 8.28128 13.4422 7.76712 11.6184C6.93339 9.74319 6.57473 7.69352 6.72028 5.64692C6.75447 5.08481 7.22953 4.63806 7.79275 4.63904H10.7928C11.3549 4.63393 11.8313 5.05152 11.8928 5.60904C11.9478 6.13604 12.0478 6.65704 12.1928 7.16704C12.3478 7.72904 12.1678 8.33104 11.7328 8.71104L10.4628 9.98104C11.5628 11.8151 13.1778 13.4301 15.0128 14.5301L16.2828 13.2601C16.6628 12.8251 17.2648 12.6451 17.8268 12.8001C18.3368 12.9451 18.8578 13.0451 19.3848 13.1001C19.9478 13.1616 20.3678 13.6451 20.3628 14.2101V16.92H22Z"
+                                        stroke="currentColor" stroke-width="2" />
+                                </svg>
+                                <div>
+                                    <div class="contact-label">Téléphone</div>
+                                    <a href="tel:0143551234" class="contact-value contact-link" id="pharmacyPhone">01 43
+                                        55 12 34</a>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path
+                                        d="M3 8L10.89 13.26C11.5266 13.6778 12.4734 13.6778 13.11 13.26L21 8M5 19H19C20.1046 19 21 18.1046 21 17V7C21 5.89543 20.1046 5 19 5H5C3.89543 5 3 5.89543 3 7V17C3 18.1046 3.89543 19 5 19Z"
+                                        stroke="currentColor" stroke-width="2" />
+                                </svg>
+                                <div>
+                                    <div class="contact-label">Email</div>
+                                    <a href="mailto:contact@pharmacie-republique.fr"
+                                        class="contact-value contact-link">contact@pharmacie-republique.fr</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Opening Hours -->
+                    <div class="details-card">
+                        <h2 class="details-card-title">Horaires d'ouverture</h2>
+                        <div class="opening-hours" id="openingHours">
+                            <!-- Hours will be injected by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Services -->
+                    <div class="details-card">
+                        <h2 class="details-card-title">Services disponibles</h2>
+                        <div class="services-grid" id="servicesGrid">
+                            <!-- Services will be injected by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Available Products -->
+                    <div class="details-card">
+                        <h2 class="details-card-title">Produits disponibles</h2>
+                        <div class="products-list" id="productsList">
+                            <!-- Products will be injected by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Reviews -->
+                    <div class="details-card">
+                        <h2 class="details-card-title">Avis clients</h2>
+                        <div class="reviews-summary">
+                            <div class="reviews-score">
+                                <div class="reviews-score-number">4.8</div>
+                                <div class="reviews-score-stars">★★★★★</div>
+                                <div class="reviews-score-text">Basé sur 127 avis</div>
+                            </div>
+                        </div>
+                        <div class="reviews-list" id="reviewsList">
+                            <!-- Reviews will be injected by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column (Sidebar) -->
+                <div class="pharmacy-details-sidebar">
+                    <!-- Quick Actions -->
+                    <div class="details-card sticky-card">
+                        <h3 class="details-card-title">Actions rapides</h3>
+                        <div class="quick-actions">
+                            <button class="action-btn action-btn-primary" id="callBtn">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path
+                                        d="M22 16.92V19.92C22.0011 20.4832 21.5544 20.9582 20.9922 20.9924C18.9478 21.1388 16.9006 20.7805 15.0275 19.9477C13.2739 19.1731 11.7101 18.0217 10.4543 16.5789C9.19854 15.1361 8.28128 13.4422 7.76712 11.6184C6.93339 9.74319 6.57473 7.69352 6.72028 5.64692C6.75447 5.08481 7.22953 4.63806 7.79275 4.63904H10.7928C11.3549 4.63393 11.8313 5.05152 11.8928 5.60904C11.9478 6.13604 12.0478 6.65704 12.1928 7.16704C12.3478 7.72904 12.1678 8.33104 11.7328 8.71104L10.4628 9.98104C11.5628 11.8151 13.1778 13.4301 15.0128 14.5301L16.2828 13.2601C16.6628 12.8251 17.2648 12.6451 17.8268 12.8001C18.3368 12.9451 18.8578 13.0451 19.3848 13.1001C19.9478 13.1616 20.3678 13.6451 20.3628 14.2101V16.92H22Z"
+                                        stroke="currentColor" stroke-width="2" />
+                                </svg>
+                                Appeler
+                            </button>
+                            <button class="action-btn action-btn-secondary" id="directionsBtn">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path
+                                        d="M21 10C21 17 12 23 12 23C12 23 3 17 3 10C3 7.61305 3.94821 5.32387 5.63604 3.63604C7.32387 1.94821 9.61305 1 12 1C14.3869 1 16.6761 1.94821 18.364 3.63604C20.0518 5.32387 21 7.61305 21 10Z"
+                                        stroke="currentColor" stroke-width="2" />
+                                </svg>
+                                Itinéraire
+                            </button>
+                            <button class="action-btn action-btn-secondary" id="shareBtn">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path
+                                        d="M18 8C19.6569 8 21 6.65685 21 5C21 3.34315 19.6569 2 18 2C16.3431 2 15 3.34315 15 5C15 6.65685 16.3431 8 18 8Z"
+                                        stroke="currentColor" stroke-width="2" />
+                                    <path
+                                        d="M6 15C7.65685 15 9 13.6569 9 12C9 10.3431 7.65685 9 6 9C4.34315 9 3 10.3431 3 12C3 13.6569 4.34315 15 6 15Z"
+                                        stroke="currentColor" stroke-width="2" />
+                                    <path
+                                        d="M18 22C19.6569 22 21 20.6569 21 19C21 17.3431 19.6569 16 18 16C16.3431 16 15 17.3431 15 19C15 20.6569 16.3431 22 18 22Z"
+                                        stroke="currentColor" stroke-width="2" />
+                                    <path d="M8.59 13.51L15.42 17.49M15.41 6.51L8.59 10.49" stroke="currentColor"
+                                        stroke-width="2" />
+                                </svg>
+                                Partager
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Reservation Form -->
+                    <div class="details-card">
+                        <h3 class="details-card-title">Réserver des médicaments</h3>
+                        <form class="reservation-form" id="reservationForm">
+                            <div class="form-group">
+                                <label for="reservationName">Nom complet</label>
+                                <input type="text" id="reservationName" class="form-input" placeholder="Votre nom"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label for="reservationPhone">Téléphone</label>
+                                <input type="tel" id="reservationPhone" class="form-input" placeholder="06 12 34 56 78"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label for="reservationProducts">Produits à réserver</label>
+                                <textarea id="reservationProducts" class="form-textarea" rows="3"
+                                    placeholder="Liste des médicaments" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="reservationMessage">Message (optionnel)</label>
+                                <textarea id="reservationMessage" class="form-textarea" rows="2"
+                                    placeholder="Informations complémentaires"></textarea>
+                            </div>
+                            <button type="submit" class="form-submit-btn">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path
+                                        d="M9 11L12 14L22 4M21 12V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H16"
+                                        stroke="currentColor" stroke-width="2" />
+                                </svg>
+                                Envoyer la réservation
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="pharmacy-details.js"></script>
+</body>
+
+</html>

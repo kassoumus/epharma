@@ -1,0 +1,27 @@
+# Fichiers système
+.DS_Store
+Thumbs.db
+
+# Environnement
+.env
+.env.local
+.env.production
+
+# Node modules (si vous ajoutez un backend)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Build
+dist/
+build/
+.vercel/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log

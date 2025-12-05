@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Résultats de recherche - Pharmacies disponibles">
+    <title>Résultats - Epharma</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M12 8V16M8 12H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                    <span class="logo-text">Epharma</span>
+                </div>
+                <nav class="nav">
+                    <a href="index.html" class="nav-link">Rechercher</a>
+                    <a href="#" class="nav-link active">Pharmacies</a>
+                    <a href="#" class="nav-link">À propos</a>
+                    <button class="btn-secondary">Espace Pharmacie</button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Search Bar (compact version) -->
+    <section class="search-bar-compact">
+        <div class="container">
+            <div class="search-box-compact">
+                <div class="search-input-wrapper">
+                    <svg class="search-icon" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
+                            stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <input type="text" class="search-input" id="medicamentSearchCompact" placeholder="Doliprane 1000mg"
+                        value="Doliprane 1000mg">
+                </div>
+                <div class="search-divider-compact"></div>
+                <div class="location-input-wrapper">
+                    <svg class="location-icon" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M21 10C21 17 12 23 12 23C12 23 3 17 3 10C3 7.61305 3.94821 5.32387 5.63604 3.63604C7.32387 1.94821 9.61305 1 12 1C14.3869 1 16.6761 1.94821 18.364 3.63604C20.0518 5.32387 21 7.61305 21 10Z"
+                            stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <input type="text" class="location-input" id="locationSearchCompact" placeholder="Paris"
+                        value="Paris">
+                </div>
+                <button class="search-btn-compact" id="searchBtnCompact">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
+                            stroke="currentColor" stroke-width="2" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section class="results-section">
+        <div class="container-fluid">
+            <div class="results-header">
+                <div class="results-info">
+                    <h1 class="results-title">
+                        <span class="results-count" id="resultsCount">12</span> pharmacies trouvées
+                    </h1>
+                    <p class="results-subtitle">
+                        d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2
+                        17.5228 6.47715 22 12 22Z"
+                        stroke="currentColor" stroke-width="2" />
+                        <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                        Ouvertes
+                        </button>
+                        <button class="filter-btn" data-filter="nearby">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path
+                                    d="M21 10C21 17 12 23 12 23C12 23 3 17 3 10C3 7.61305 3.94821 5.32387 5.63604 3.63604C7.32387 1.94821 9.61305 1 12 1C14.3869 1 16.6761 1.94821 18.364 3.63604C20.0518 5.32387 21 7.61305 21 10Z"
+                                    stroke="currentColor" stroke-width="2" />
+                            </svg>
+                            À proximité
+                        </button>
+                </div>
+            </div>
+
+            <!-- Results Grid -->
+            <div class="results-grid">
+                <!-- Pharmacy List -->
+                <div class="pharmacy-list" id="pharmacyList">
+                    <!-- Pharmacies will be injected here by JavaScript -->
+                </div>
+
+                <!-- Map -->
+                <div class="map-container">
+                    <div id="map" class="map"></div>
+                    <div class="map-controls">
+                        <button class="map-control-btn" id="centerMapBtn" title="Centrer la carte">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M12 22C12 22 20 18 20 12V5L12 2L4 5V12C4 18 12 22 12 22Z" stroke="currentColor"
+                                    stroke-width="2" />
+                            </svg>
+                        </button>
+                        <button class="map-control-btn" id="toggleViewBtn" title="Basculer la vue">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path
+                                    d="M21 16V8C20.9996 7.64927 20.9071 7.30481 20.7315 7.00116C20.556 6.69751 20.3037 6.44536 20 6.27L13 2.27C12.696 2.09446 12.3511 2.00205 12 2.00205C11.6489 2.00205 11.304 2.09446 11 2.27L4 6.27C3.69626 6.44536 3.44398 6.69751 3.26846 7.00116C3.09294 7.30481 3.00036 7.64927 3 8V16C3.00036 16.3507 3.09294 16.6952 3.26846 16.9988C3.44398 17.3025 3.69626 17.5546 4 17.73L11 21.73C11.304 21.9055 11.6489 21.9979 12 21.9979C12.3511 21.9979 12.696 21.9055 13 21.73L20 17.73C20.3037 17.5546 20.556 17.3025 20.7315 16.9988C20.9071 16.6952 20.9996 16.3507 21 16Z"
+                                    stroke="currentColor" stroke-width="2" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="results.js"></script>
+</body>
+
+</html>

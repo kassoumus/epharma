@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion du Stock - Espace Pharmacie</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="admin-body">
+    <!-- Sidebar (same as dashboard) -->
+    <aside class="admin-sidebar" id="adminSidebar">
+        <div class="admin-sidebar-header">
+            <div class="logo">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z"
+                        stroke="currentColor" stroke-width="2" />
+                    <path d="M12 8V16M8 12H16" stroke="currentColor" stroke-width="2" />
+                </svg>
+                <span class="logo-text">Epharma</span>
+            </div>
+        </div>
+
+        <div class="admin-pharmacy-info">
+            <div class="admin-pharmacy-name" id="pharmacyName">Pharmacie de la République</div>
+            <div class="admin-pharmacy-email" id="pharmacyEmail">contact@pharmacie-republique.fr</div>
+        </div>
+
+        <nav class="admin-nav">
+            <a href="admin-dashboard.html" class="admin-nav-item">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="2" />
+                    <rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="2" />
+                    <rect x="14" y="14" width="7" height="7" stroke="currentColor" stroke-width="2" />
+                    <rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="2" />
+                </svg>
+                <span>Dashboard</span>
+            </a>
+            <a href="admin-stock.html" class="admin-nav-item active">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M20 7H4C2.89543 7 2 7.89543 2 9V19C2 20.1046 2.89543 21 4 21H20C21.1046 21 22 20.1046 22 19V9C22 7.89543 21.1046 7 20 7Z"
+                        stroke="currentColor" stroke-width="2" />
+                    <path
+                        d="M16 21V5C16 4.46957 15.7893 3.96086 15.4142 3.58579C15.0391 3.21071 14.5304 3 14 3H10C9.46957 3 8.96086 3.21071 8.58579 3.58579C8.21071 3.96086 8 4.46957 8 5V21"
+                        stroke="currentColor" stroke-width="2" />
+                </svg>
+                <span>Gestion du stock</span>
+            </a>
+            <a href="admin-info.html" class="admin-nav-item">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+                        stroke="currentColor" stroke-width="2" />
+                    <path d="M12 16V12M12 8H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+                <span>Informations</span>
+            </a>
+        </nav>
+
+        <div class="admin-sidebar-footer">
+            <button class="admin-logout-btn" id="logoutBtn">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9M16 17L21 12M21 12L16 7M21 12H9"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+                <span>Déconnexion</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+        <div class="admin-header">
+            <h1 class="admin-page-title">Gestion du stock</h1>
+            <div class="admin-header-actions">
+                <button class="admin-btn-primary" id="addProductBtn">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                    Ajouter un produit
+                </button>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="admin-filters">
+            <div class="admin-search-box">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
+                        stroke="currentColor" stroke-width="2" />
+                </svg>
+                <input type="text" id="searchInput" placeholder="Rechercher un produit...">
+            </div>
+            <div class="admin-filter-buttons">
+                <button class="admin-filter-btn active" data-filter="all">Tous</button>
+                <button class="admin-filter-btn" data-filter="instock">En stock</button>
+                <button class="admin-filter-btn" data-filter="lowstock">Stock bas</button>
+                <button class="admin-filter-btn" data-filter="outofstock">Rupture</button>
+            </div>
+        </div>
+
+        <!-- Products Table -->
+        <div class="admin-section">
+            <div class="admin-table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Produit</th>
+                            <th>Quantité</th>
+                            <th>Prix</th>
+                            <th>Seuil alerte</th>
+                            <th>Statut</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productsTable">
+                        <!-- Products will be injected here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add/Edit Product Modal -->
+    <div class="admin-modal" id="productModal">
+        <div class="admin-modal-content">
+            <div class="admin-modal-header">
+                <h2 class="admin-modal-title" id="modalTitle">Ajouter un produit</h2>
+                <button class="admin-modal-close" id="closeModal">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                </button>
+            </div>
+            <form class="admin-modal-form" id="productForm">
+                <div class="admin-form-group">
+                    <label for="productName">Nom du médicament *</label>
+                    <input type="text" id="productName" class="admin-form-input" required>
+                </div>
+                <div class="admin-form-row">
+                    <div class="admin-form-group">
+                        <label for="productStock">Quantité en stock *</label>
+                        <input type="number" id="productStock" class="admin-form-input" min="0" required>
+                    </div>
+                    <div class="admin-form-group">
+                        <label for="productPrice">Prix (€) *</label>
+                        <input type="number" id="productPrice" class="admin-form-input" step="0.01" min="0" required>
+                    </div>
+                </div>
+                <div class="admin-form-group">
+                    <label for="productThreshold">Seuil d'alerte stock bas *</label>
+                    <input type="number" id="productThreshold" class="admin-form-input" min="0" required>
+                </div>
+                <div class="admin-modal-actions">
+                    <button type="button" class="admin-btn-secondary" id="cancelBtn">Annuler</button>
+                    <button type="submit" class="admin-btn-primary">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" />
+                        </svg>
+                        Enregistrer
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+    <script src="admin-stock.js"></script>
+</body>
+
+</html>

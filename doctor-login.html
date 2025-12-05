@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion Médecin - Epharma</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="admin-body">
+    <div class="admin-login-container">
+        <!-- Left Side - Branding -->
+        <div class="admin-login-left doctor-theme">
+            <div class="admin-login-branding">
+                <div class="logo-large">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21"
+                            stroke="currentColor" stroke-width="2" />
+                        <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                </div>
+                <h1>Espace Médecin</h1>
+                <p>Gérez vos consultations, rendez-vous et patients en toute simplicité</p>
+
+                <div class="admin-features">
+                    <div class="admin-feature-item">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2" />
+                            <path d="M16 2V6M8 2V6M3 10H21" stroke="currentColor" stroke-width="2" />
+                        </svg>
+                        <span>Agenda intelligent</span>
+                    </div>
+                    <div class="admin-feature-item">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21"
+                                stroke="currentColor" stroke-width="2" />
+                            <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2" />
+                            <path
+                                d="M23 21V19C22.9993 18.1137 22.7044 17.2528 22.1614 16.5523C21.6184 15.8519 20.8581 15.3516 20 15.13"
+                                stroke="currentColor" stroke-width="2" />
+                            <path
+                                d="M16 3.13C16.8604 3.35031 17.623 3.85071 18.1676 4.55232C18.7122 5.25392 19.0078 6.11683 19.0078 7.005C19.0078 7.89318 18.7122 8.75608 18.1676 9.45769C17.623 10.1593 16.8604 10.6597 16 10.88"
+                                stroke="currentColor" stroke-width="2" />
+                        </svg>
+                        <span>Gestion patients</span>
+                    </div>
+                    <div class="admin-feature-item">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
+                                stroke="currentColor" stroke-width="2" />
+                        </svg>
+                        <span>Statistiques détaillées</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side - Login Form -->
+        <div class="admin-login-right">
+            <div class="admin-login-form-container">
+                <div class="admin-login-header">
+                    <h2>Connexion</h2>
+                    <p>Accédez à votre espace professionnel</p>
+                </div>
+
+                <form class="admin-login-form" id="doctorLoginForm">
+                    <div class="admin-form-group">
+                        <label for="email">Email professionnel</label>
+                        <div class="admin-input-wrapper">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path
+                                    d="M4 4H20C21.1 4 22 4.9 22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6C2 4.9 2.9 4 4 4Z"
+                                    stroke="currentColor" stroke-width="2" />
+                                <path d="M22 6L12 13L2 6" stroke="currentColor" stroke-width="2" />
+                            </svg>
+                            <input type="email" id="email" class="admin-form-input" placeholder="dr.nom@email.fr"
+                                required>
+                        </div>
+                    </div>
+
+                    <div class="admin-form-group">
+                        <label for="password">Mot de passe</label>
+                        <div class="admin-input-wrapper">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor"
+                                    stroke-width="2" />
+                                <path
+                                    d="M7 11V7C7 5.67392 7.52678 4.40215 8.46447 3.46447C9.40215 2.52678 10.6739 2 12 2C13.3261 2 14.5979 2.52678 15.5355 3.46447C16.4732 4.40215 17 5.67392 17 7V11"
+                                    stroke="currentColor" stroke-width="2" />
+                            </svg>
+                            <input type="password" id="password" class="admin-form-input" placeholder="••••••••"
+                                required>
+                        </div>
+                    </div>
+
+                    <div class="admin-form-options">
+                        <label class="admin-checkbox">
+                            <input type="checkbox" id="remember">
+                            <span>Se souvenir de moi</span>
+                        </label>
+                        <a href="#" class="admin-link">Mot de passe oublié ?</a>
+                    </div>
+
+                    <button type="submit" class="admin-btn-primary admin-btn-full">
+                        Se connecter
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" />
+                        </svg>
+                    </button>
+                </form>
+
+                <div class="admin-login-demo">
+                    <p class="demo-title">Identifiants de démonstration :</p>
+                    <div class="demo-credentials">
+                        <div class="demo-item">
+                            <strong>Email:</strong> dr.dubois@cabinet-sante.fr
+                        </div>
+                        <div class="demo-item">
+                            <strong>Mot de passe:</strong> demo123
+                        </div>
+                    </div>
+                </div>
+
+                <div class="admin-login-footer">
+                    <a href="index.html" class="back-link">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" />
+                        </svg>
+                        Retour à l'accueil
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="doctor-admin.js"></script>
+</body>
+
+</html>

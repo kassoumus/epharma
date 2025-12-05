@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Médecin - Epharma</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="admin-body">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar doctor-sidebar" id="adminSidebar">
+        <div class="admin-sidebar-header">
+            <div class="logo">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21"
+                        stroke="currentColor" stroke-width="2" />
+                    <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" />
+                </svg>
+                <span class="logo-text">Epharma</span>
+            </div>
+        </div>
+
+        <div class="admin-pharmacy-info">
+            <div class="admin-pharmacy-name" id="doctorName">Dr. Marie Dubois</div>
+            <div class="admin-pharmacy-email" id="doctorSpecialty">Médecin généraliste</div>
+        </div>
+
+        <nav class="admin-nav">
+            <a href="doctor-dashboard.html" class="admin-nav-item active">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="2" />
+                    <rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="2" />
+                    <rect x="14" y="14" width="7" height="7" stroke="currentColor" stroke-width="2" />
+                    <rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="2" />
+                </svg>
+                <span>Dashboard</span>
+            </a>
+            <a href="#" class="admin-nav-item">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2" />
+                    <path d="M16 2V6M8 2V6M3 10H21" stroke="currentColor" stroke-width="2" />
+                </svg>
+                <span>Agenda</span>
+            </a>
+            <a href="#" class="admin-nav-item">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21"
+                        stroke="currentColor" stroke-width="2" />
+                    <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2" />
+                </svg>
+                <span>Patients</span>
+            </a>
+            <a href="#" class="admin-nav-item">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
+                    <path d="M12 16V12M12 8H12.01" stroke="currentColor" stroke-width="2" />
+                </svg>
+                <span>Mon profil</span>
+            </a>
+        </nav>
+
+        <div class="admin-sidebar-footer">
+            <button class="admin-logout-btn" id="logoutBtn">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9M16 17L21 12M21 12L16 7M21 12H9"
+                        stroke="currentColor" stroke-width="2" />
+                </svg>
+                <span>Déconnexion</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+        <div class="admin-header">
+            <div>
+                <h1 class="admin-page-title">Dashboard</h1>
+                <p class="admin-page-subtitle">Bienvenue, <span id="welcomeName">Dr. Dubois</span> • <span
+                        id="currentTime"></span></p>
+            </div>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="admin-stats-grid">
+            <div class="admin-stat-card doctor-stat">
+                <div class="admin-stat-icon" style="background: linear-gradient(135deg, #f97316, #ea580c);">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2" />
+                        <path d="M16 2V6M8 2V6M3 10H21" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                </div>
+                <div class="admin-stat-content">
+                    <div class="admin-stat-label">Rendez-vous aujourd'hui</div>
+                    <div class="admin-stat-value" id="statTodayAppointments">3</div>
+                </div>
+            </div>
+
+            <div class="admin-stat-card doctor-stat">
+                <div class="admin-stat-icon" style="background: linear-gradient(135deg, #10b981, #059669);">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21"
+                            stroke="currentColor" stroke-width="2" />
+                        <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                </div>
+                <div class="admin-stat-content">
+                    <div class="admin-stat-label">Total patients</div>
+                    <div class="admin-stat-value" id="statTotalPatients">45</div>
+                </div>
+            </div>
+
+            <div class="admin-stat-card doctor-stat">
+                <div class="admin-stat-icon" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
+                            stroke="currentColor" stroke-width="2" />
+                    </svg>
+                </div>
+                <div class="admin-stat-content">
+                    <div class="admin-stat-label">Note moyenne</div>
+                    <div class="admin-stat-value" id="statRating">4.8</div>
+                </div>
+            </div>
+
+            <div class="admin-stat-card doctor-stat">
+                <div class="admin-stat-icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M12 8V12L15 15" stroke="currentColor" stroke-width="2" />
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                </div>
+                <div class="admin-stat-content">
+                    <div class="admin-stat-label">En attente</div>
+                    <div class="admin-stat-value" id="statPending">1</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Today's Appointments -->
+        <div class="admin-section">
+            <div class="admin-section-header">
+                <h2 class="admin-section-title">Rendez-vous du jour</h2>
+                <button class="admin-btn-secondary">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    Nouveau rendez-vous
+                </button>
+            </div>
+            <div class="admin-table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Heure</th>
+                            <th>Patient</th>
+                            <th>Type</th>
+                            <th>Motif</th>
+                            <th>Statut</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="appointmentsTable">
+                        <!-- Appointments will be injected here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Alerts -->
+        <div class="admin-section">
+            <h2 class="admin-section-title">Alertes et notifications</h2>
+            <div class="admin-alerts" id="alertsContainer">
+                <!-- Alerts will be injected here -->
+            </div>
+        </div>
+    </main>
+
+    <script src="doctor-admin.js"></script>
+    <script src="doctor-dashboard.js"></script>
+</body>
+
+</html>
