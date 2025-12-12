@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Connexion - Accédez à votre compte Epharma">
+    <title>Connexion - Epharma</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="admin-login-body">
+    <div class="admin-login-container">
+        <!-- Left Side - Branding -->
+        <div class="admin-login-branding user-theme">
+            <div class="admin-login-branding-content">
+                <div class="logo-large">
+                    <svg class="logo-icon-large" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z"
+                            stroke="currentColor" stroke-width="2" />
+                        <path d="M12 8V16M8 12H16" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span class="logo-text-large">Epharma</span>
+                </div>
+                <h1 class="admin-branding-title">Bon retour !</h1>
+                <p class="admin-branding-subtitle">Connectez-vous pour accéder à votre compte</p>
+
+                <div class="admin-features">
+                    <div class="admin-feature-item">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+                                stroke="currentColor" stroke-width="2" />
+                        </svg>
+                        <span>Accédez à vos favoris</span>
+                    </div>
+                    <div class="admin-feature-item">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M12 8V12L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
+                        </svg>
+                        <span>Consultez votre historique</span>
+                    </div>
+                    <div class="admin-feature-item">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21"
+                                stroke="currentColor" stroke-width="2" />
+                            <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" />
+                        </svg>
+                        <span>Gérez votre profil</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side - Login Form -->
+        <div class="admin-login-form-container">
+            <div class="admin-login-form-wrapper">
+                <div class="admin-login-header">
+                    <h2 class="admin-login-title">Connexion</h2>
+                    <p class="admin-login-description">Accédez à votre espace personnel</p>
+                </div>
+
+                <form class="admin-login-form" id="signInForm">
+                    <div class="admin-form-group">
+                        <label for="email" class="admin-form-label">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path
+                                    d="M3 8L10.89 13.26C11.5266 13.6778 12.4734 13.6778 13.11 13.26L21 8M5 19H19C20.1046 19 21 18.1046 21 17V7C21 5.89543 20.1046 5 19 5H5C3.89543 5 3 5.89543 3 7V17C3 18.1046 3.89543 19 5 19Z"
+                                    stroke="currentColor" stroke-width="2" />
+                            </svg>
+                            Email
+                        </label>
+                        <input type="email" id="email" class="admin-form-input" placeholder="jean.dupont@email.com"
+                            required>
+                    </div>
+
+                    <div class="admin-form-group">
+                        <label for="password" class="admin-form-label">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor"
+                                    stroke-width="2" />
+                                <path d="M7 11V7C7 4.23858 9.23858 2 12 2C14.7614 2 17 4.23858 17 7V11"
+                                    stroke="currentColor" stroke-width="2" />
+                            </svg>
+                            Mot de passe
+                        </label>
+                        <input type="password" id="password" class="admin-form-input" placeholder="••••••••" required>
+                    </div>
+
+                    <div class="admin-form-options">
+                        <label class="admin-checkbox-label">
+                            <input type="checkbox" id="rememberMe" class="admin-checkbox">
+                            <span>Se souvenir de moi</span>
+                        </label>
+                        <a href="user-reset-password.html" class="admin-forgot-link">Mot de passe oublié ?</a>
+                    </div>
+
+                    <button type="submit" class="admin-submit-btn" id="signInBtn">
+                        <span>Se connecter</span>
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M15 3H19C19.5304 3 20.0391 3.21071 20.4142 3.58579C20.7893 3.96086 21 4.46957 21 5V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H15M10 17L15 12M15 12L10 7M15 12H3"
+                                stroke="currentColor" stroke-width="2" />
+                        </svg>
+                    </button>
+                </form>
+
+                <div class="admin-login-footer">
+                    <p>Pas encore de compte ? <a href="user-signup.html" class="admin-register-link">S'inscrire</a></p>
+                    <a href="index.html" class="admin-back-home">← Retour à l'accueil</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-client.js"></script>
+    <script src="user-auth.js"></script>
+    <script>
+        // Gestion du formulaire de connexion
+        document.getElementById('signInForm').addEventListener('submit', handleSignInForm);
+
+        console.log('🔐 User login page loaded');
+    </script>
+
+    <style>
+        /* Thème spécifique pour les utilisateurs patients */
+        .user-theme {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%) !important;
+        }
+
+        /* Animation du spinner */
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .spinner {
+            animation: spin 1s linear infinite;
+        }
+    </style>
+</body>
+
+</html>
