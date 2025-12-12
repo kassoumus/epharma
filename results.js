@@ -363,6 +363,25 @@ function centerMapOnPharmacy(pharmacy) {
     }
 }
 
+// === INITIALIZATION ===
+document.addEventListener('DOMContentLoaded', () => {
+    // Populate search inputs with URL parameters
+    const medicamentInput = document.getElementById('medicamentSearchCompact');
+    const locationInput = document.getElementById('locationSearchCompact');
+
+    if (medicamentInput && searchedMedicaments.length > 0) {
+        medicamentInput.value = searchedMedicaments.join(', ');
+    }
+
+    if (locationInput && searchedLocation) {
+        locationInput.value = searchedLocation;
+    }
+
+    // Initialize map and render pharmacies
+    initializeMap();
+    renderPharmacies();
+});
+
 // === CONSOLE LOG ===
 console.log('🗺️ Epharma Results Page initialized!');
 console.log(`📍 ${pharmacies.length} pharmacies de Niamey chargées`);
