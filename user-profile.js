@@ -27,22 +27,40 @@ async function loadUserProfile() {
             .from('user_profiles')
             .select('*')
             .eq('user_id', currentUser.id)
-            .single();
+            .maybeSingle(); // Utiliser maybeSingle() au lieu de single()
 
-        if (error) throw error;
+        // Si le profil n'existe pas, créer un profil par défaut
+        if (!profile) {
+            console.log('Profil non trouvé, création d\'un profil par défaut...');
+            const defaultProfile = {
+                user_id: currentUser.id,
+                full_name: currentUser.email.split('@')[0],
+                city: 'Niamey',
+                search_radius: 5
+            };
 
-        currentProfile = profile;
+            const { data: newProfile, error: createError } = await supabase
+                .from('user_profiles')
+                .insert(defaultProfile)
+                .select()
+                .single();
 
-        // 3. Afficher les informations
-        displayUserProfile(profile);
+            if (createError) throw createError;
 
-        // 4. Charger les favoris et l'historique
+            currentProfile = newProfile;
+            displayUserProfile(newProfile);
+        } else {
+            currentProfile = profile;
+            displayUserProfile(profile);
+        }
+
+        // 3. Charger les favoris et l'historique
         await loadUserFavorites();
         await loadUserHistory();
 
     } catch (error) {
         console.error('Erreur chargement profil:', error);
-        showError('profileContainer', 'Erreur lors du chargement du profil');
+        showError('profileContainer', 'Erreur lors du chargement du profil: ' + error.message);
     }
 }
 
