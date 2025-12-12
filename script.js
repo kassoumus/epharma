@@ -225,48 +225,48 @@ document.addEventListener('click', (e) => {
     }
 });
 
-// === SEARCH BUTTON ===
-searchBtn.addEventListener('click', () => {
-    performSearch();
+// === SEARCH FUNCTIONALITY ===
+function performSearch() {
+    const location = locationSearch.value.trim() || 'Niamey'; // Default to Niamey
+
+    if (currentCategory === 'pharmacy') {
+        if (searchedMedicaments.length === 0) {
+            alert('Veuillez entrer au moins un médicament');
+            return;
+        }
+
+        const medicamentsParam = searchedMedicaments.join(',');
+        window.location.href = `results.html?medicaments=${encodeURIComponent(medicamentsParam)}&location=${encodeURIComponent(location)}`;
+    } else if (currentCategory === 'health-center') {
+        window.location.href = 'health-centers.html';
+    } else if (currentCategory === 'doctor') {
+        window.location.href = 'doctors.html';
+    }
+}
+
+searchBtn.addEventListener('click', performSearch);
+
+// === ENTER KEY SUPPORT ===
+medicamentSearch.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        const value = medicamentSearch.value.trim();
+        if (value && currentCategory === 'pharmacy') {
+            addMedicamentTag(value);
+            medicamentSearch.value = '';
+            suggestionsDropdown.style.display = 'none';
+        } else {
+            performSearch();
+        }
+    }
 });
 
-// Search on Enter key in location
-locationSearch.addEventListener('keypress', (e) => {
+locationSearch.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
+        e.preventDefault();
         performSearch();
     }
 });
-
-function performSearch() {
-    const location = locationSearch.value.trim();
-
-    if (!location) {
-        alert('Veuillez entrer une localisation');
-        return;
-    }
-
-    // Redirect based on category
-    const redirectPages = {
-        'pharmacy': 'results.html',
-        'health-center': 'health-centers.html',
-        'doctor': 'doctors.html'
-    };
-
-    const page = redirectPages[currentCategory] || 'results.html';
-
-    // For pharmacies, use medications; for others, use search term
-    if (currentCategory === 'pharmacy') {
-        if (searchedMedicaments.length === 0) {
-            alert('Veuillez ajouter au moins un médicament (appuyez sur Entrée)');
-            return;
-        }
-        const medicaments = searchedMedicaments.join(',');
-        window.location.href = `${page}?medicaments=${encodeURIComponent(medicaments)}&location=${encodeURIComponent(location)}`;
-    } else {
-        const searchTerm = medicamentSearch.value.trim() || (currentCategory === 'health-center' ? 'Centres de santé' : 'Médecins');
-        window.location.href = `${page}?search=${encodeURIComponent(searchTerm)}&location=${encodeURIComponent(location)}`;
-    }
-}
 
 // === ANIMATIONS ===
 const style = document.createElement('style');
@@ -329,6 +329,13 @@ document.querySelectorAll('.feature-card').forEach(card => {
 });
 
 // === INITIALIZATION ===
-console.log('🚀 Epharma initialized successfully!');
+document.addEventListener('DOMContentLoaded', () => {
+    // Set default location to Niamey
+    if (locationSearch && !locationSearch.value) {
+        locationSearch.value = 'Niamey';
+    }
+    console.log('📍 Default location set to: Niamey, Niger');
+});
+console.log('🚀 Epharma initialized');
 console.log('📍 Multi-category search enabled');
 console.log('✅ Pharmacies, Centres de santé, Médecins');
