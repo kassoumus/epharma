@@ -16,6 +16,10 @@ BEGIN
         WHERE table_name = 'users' AND column_name = 'role'
     ) THEN
         ALTER TABLE users ADD COLUMN role VARCHAR(20) DEFAULT 'patient';
+        
+        -- Ajouter contrainte pour les rôles valides APRÈS avoir créé la colonne
+        ALTER TABLE users ADD CONSTRAINT check_role 
+        CHECK (role IN ('patient', 'pharmacy', 'doctor', 'admin'));
     END IF;
 
     -- Ajouter colonne is_active si elle n'existe pas
@@ -32,17 +36,6 @@ BEGIN
         WHERE table_name = 'users' AND column_name = 'last_login'
     ) THEN
         ALTER TABLE users ADD COLUMN last_login TIMESTAMP WITH TIME ZONE;
-    END IF;
-END $$;
-
--- Ajouter contrainte pour les rôles valides
-DO $$
-BEGIN
-    IF NOT EXISTS (
-        SELECT 1 FROM pg_constraint WHERE conname = 'check_role'
-    ) THEN
-        ALTER TABLE users ADD CONSTRAINT check_role 
-        CHECK (role IN ('patient', 'pharmacy', 'doctor', 'admin'));
     END IF;
 END $$;
 
