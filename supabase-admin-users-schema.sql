@@ -56,16 +56,16 @@ SELECT
     up.phone,
     up.city,
     up.address,
-    COALESCE(usr.role, 'patient') as role,
-    COALESCE(usr.is_active, true) as is_active,
-    usr.last_login,
+    COALESCE(users_table.role, 'patient') as role,
+    COALESCE(users_table.is_active, true) as is_active,
+    users_table.last_login,
     CASE 
         WHEN u.email_confirmed_at IS NOT NULL THEN 'confirmed'
         ELSE 'pending'
     END as email_status
 FROM auth.users u
 LEFT JOIN user_profiles up ON u.id = up.user_id
-LEFT JOIN users usr ON u.id = usr.id
+LEFT JOIN users users_table ON u.id = users_table.id
 ORDER BY u.created_at DESC;
 
 -- ========================================
