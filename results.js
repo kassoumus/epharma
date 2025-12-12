@@ -185,7 +185,8 @@ function addMarker(pharmacy) {
 }
 
 // === RENDER PHARMACIES ===
-function renderPharmacies(pharmaciesToRender) {
+function renderPharmacies() {
+    const pharmaciesToRender = filterPharmacies();
     const pharmacyList = document.getElementById('pharmacyList');
     pharmacyList.innerHTML = '';
 
@@ -363,11 +364,36 @@ function centerMapOnPharmacy(pharmacy) {
     }
 }
 
+// === FILTER FUNCTIONALITY ===
+function applyFilter(filter) {
+    activeFilter = filter;
+    renderPharmacies();
+
+    // Update active button
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    const activeBtn = document.querySelector(`[data-filter="${filter}"]`);
+    if (activeBtn) {
+        activeBtn.classList.add('active');
+    }
+}
+
+function filterPharmacies() {
+    if (activeFilter === 'open') {
+        return pharmacies.filter(p => p.isOpen);
+    } else if (activeFilter === 'nearby') {
+        return pharmacies.filter(p => p.distance <= 1.5);
+    }
+    return pharmacies; // 'all' filter
+}
+
 // === INITIALIZATION ===
 document.addEventListener('DOMContentLoaded', () => {
     // Populate search inputs with URL parameters
     const medicamentInput = document.getElementById('medicamentSearchCompact');
     const locationInput = document.getElementById('locationSearchCompact');
+    const locationDisplay = document.getElementById('locationDisplay');
 
     if (medicamentInput && searchedMedicaments.length > 0) {
         medicamentInput.value = searchedMedicaments.join(', ');
@@ -377,9 +403,23 @@ document.addEventListener('DOMContentLoaded', () => {
         locationInput.value = searchedLocation;
     }
 
+    if (locationDisplay && searchedLocation) {
+        locationDisplay.textContent = searchedLocation;
+    }
+
     // Initialize map and render pharmacies
     initializeMap();
     renderPharmacies();
+
+    // Setup filter buttons
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            applyFilter(btn.dataset.filter);
+        });
+    });
+
+    // Set initial filter to 'open'
+    applyFilter('open');
 });
 
 // === CONSOLE LOG ===
