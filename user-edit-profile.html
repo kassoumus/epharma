@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifier mon profil - Epharma</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="admin-body">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar user-sidebar">
+        <div class="admin-sidebar-header">
+            <div class="logo">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z"
+                        stroke="currentColor" stroke-width="2" />
+                    <path d="M12 8V16M8 12H16" stroke="currentColor" stroke-width="2" />
+                </svg>
+                <span class="logo-text">Epharma</span>
+            </div>
+        </div>
+
+        <div class="admin-pharmacy-info">
+            <div class="user-avatar-container">
+                <img src="https://ui-avatars.com/api/?name=User&background=10B981&color=fff&size=80" alt="Avatar"
+                    class="user-avatar-sidebar">
+            </div>
+            <div class="admin-pharmacy-name">Modifier le profil</div>
+        </div>
+
+        <nav class="admin-nav">
+            <a href="user-profile.html" class="admin-nav-item">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21"
+                        stroke="currentColor" stroke-width="2" />
+                    <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" />
+                </svg>
+                <span>Mon Profil</span>
+            </a>
+            <a href="index.html" class="admin-nav-item">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
+                        stroke="currentColor" stroke-width="2" />
+                </svg>
+                <span>Rechercher</span>
+            </a>
+        </nav>
+
+        <div class="admin-sidebar-footer">
+            <button class="admin-logout-btn" onclick="signOut()">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9M16 17L21 12M21 12L16 7M21 12H9"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+                <span>Déconnexion</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+        <div class="admin-header">
+            <h1 class="admin-page-title">Modifier mon profil</h1>
+            <div class="admin-header-actions">
+                <a href="user-profile.html" class="admin-btn-secondary">
+                    <svg viewBox="0 0 24 24" fill="none" width="20" height="20">
+                        <path d="M19 12H5M12 19L5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                    <span>Retour au profil</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Edit Form -->
+        <div class="admin-section">
+            <form class="edit-profile-form" id="editProfileForm">
+                <!-- Avatar Upload -->
+                <div class="avatar-upload-section">
+                    <div class="avatar-preview">
+                        <img src="https://ui-avatars.com/api/?name=User&background=10B981&color=fff&size=120"
+                            alt="Avatar" id="avatarPreview">
+                        <label for="avatarInput" class="avatar-upload-btn">
+                            <svg viewBox="0 0 24 24" fill="none" width="20" height="20">
+                                <path
+                                    d="M23 19C23 19.5304 22.7893 20.0391 22.4142 20.4142C22.0391 20.7893 21.5304 21 21 21H3C2.46957 21 1.96086 20.7893 1.58579 20.4142C1.21071 20.0391 1 19.5304 1 19V8C1 7.46957 1.21071 6.96086 1.58579 6.58579C1.96086 6.21071 2.46957 6 3 6H7L9 3H15L17 6H21C21.5304 6 22.0391 6.21071 22.4142 6.58579C22.7893 6.96086 23 7.46957 23 8V19Z"
+                                    stroke="currentColor" stroke-width="2" />
+                                <circle cx="12" cy="13" r="4" stroke="currentColor" stroke-width="2" />
+                            </svg>
+                            Changer la photo
+                        </label>
+                        <input type="file" id="avatarInput" accept="image/*" style="display: none;"
+                            onchange="handleAvatarUpload(event)">
+                    </div>
+                    <div class="avatar-info">
+                        <p>Photo de profil</p>
+                        <small>JPG, PNG ou GIF. Max 2MB.</small>
+                    </div>
+                </div>
+
+                <!-- Personal Information -->
+                <div class="form-section">
+                    <h3 class="form-section-title">Informations personnelles</h3>
+                    <div class="form-grid">
+                        <div class="admin-form-group">
+                            <label for="editFullName" class="admin-form-label">
+                                <svg viewBox="0 0 24 24" fill="none" width="18" height="18">
+                                    <path
+                                        d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21"
+                                        stroke="currentColor" stroke-width="2" />
+                                    <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" />
+                                </svg>
+                                Nom complet
+                            </label>
+                            <input type="text" id="editFullName" class="admin-form-input" placeholder="Jean Dupont"
+                                required>
+                        </div>
+
+                        <div class="admin-form-group">
+                            <label for="editPhone" class="admin-form-label">
+                                <svg viewBox="0 0 24 24" fill="none" width="18" height="18">
+                                    <path
+                                        d="M22 16.92V19.92C22 20.4696 21.5523 20.9167 21.0027 20.9201C18.2222 21.0891 15.4632 20.3717 13.0429 18.8501C10.7869 17.4446 8.90821 15.5659 7.50269 13.3099C5.97501 10.8777 5.25741 8.10427 5.42841 5.31106C5.43189 4.76126 5.67356 4.23414 6.09938 3.84631C6.5252 3.45848 7.09996 3.24067 7.69841 3.24006H10.6984C11.7598 3.22906 12.6534 4.00831 12.7784 5.06006C12.8934 6.06006 13.1184 7.04006 13.4484 7.98006C13.7284 8.76006 13.5084 9.63006 12.8984 10.17L11.5884 11.48C12.8534 13.78 14.7184 15.645 17.0184 16.91L18.3284 15.6C18.8684 14.99 19.7384 14.77 20.5184 15.05C21.4584 15.38 22.4384 15.605 23.4384 15.72C24.5034 15.847 25.2884 16.7706 25.2784 17.84V19.92C25.2784 20.4696 24.8307 20.9167 24.2811 20.9201Z"
+                                        stroke="currentColor" stroke-width="2" />
+                                </svg>
+                                Téléphone
+                            </label>
+                            <input type="tel" id="editPhone" class="admin-form-input" placeholder="(+227) 90 12 34 56">
+                        </div>
+
+                        <div class="admin-form-group">
+                            <label for="editCity" class="admin-form-label">
+                                <svg viewBox="0 0 24 24" fill="none" width="18" height="18">
+                                    <path
+                                        d="M21 10C21 17 12 23 12 23C12 23 3 17 3 10C3 7.61305 3.94821 5.32387 5.63604 3.63604C7.32387 1.94821 9.61305 1 12 1C14.3869 1 16.6761 1.94821 18.364 3.63604C20.0518 5.32387 21 7.61305 21 10Z"
+                                        stroke="currentColor" stroke-width="2" />
+                                    <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2" />
+                                </svg>
+                                Ville
+                            </label>
+                            <input type="text" id="editCity" class="admin-form-input" placeholder="Niamey">
+                        </div>
+
+                        <div class="admin-form-group full-width">
+                            <label for="editAddress" class="admin-form-label">
+                                <svg viewBox="0 0 24 24" fill="none" width="18" height="18">
+                                    <path
+                                        d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z"
+                                        stroke="currentColor" stroke-width="2" />
+                                </svg>
+                                Adresse
+                            </label>
+                            <input type="text" id="editAddress" class="admin-form-input"
+                                placeholder="123 Rue de la République, Niamey">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Email (read-only) -->
+                <div class="form-section">
+                    <h3 class="form-section-title">Compte</h3>
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">
+                            <svg viewBox="0 0 24 24" fill="none" width="18" height="18">
+                                <path
+                                    d="M3 8L10.89 13.26C11.5266 13.6778 12.4734 13.6778 13.11 13.26L21 8M5 19H19C20.1046 19 21 18.1046 21 17V7C21 5.89543 20.1046 5 19 5H5C3.89543 5 3 5.89543 3 7V17C3 18.1046 3.89543 19 5 19Z"
+                                    stroke="currentColor" stroke-width="2" />
+                            </svg>
+                            Email
+                        </label>
+                        <input type="email" id="editEmail" class="admin-form-input" disabled>
+                        <small class="form-hint">L'email ne peut pas être modifié</small>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="form-actions">
+                    <button type="submit" class="admin-btn-primary" id="saveProfileBtn">
+                        <svg viewBox="0 0 24 24" fill="none" width="20" height="20">
+                            <path
+                                d="M19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H16L21 8V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21Z"
+                                stroke="currentColor" stroke-width="2" />
+                            <path d="M17 21V13H7V21M7 3V8H15" stroke="currentColor" stroke-width="2" />
+                        </svg>
+                        <span>Enregistrer les modifications</span>
+                    </button>
+                    <a href="user-profile.html" class="admin-btn-secondary">Annuler</a>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-client.js"></script>
+    <script src="user-auth.js"></script>
+    <script src="user-profile.js"></script>
+    <script>
+        // Protection de la page
+        requireAuth().then(async isAuth => {
+            if (isAuth) {
+                // Charger le profil actuel
+                currentUser = await getCurrentUser();
+                const profile = await getUserProfile(currentUser.id);
+
+                if (profile) {
+                    // Pré-remplir le formulaire
+                    document.getElementById('editFullName').value = profile.full_name || '';
+                    document.getElementById('editPhone').value = profile.phone || '';
+                    document.getElementById('editCity').value = profile.city || 'Niamey';
+                    document.getElementById('editAddress').value = profile.address || '';
+                    document.getElementById('editEmail').value = currentUser.email || '';
+
+                    // Avatar
+                    if (profile.avatar_url) {
+                        document.getElementById('avatarPreview').src = profile.avatar_url;
+                    }
+                }
+            }
+        });
+
+        // Gestion du formulaire
+        document.getElementById('editProfileForm').addEventListener('submit', handleEditProfileForm);
+
+        console.log('✏️ Edit profile page loaded');
+    </script>
+
+    <style>
+        /* Thème utilisateur */
+        .user-sidebar {
+            background: linear-gradient(180deg, #10B981 0%, #059669 100%) !important;
+        }
+
+        .edit-profile-form {
+            max-width: 800px;
+        }
+
+        .avatar-upload-section {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding: 32px;
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 24px;
+        }
+
+        .avatar-preview {
+            position: relative;
+        }
+
+        .avatar-preview img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid #10B981;
+        }
+
+        .avatar-upload-btn {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: #10B981;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .avatar-upload-btn:hover {
+            background: #059669;
+            transform: scale(1.05);
+        }
+
+        .avatar-info p {
+            margin: 0 0 4px 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .avatar-info small {
+            font-size: 14px;
+            color: #6B7280;
+        }
+
+        .form-section {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 24px;
+        }
+
+        .form-section-title {
+            margin: 0 0 24px 0;
+            font-size: 18px;
+            font-weight: 600;
+            color: #111827;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #F3F4F6;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-hint {
+            display: block;
+            margin-top: 6px;
+            font-size: 13px;
+            color: #6B7280;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 16px;
+            padding: 24px;
+            background: white;
+            border-radius: 12px;
+        }
+
+        .user-avatar-container {
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .user-avatar-sidebar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Animation du spinner */
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .spinner {
+            animation: spin 1s linear infinite;
+        }
+    </style>
+</body>
+
+</html>
