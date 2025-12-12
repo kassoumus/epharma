@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Profil - Epharma</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="admin-body">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar user-sidebar" id="userSidebar">
+        <div class="admin-sidebar-header">
+            <div class="logo">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z"
+                        stroke="currentColor" stroke-width="2" />
+                    <path d="M12 8V16M8 12H16" stroke="currentColor" stroke-width="2" />
+                </svg>
+                <span class="logo-text">Epharma</span>
+            </div>
+        </div>
+
+        <div class="admin-pharmacy-info">
+            <div class="user-avatar-container">
+                <img src="https://ui-avatars.com/api/?name=User&background=10B981&color=fff&size=80" alt="Avatar"
+                    id="sidebarAvatar" class="user-avatar-sidebar">
+            </div>
+            <div class="admin-pharmacy-name" id="sidebarUserName">Utilisateur</div>
+            <div class="admin-pharmacy-email" id="sidebarUserEmail">email@example.com</div>
+        </div>
+
+        <nav class="admin-nav">
+            <a href="user-profile.html" class="admin-nav-item active">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21"
+                        stroke="currentColor" stroke-width="2" />
+                    <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" />
+                </svg>
+                <span>Mon Profil</span>
+            </a>
+            <a href="index.html" class="admin-nav-item">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
+                        stroke="currentColor" stroke-width="2" />
+                </svg>
+                <span>Rechercher</span>
+            </a>
+            <a href="results.html" class="admin-nav-item">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z"
+                        stroke="currentColor" stroke-width="2" />
+                    <path d="M12 8V16M8 12H16" stroke="currentColor" stroke-width="2" />
+                </svg>
+                <span>Pharmacies</span>
+            </a>
+        </nav>
+
+        <div class="admin-sidebar-footer">
+            <button class="admin-logout-btn" onclick="signOut()">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9M16 17L21 12M21 12L16 7M21 12H9"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+                <span>Déconnexion</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main" id="profileContainer">
+        <div class="admin-header">
+            <h1 class="admin-page-title">Mon Profil</h1>
+            <div class="admin-header-actions">
+                <a href="user-edit-profile.html" class="admin-btn-primary">
+                    <svg viewBox="0 0 24 24" fill="none" width="20" height="20">
+                        <path
+                            d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V13"
+                            stroke="currentColor" stroke-width="2" />
+                        <path
+                            d="M18.5 2.5C18.8978 2.10217 19.4374 1.87868 20 1.87868C20.5626 1.87868 21.1022 2.10217 21.5 2.5C21.8978 2.89782 22.1213 3.43739 22.1213 4C22.1213 4.56261 21.8978 5.10217 21.5 5.5L12 15L8 16L9 12L18.5 2.5Z"
+                            stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>Modifier le profil</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Profile Info -->
+        <div class="admin-section">
+            <div class="profile-header">
+                <div class="profile-avatar-large">
+                    <img src="https://ui-avatars.com/api/?name=User&background=10B981&color=fff&size=120" alt="Avatar"
+                        id="userAvatar">
+                </div>
+                <div class="profile-info">
+                    <h2 id="userFullName">Chargement...</h2>
+                    <p id="userEmail">email@example.com</p>
+                    <div class="profile-meta">
+                        <span>Membre depuis <strong id="memberSince">...</strong></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="admin-stats-grid">
+            <div class="admin-stat-card">
+                <div class="admin-stat-icon" style="background: linear-gradient(135deg, #10b98120, #10b98110);">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+                            stroke="currentColor" stroke-width="2" />
+                    </svg>
+                </div>
+                <div class="admin-stat-content">
+                    <div class="admin-stat-label">Favoris</div>
+                    <div class="admin-stat-value" id="favoritesCount">0</div>
+                </div>
+            </div>
+
+            <div class="admin-stat-card">
+                <div class="admin-stat-icon" style="background: linear-gradient(135deg, #3b82f620, #3b82f610);">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M12 8V12L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                </div>
+                <div class="admin-stat-content">
+                    <div class="admin-stat-label">Recherches</div>
+                    <div class="admin-stat-value" id="historyCount">0</div>
+                </div>
+            </div>
+
+            <div class="admin-stat-card">
+                <div class="admin-stat-icon" style="background: linear-gradient(135deg, #8b5cf620, #8b5cf610);">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M21 10C21 17 12 23 12 23C12 23 3 17 3 10C3 7.61305 3.94821 5.32387 5.63604 3.63604C7.32387 1.94821 9.61305 1 12 1C14.3869 1 16.6761 1.94821 18.364 3.63604C20.0518 5.32387 21 7.61305 21 10Z"
+                            stroke="currentColor" stroke-width="2" />
+                        <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                </div>
+                <div class="admin-stat-content">
+                    <div class="admin-stat-label">Ville</div>
+                    <div class="admin-stat-value" style="font-size: 20px;" id="userCity">Niamey</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Personal Info -->
+        <div class="admin-section">
+            <div class="admin-section-header">
+                <h2 class="admin-section-title">Informations personnelles</h2>
+            </div>
+            <div class="profile-details-grid">
+                <div class="profile-detail-item">
+                    <label>Téléphone</label>
+                    <p id="userPhone">Non renseigné</p>
+                </div>
+                <div class="profile-detail-item">
+                    <label>Adresse</label>
+                    <p id="userAddress">Non renseignée</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Favorites -->
+        <div class="admin-section">
+            <div class="admin-section-header">
+                <h2 class="admin-section-title">Mes Favoris</h2>
+            </div>
+            <div id="favoritesList" class="favorites-grid">
+                <!-- Favorites will be loaded here -->
+            </div>
+        </div>
+
+        <!-- History -->
+        <div class="admin-section">
+            <div class="admin-section-header">
+                <h2 class="admin-section-title">Historique de recherches</h2>
+                <button class="admin-link" onclick="clearHistory()">Effacer tout</button>
+            </div>
+            <div id="historyList" class="history-list">
+                <!-- History will be loaded here -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-client.js"></script>
+    <script src="user-auth.js"></script>
+    <script src="user-profile.js"></script>
+    <script>
+        // Protection de la page
+        requireAuth().then(isAuth => {
+            if (isAuth) {
+                loadUserProfile();
+            }
+        });
+
+        console.log('👤 User profile page loaded');
+    </script>
+
+    <style>
+        /* Thème utilisateur */
+        .user-sidebar {
+            background: linear-gradient(180deg, #10B981 0%, #059669 100%) !important;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding: 24px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-avatar-large img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid #10B981;
+        }
+
+        .profile-info h2 {
+            margin: 0 0 8px 0;
+            font-size: 28px;
+            color: #111827;
+        }
+
+        .profile-info p {
+            margin: 0 0 12px 0;
+            color: #6B7280;
+        }
+
+        .profile-meta {
+            font-size: 14px;
+            color: #9CA3AF;
+        }
+
+        .profile-details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            padding: 24px;
+            background: white;
+            border-radius: 12px;
+        }
+
+        .profile-detail-item label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #6B7280;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .profile-detail-item p {
+            margin: 0;
+            font-size: 16px;
+            color: #111827;
+        }
+
+        .favorites-grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .favorite-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #E5E7EB;
+        }
+
+        .favorite-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #F3F4F6;
+            border-radius: 12px;
+            color: #10B981;
+        }
+
+        .favorite-info {
+            flex: 1;
+        }
+
+        .favorite-info h4 {
+            margin: 0 0 4px 0;
+            font-size: 16px;
+            color: #111827;
+        }
+
+        .favorite-info p {
+            margin: 0 0 2px 0;
+            font-size: 14px;
+            color: #6B7280;
+        }
+
+        .favorite-info small {
+            font-size: 12px;
+            color: #9CA3AF;
+        }
+
+        .favorite-remove-btn {
+            padding: 8px;
+            background: #FEE2E2;
+            border: none;
+            border-radius: 8px;
+            color: #EF4444;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .favorite-remove-btn:hover {
+            background: #FCA5A5;
+        }
+
+        .history-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .history-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #E5E7EB;
+        }
+
+        .history-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #F3F4F6;
+            border-radius: 10px;
+            color: #6B7280;
+        }
+
+        .history-info h4 {
+            margin: 0 0 4px 0;
+            font-size: 15px;
+            color: #111827;
+        }
+
+        .history-info small {
+            font-size: 13px;
+            color: #9CA3AF;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            color: #9CA3AF;
+        }
+
+        .empty-state svg {
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .empty-state p {
+            margin: 0 0 8px 0;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .empty-state small {
+            font-size: 14px;
+        }
+
+        .user-avatar-container {
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .user-avatar-sidebar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</body>
+
+</html>
