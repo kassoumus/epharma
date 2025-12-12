@@ -125,8 +125,13 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 -- ROW LEVEL SECURITY (RLS)
 -- ========================================
 
+-- Supprimer les politiques existantes si elles existent
+DROP POLICY IF EXISTS "Super admins can view all users" ON users;
+DROP POLICY IF EXISTS "Super admins can update user roles" ON users;
+DROP POLICY IF EXISTS "Super admins can delete users" ON users;
+
 -- Politique pour que les super-admins puissent voir tous les utilisateurs
-CREATE POLICY IF NOT EXISTS "Super admins can view all users"
+CREATE POLICY "Super admins can view all users"
 ON users FOR SELECT
 USING (
     EXISTS (
@@ -137,7 +142,7 @@ USING (
 );
 
 -- Politique pour que les super-admins puissent modifier les rôles
-CREATE POLICY IF NOT EXISTS "Super admins can update user roles"
+CREATE POLICY "Super admins can update user roles"
 ON users FOR UPDATE
 USING (
     EXISTS (
@@ -147,7 +152,7 @@ USING (
 );
 
 -- Politique pour que les super-admins puissent supprimer des utilisateurs
-CREATE POLICY IF NOT EXISTS "Super admins can delete users"
+CREATE POLICY "Super admins can delete users"
 ON users FOR DELETE
 USING (
     EXISTS (
