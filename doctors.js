@@ -307,7 +307,7 @@ function renderDoctors() {
             </div>
             
             <div class="doctor-info-row">
-                <span class="doctor-price">Secteur ${doctor.sector} - ${doctor.consultationPrice}€</span>
+                <span class="doctor-price">Secteur ${doctor.sector} - ${doctor.consultationPrice} FCFA</span>
                 <span class="doctor-experience">${doctor.experience} ans d'expérience</span>
             </div>
             

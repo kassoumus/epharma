@@ -6,13 +6,13 @@
 const pharmaciesData = {
     1: {
         id: 1,
-        name: "Pharmacie de la République",
-        address: "45 Avenue de la République, 75011 Paris",
-        lat: 48.8656,
-        lng: 2.3798,
-        distance: 0.3,
-        phone: "01 43 55 12 34",
-        email: "contact@pharmacie-republique.fr",
+        name: "Pharmacie Sabo",
+        address: "Route Ouallam, Niamey",
+        lat: 13.5245,
+        lng: 2.0985,
+        distance: 0.5,
+        phone: "(+227) 20 35 01 99",
+        email: "contact@pharmacie-sabo.ne",
         isOpen: true,
         rating: 4.8,
         reviewsCount: 127,
@@ -34,55 +34,43 @@ const pharmaciesData = {
             { name: "Tests COVID", icon: "shield", available: false }
         ],
         products: [
-            { name: "Doliprane 1000mg", stock: 15, price: "2.50€" },
-            { name: "Aspégic 500mg", stock: 8, price: "3.20€" },
-            { name: "Ibuprofène 400mg", stock: 12, price: "2.80€" }
+            { name: "Doliprane 1000mg", stock: 15, price: "2500 FCFA" },
+            { name: "Aspégic 500mg", stock: 8, price: "3200 FCFA" },
+            { name: "Ibuprofène 400mg", stock: 12, price: "2800 FCFA" }
         ],
         reviews: [
             {
-                author: "Marie D.",
+                author: "Amadou D.",
                 rating: 5,
                 comment: "Excellent service, personnel très aimable et professionnel. Toujours de bon conseil.",
                 date: "2025-11-28"
             },
             {
-                author: "Jean-Pierre L.",
+                author: "Fatouma M.",
                 rating: 5,
                 comment: "Pharmacie très bien située, accueil chaleureux. Je recommande vivement !",
                 date: "2025-11-25"
-            },
-            {
-                author: "Sophie M.",
-                rating: 4,
-                comment: "Bonne pharmacie, bien achalandée. Parfois un peu d'attente aux heures de pointe.",
-                date: "2025-11-20"
-            },
-            {
-                author: "Thomas R.",
-                rating: 5,
-                comment: "Personnel compétent et à l'écoute. Large choix de produits.",
-                date: "2025-11-15"
             }
         ]
     },
     2: {
         id: 2,
-        name: "Pharmacie Saint-Antoine",
-        address: "128 Rue du Faubourg Saint-Antoine, 75012 Paris",
-        lat: 48.8503,
-        lng: 2.3765,
-        distance: 0.5,
-        phone: "01 43 43 21 87",
-        email: "contact@pharmacie-stantoine.fr",
+        name: "Pharmacie Air",
+        address: "Niamey",
+        lat: 13.5137,
+        lng: 2.1098,
+        distance: 0.3,
+        phone: "(+227) 20 74 01 29",
+        email: "contact@pharmacie-air.ne",
         isOpen: true,
         rating: 4.6,
         reviewsCount: 89,
         hours: {
-            lundi: "9h00 - 19h30",
-            mardi: "9h00 - 19h30",
-            mercredi: "9h00 - 19h30",
-            jeudi: "9h00 - 19h30",
-            vendredi: "9h00 - 19h30",
+            lundi: "8h00 - 19h00",
+            mardi: "8h00 - 19h00",
+            mercredi: "8h00 - 19h00",
+            jeudi: "8h00 - 19h00",
+            vendredi: "8h00 - 19h00",
             samedi: "9h00 - 18h00",
             dimanche: "Fermé"
         },
@@ -95,22 +83,190 @@ const pharmaciesData = {
             { name: "Tests COVID", icon: "shield", available: true }
         ],
         products: [
-            { name: "Doliprane 1000mg", stock: 8, price: "2.50€" }
+            { name: "Doliprane 1000mg", stock: 12, price: "2500 FCFA" }
         ],
         reviews: [
             {
-                author: "Claire B.",
+                author: "Mariama B.",
                 rating: 5,
                 comment: "Très professionnels, toujours disponibles pour répondre aux questions.",
                 date: "2025-11-22"
-            },
-            {
-                author: "Marc D.",
-                rating: 4,
-                comment: "Bonne pharmacie de quartier, personnel sympathique.",
-                date: "2025-11-18"
             }
         ]
+    },
+    3: {
+        id: 3,
+        name: "Pharmacie Ar-Rahma",
+        address: "Quartier Sarey Koubou, Ilot N° 6276, Niamey",
+        lat: 13.5089,
+        lng: 2.1156,
+        distance: 0.8,
+        phone: "(+227) 88 92 00 86",
+        email: "contact@pharmacie-arrahma.ne",
+        isOpen: true,
+        rating: 4.7,
+        reviewsCount: 95,
+        hours: {
+            lundi: "8h30 - 19h30",
+            mardi: "8h30 - 19h30",
+            mercredi: "8h30 - 19h30",
+            jeudi: "8h30 - 19h30",
+            vendredi: "8h30 - 19h30",
+            samedi: "9h00 - 18h00",
+            dimanche: "Fermé"
+        },
+        services: [
+            { name: "Garde de nuit", icon: "moon", available: false },
+            { name: "Livraison à domicile", icon: "truck", available: true },
+            { name: "Parking", icon: "car", available: true },
+            { name: "Paiement carte", icon: "credit-card", available: true },
+            { name: "Tiers payant", icon: "file-text", available: true },
+            { name: "Tests COVID", icon: "shield", available: false }
+        ],
+        products: [
+            { name: "Doliprane 1000mg", stock: 10, price: "2500 FCFA" },
+            { name: "Paracétamol 500mg", stock: 20, price: "1500 FCFA" }
+        ],
+        reviews: []
+    },
+    4: {
+        id: 4,
+        name: "Pharmacie Dendi Koira Kano",
+        address: "Koira Kano Nord, Niamey",
+        lat: 13.5198,
+        lng: 2.1234,
+        distance: 1.2,
+        phone: "(+227) 21 31 73 31",
+        email: "contact@pharmacie-dendi.ne",
+        isOpen: true,
+        rating: 4.5,
+        reviewsCount: 78,
+        hours: {
+            lundi: "9h00 - 20h00",
+            mardi: "9h00 - 20h00",
+            mercredi: "9h00 - 20h00",
+            jeudi: "9h00 - 20h00",
+            vendredi: "9h00 - 20h00",
+            samedi: "9h00 - 19h00",
+            dimanche: "Fermé"
+        },
+        services: [
+            { name: "Garde de nuit", icon: "moon", available: true },
+            { name: "Livraison à domicile", icon: "truck", available: false },
+            { name: "Parking", icon: "car", available: true },
+            { name: "Paiement carte", icon: "credit-card", available: true },
+            { name: "Tiers payant", icon: "file-text", available: false },
+            { name: "Tests COVID", icon: "shield", available: true }
+        ],
+        products: [
+            { name: "Doliprane 1000mg", stock: 8, price: "2500 FCFA" }
+        ],
+        reviews: []
+    },
+    5: {
+        id: 5,
+        name: "Pharmacie 03 Août",
+        address: "Boulevard Mali-Bero, Niamey",
+        lat: 13.5118,
+        lng: 2.1436,
+        distance: 1.5,
+        phone: "(+227) 20 35 18 18",
+        email: "contact@pharmacie-03aout.ne",
+        isOpen: true,
+        rating: 4.8,
+        reviewsCount: 112,
+        hours: {
+            lundi: "8h00 - 19h00",
+            mardi: "8h00 - 19h00",
+            mercredi: "8h00 - 19h00",
+            jeudi: "8h00 - 19h00",
+            vendredi: "8h00 - 19h00",
+            samedi: "9h00 - 18h00",
+            dimanche: "Fermé"
+        },
+        services: [
+            { name: "Garde de nuit", icon: "moon", available: true },
+            { name: "Livraison à domicile", icon: "truck", available: true },
+            { name: "Parking", icon: "car", available: true },
+            { name: "Paiement carte", icon: "credit-card", available: true },
+            { name: "Tiers payant", icon: "file-text", available: true },
+            { name: "Tests COVID", icon: "shield", available: true }
+        ],
+        products: [
+            { name: "Doliprane 1000mg", stock: 18, price: "2500 FCFA" },
+            { name: "Aspégic 500mg", stock: 10, price: "3200 FCFA" }
+        ],
+        reviews: []
+    },
+    6: {
+        id: 6,
+        name: "Pharmacie 7 Thérapies",
+        address: "Quartier Bobiel Ilot 5069 /H, Niamey",
+        lat: 13.5067,
+        lng: 2.1189,
+        distance: 1.8,
+        phone: "(+227) 21 66 21 58",
+        email: "contact@pharmacie-7therapies.ne",
+        isOpen: true,
+        rating: 4.6,
+        reviewsCount: 87,
+        hours: {
+            lundi: "9h00 - 18h30",
+            mardi: "9h00 - 18h30",
+            mercredi: "9h00 - 18h30",
+            jeudi: "9h00 - 18h30",
+            vendredi: "9h00 - 18h30",
+            samedi: "9h00 - 17h00",
+            dimanche: "Fermé"
+        },
+        services: [
+            { name: "Garde de nuit", icon: "moon", available: false },
+            { name: "Livraison à domicile", icon: "truck", available: true },
+            { name: "Parking", icon: "car", available: false },
+            { name: "Paiement carte", icon: "credit-card", available: true },
+            { name: "Tiers payant", icon: "file-text", available: true },
+            { name: "Tests COVID", icon: "shield", available: false }
+        ],
+        products: [
+            { name: "Doliprane 1000mg", stock: 14, price: "2500 FCFA" }
+        ],
+        reviews: []
+    },
+    7: {
+        id: 7,
+        name: "Pharmacie de la Gare",
+        address: "Boulevard Mali Bero, Niamey",
+        lat: 13.5334,
+        lng: 2.0976,
+        distance: 2.0,
+        phone: "Non spécifié",
+        email: "contact@pharmacie-gare.ne",
+        isOpen: true,
+        rating: 4.9,
+        reviewsCount: 145,
+        hours: {
+            lundi: "24h/24",
+            mardi: "24h/24",
+            mercredi: "24h/24",
+            jeudi: "24h/24",
+            vendredi: "24h/24",
+            samedi: "24h/24",
+            dimanche: "24h/24"
+        },
+        services: [
+            { name: "Garde de nuit", icon: "moon", available: true },
+            { name: "Livraison à domicile", icon: "truck", available: true },
+            { name: "Parking", icon: "car", available: true },
+            { name: "Paiement carte", icon: "credit-card", available: true },
+            { name: "Tiers payant", icon: "file-text", available: true },
+            { name: "Tests COVID", icon: "shield", available: true }
+        ],
+        products: [
+            { name: "Doliprane 1000mg", stock: 20, price: "2500 FCFA" },
+            { name: "Aspégic 500mg", stock: 15, price: "3200 FCFA" },
+            { name: "Ibuprofène 400mg", stock: 18, price: "2800 FCFA" }
+        ],
+        reviews: []
     }
 };
 
@@ -229,7 +385,7 @@ function renderProducts() {
                         <span>${product.stock} en stock</span>
                     </div>
                 </div>
-                <div class="product-price">${product.price}</div>
+                <!-- Prix masqué -->
             </div>
         `;
     });
