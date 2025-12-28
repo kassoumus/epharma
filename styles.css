@@ -1056,8 +1056,22 @@ body {
     color: var(--error);
 }
 
-.pharmacy-detail.closed svg {
-    color: var(--error);
+
+
+/* === PHARMACY DETAIL ITEM (for doctors page) === */
+.pharmacy-detail-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+}
+
+.pharmacy-detail-item svg {
+    width: 16px;
+    height: 16px;
+    color: var(--gray-400);
+    flex-shrink: 0;
 }
 
 .pharmacy-stock {
@@ -2947,3 +2961,4 @@ body {
     color: var(--gray-600);
     font-style: italic;
 }
+

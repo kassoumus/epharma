@@ -1,27 +1,29 @@
-# Fichiers système
-.DS_Store
-Thumbs.db
-
-# Environnement
-.env
-.env.local
-.env.production
-
-# Node modules (si vous ajoutez un backend)
+# Dependencies
 node_modules/
-npm-debug.log
-yarn-error.log
+.pnp
+.pnp.js
 
-# Build
-dist/
+# Testing
+coverage/
+
+# Production
 build/
-.vercel/
+dist/
+
+# Misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.log
 
 # IDE
 .vscode/
 .idea/
 *.swp
 *.swo
+*~
 
-# Logs
-*.log
+# OS
+Thumbs.db
