@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion des Pharmacies - Super Admin</title>
+    <title>Gestion des Médecins - Super Admin</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -55,7 +55,7 @@
                 </svg>
                 <span>Utilisateurs</span>
             </a>
-            <a href="super-admin-pharmacies.html" class="admin-nav-item active">
+            <a href="super-admin-pharmacies.html" class="admin-nav-item">
                 <svg viewBox="0 0 24 24" fill="none">
                     <path
                         d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z"
@@ -64,7 +64,7 @@
                 </svg>
                 <span>Pharmacies</span>
             </a>
-            <a href="super-admin-doctors.html" class="admin-nav-item">
+            <a href="super-admin-doctors.html" class="admin-nav-item active">
                 <svg viewBox="0 0 24 24" fill="none">
                     <path
                         d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21"
@@ -91,13 +91,13 @@
     <main class="admin-main">
         <!-- Header -->
         <div class="admin-header">
-            <h1 class="admin-page-title">Gestion des Pharmacies</h1>
+            <h1 class="admin-page-title">Gestion des Médecins</h1>
             <div class="admin-header-actions">
-                <button onclick="openCreatePharmacyModal()" class="btn-primary">
+                <button onclick="openCreateDoctorModal()" class="btn-primary">
                     <svg viewBox="0 0 24 24" fill="none" width="20" height="20">
                         <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" />
                     </svg>
-                    <span>Ajouter une pharmacie</span>
+                    <span>Ajouter un médecin</span>
                 </button>
             </div>
         </div>
@@ -108,14 +108,14 @@
                 <div class="admin-stat-icon" style="background: linear-gradient(135deg, #3b82f620, #3b82f610);">
                     <svg viewBox="0 0 24 24" fill="none">
                         <path
-                            d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z"
+                            d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21"
                             stroke="currentColor" stroke-width="2" />
-                        <path d="M12 8V16M8 12H16" stroke="currentColor" stroke-width="2" />
+                        <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" />
                     </svg>
                 </div>
                 <div class="admin-stat-content">
-                    <div class="admin-stat-label">Total Pharmacies</div>
-                    <div class="admin-stat-value" id="totalPharmacies">0</div>
+                    <div class="admin-stat-label">Total Médecins</div>
+                    <div class="admin-stat-value" id="totalDoctors">0</div>
                 </div>
             </div>
 
@@ -128,8 +128,8 @@
                     </svg>
                 </div>
                 <div class="admin-stat-content">
-                    <div class="admin-stat-label">Actives</div>
-                    <div class="admin-stat-value" id="activePharmacies">0</div>
+                    <div class="admin-stat-label">Vérifiés</div>
+                    <div class="admin-stat-value" id="verifiedDoctors">0</div>
                 </div>
             </div>
 
@@ -141,8 +141,8 @@
                     </svg>
                 </div>
                 <div class="admin-stat-content">
-                    <div class="admin-stat-label">Ouvertes 24/7</div>
-                    <div class="admin-stat-value" id="pharmacies247">0</div>
+                    <div class="admin-stat-label">Actifs</div>
+                    <div class="admin-stat-value" id="activeDoctors">0</div>
                 </div>
             </div>
 
@@ -150,13 +150,13 @@
                 <div class="admin-stat-icon" style="background: linear-gradient(135deg, #8b5cf620, #8b5cf610);">
                     <svg viewBox="0 0 24 24" fill="none">
                         <path
-                            d="M9 17H15M9 13H15M9 9H10M13 3L15.2857 9.85714L21 12L15.2857 14.1429L13 21L10.7143 14.1429L5 12L10.7143 9.85714L13 3Z"
+                            d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
                             stroke="currentColor" stroke-width="2" />
                     </svg>
                 </div>
                 <div class="admin-stat-content">
-                    <div class="admin-stat-label">Avec Parking</div>
-                    <div class="admin-stat-value" id="pharmaciesParking">0</div>
+                    <div class="admin-stat-label">Nouveaux Patients</div>
+                    <div class="admin-stat-value" id="acceptingDoctors">0</div>
                 </div>
             </div>
         </div>
@@ -170,55 +170,51 @@
                             d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
                             stroke="currentColor" stroke-width="2" />
                     </svg>
-                    <input type="text" id="searchPharmacies" placeholder="Rechercher par nom, ville ou adresse..."
+                    <input type="text" id="searchDoctors" placeholder="Rechercher par nom, spécialité ou licence..."
                         class="search-input">
                 </div>
 
-                <select id="filterCity" class="filter-select">
-                    <option value="all">Toutes les villes</option>
-                    <option value="Niamey">Niamey</option>
-                    <option value="Maradi">Maradi</option>
-                    <option value="Zinder">Zinder</option>
-                    <option value="Tahoua">Tahoua</option>
-                </select>
-
-                <select id="filterServices" class="filter-select">
-                    <option value="all">Tous les services</option>
-                    <option value="24_7">Ouvert 24/7</option>
-                    <option value="parking">Avec parking</option>
+                <select id="filterSpecialty" class="filter-select">
+                    <option value="all">Toutes les spécialités</option>
                 </select>
 
                 <select id="filterStatus" class="filter-select">
                     <option value="all">Tous les statuts</option>
-                    <option value="active">Actives</option>
-                    <option value="inactive">Inactives</option>
+                    <option value="active">Actifs</option>
+                    <option value="inactive">Inactifs</option>
+                </select>
+
+                <select id="filterVerified" class="filter-select">
+                    <option value="all">Tous</option>
+                    <option value="verified">Vérifiés</option>
+                    <option value="not_verified">Non vérifiés</option>
                 </select>
             </div>
         </div>
 
-        <!-- Pharmacies Table -->
+        <!-- Doctors Table -->
         <div class="admin-section">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
                 <span id="resultsCount" style="color: #6B7280; font-size: 14px;">Chargement...</span>
             </div>
 
             <div class="admin-table-container">
-                <table class="admin-table" id="pharmaciesTable">
+                <table class="admin-table" id="doctorsTable">
                     <thead>
                         <tr>
-                            <th>Pharmacie</th>
-                            <th>Ville</th>
-                            <th>Téléphone</th>
+                            <th>Médecin</th>
+                            <th>Spécialités</th>
+                            <th>N° Licence</th>
                             <th>Utilisateur</th>
-                            <th>Services</th>
-                            <th>Créée le</th>
+                            <th>Expérience</th>
+                            <th>Statut</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody id="pharmaciesTableBody">
+                    <tbody id="doctorsTableBody">
                         <tr>
                             <td colspan="7" style="text-align: center; padding: 40px;">
-                                Chargement des pharmacies...
+                                Chargement des médecins...
                             </td>
                         </tr>
                     </tbody>
@@ -230,21 +226,21 @@
         </div>
     </main>
 
-    <!-- Modal Create Pharmacy -->
-    <div id="createPharmacyModal" class="modal">
+    <!-- Modal Create Doctor -->
+    <div id="createDoctorModal" class="modal">
         <div class="modal-content modal-large">
             <div class="modal-header">
-                <h2>Créer une Pharmacie</h2>
-                <button onclick="closeCreatePharmacyModal()" class="modal-close">&times;</button>
+                <h2>Créer un Médecin</h2>
+                <button onclick="closeCreateDoctorModal()" class="modal-close">&times;</button>
             </div>
-            <form id="createPharmacyForm">
+            <form id="createDoctorForm">
                 <div class="modal-body">
                     <!-- User Selection -->
                     <div class="form-section">
                         <h3>1. Utilisateur</h3>
                         <div class="form-group">
                             <label>Type d'utilisateur</label>
-                            <select id="userSelectionType" class="form-input">
+                            <select id="userSelectionType" class="form-input" onchange="toggleUserSelection()">
                                 <option value="existing">Sélectionner un utilisateur existant</option>
                                 <option value="new">Créer un nouvel utilisateur</option>
                             </select>
@@ -263,7 +259,7 @@
                             <div class="form-group">
                                 <label>Email</label>
                                 <input type="email" id="newUserEmail" class="form-input"
-                                    placeholder="pharmacie@example.com">
+                                    placeholder="medecin@example.com">
                             </div>
                             <div class="form-group">
                                 <label>Mot de passe</label>
@@ -273,195 +269,193 @@
                         </div>
                     </div>
 
-                    <!-- Pharmacy Info -->
+                    <!-- Personal Info -->
                     <div class="form-section">
-                        <h3>2. Informations Pharmacie</h3>
+                        <h3>2. Informations Personnelles</h3>
                         <div class="form-row">
+                            <div class="form-group">
+                                <label>Prénom *</label>
+                                <input type="text" id="doctorFirstName" class="form-input" required placeholder="Jean">
+                            </div>
                             <div class="form-group">
                                 <label>Nom *</label>
-                                <input type="text" id="pharmacyName" class="form-input" required
-                                    placeholder="Pharmacie de la République">
-                            </div>
-                            <div class="form-group">
-                                <label>Téléphone *</label>
-                                <input type="tel" id="pharmacyPhone" class="form-input" required
-                                    placeholder="+227 20 12 34 56">
+                                <input type="text" id="doctorLastName" class="form-input" required placeholder="Dupont">
                             </div>
                         </div>
-
-                        <div class="form-group">
-                            <label>Adresse *</label>
-                            <input type="text" id="pharmacyAddress" class="form-input" required
-                                placeholder="Avenue de la République">
-                        </div>
-
                         <div class="form-row">
                             <div class="form-group">
-                                <label>Ville *</label>
-                                <select id="pharmacyCity" class="form-input" required>
-                                    <option value="Niamey">Niamey</option>
-                                    <option value="Maradi">Maradi</option>
-                                    <option value="Zinder">Zinder</option>
-                                    <option value="Tahoua">Tahoua</option>
+                                <label>Genre</label>
+                                <select id="doctorGender" class="form-input">
+                                    <option value="">Sélectionner</option>
+                                    <option value="M">Masculin</option>
+                                    <option value="F">Féminin</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>Code Postal</label>
-                                <input type="text" id="pharmacyPostalCode" class="form-input" placeholder="8000">
+                                <label>Date de naissance</label>
+                                <input type="date" id="doctorDateOfBirth" class="form-input">
                             </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Email</label>
-                            <input type="email" id="pharmacyEmail" class="form-input"
-                                placeholder="contact@pharmacie.com">
                         </div>
                     </div>
 
-                    <!-- Location -->
+                    <!-- Professional Info -->
                     <div class="form-section">
-                        <h3>3. Localisation</h3>
+                        <h3>3. Informations Professionnelles</h3>
+                        <div class="form-group">
+                            <label>Numéro de Licence *</label>
+                            <input type="text" id="doctorLicense" class="form-input" required
+                                placeholder="MED-2024-001">
+                        </div>
                         <div class="form-row">
                             <div class="form-group">
-                                <label>Latitude</label>
-                                <input type="number" step="0.0001" id="pharmacyLatitude" class="form-input"
-                                    placeholder="13.5116">
+                                <label>Spécialité Principale *</label>
+                                <select id="doctorSpecialty" class="form-input" required>
+                                    <option value="">Sélectionner une spécialité</option>
+                                </select>
                             </div>
                             <div class="form-group">
-                                <label>Longitude</label>
-                                <input type="number" step="0.0001" id="pharmacyLongitude" class="form-input"
-                                    placeholder="2.1254">
+                                <label>Années d'expérience</label>
+                                <input type="number" id="doctorExperience" class="form-input" min="0" value="0"
+                                    placeholder="5">
                             </div>
                         </div>
-                        <small style="color: #6B7280;">Utilisez Google Maps pour obtenir les coordonnées</small>
                     </div>
 
-                    <!-- Services -->
+                    <!-- Consultation Info -->
                     <div class="form-section">
-                        <h3>4. Services</h3>
-                        <div class="form-group">
-                            <label class="checkbox-label">
-                                <input type="checkbox" id="pharmacy247">
-                                <span>Ouvert 24h/24 et 7j/7</span>
-                            </label>
+                        <h3>4. Consultation</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Tarif Consultation (FCFA)</label>
+                                <input type="number" id="doctorFee" class="form-input" min="0" step="100"
+                                    placeholder="10000">
+                            </div>
+                            <div class="form-group">
+                                <label>Durée (minutes)</label>
+                                <input type="number" id="doctorDuration" class="form-input" min="15" step="15"
+                                    value="30" placeholder="30">
+                            </div>
                         </div>
                         <div class="form-group">
                             <label class="checkbox-label">
-                                <input type="checkbox" id="pharmacyParking">
-                                <span>Parking disponible</span>
+                                <input type="checkbox" id="doctorAcceptsNewPatients" checked>
+                                <span>Accepte de nouveaux patients</span>
                             </label>
                         </div>
                     </div>
                 </div>
 
                 <div class="modal-actions">
-                    <button type="button" onclick="closeCreatePharmacyModal()" class="btn-secondary">Annuler</button>
-                    <button type="submit" class="btn-primary">Créer la pharmacie</button>
+                    <button type="button" onclick="closeCreateDoctorModal()" class="btn-secondary">Annuler</button>
+                    <button type="submit" class="btn-primary">Créer le médecin</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Modal Edit Pharmacy -->
-    <div id="editPharmacyModal" class="modal">
+    <!-- Modal Edit Doctor -->
+    <div id="editDoctorModal" class="modal">
         <div class="modal-content modal-large">
             <div class="modal-header">
-                <h2>Modifier la Pharmacie</h2>
-                <button onclick="closeEditPharmacyModal()" class="modal-close">&times;</button>
+                <h2>Modifier le Médecin</h2>
+                <button onclick="closeEditDoctorModal()" class="modal-close">&times;</button>
             </div>
-            <form id="editPharmacyForm">
-                <input type="hidden" id="editPharmacyId">
+            <form id="editDoctorForm">
+                <input type="hidden" id="editDoctorId">
                 <div class="modal-body">
                     <div class="form-section">
-                        <h3>Informations Pharmacie</h3>
+                        <h3>Informations Personnelles</h3>
                         <div class="form-row">
+                            <div class="form-group">
+                                <label>Prénom *</label>
+                                <input type="text" id="editDoctorFirstName" class="form-input" required>
+                            </div>
                             <div class="form-group">
                                 <label>Nom *</label>
-                                <input type="text" id="editPharmacyName" class="form-input" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Téléphone *</label>
-                                <input type="tel" id="editPharmacyPhone" class="form-input" required>
+                                <input type="text" id="editDoctorLastName" class="form-input" required>
                             </div>
                         </div>
-
-                        <div class="form-group">
-                            <label>Adresse *</label>
-                            <input type="text" id="editPharmacyAddress" class="form-input" required>
-                        </div>
-
                         <div class="form-row">
                             <div class="form-group">
-                                <label>Ville *</label>
-                                <select id="editPharmacyCity" class="form-input" required>
-                                    <option value="Niamey">Niamey</option>
-                                    <option value="Maradi">Maradi</option>
-                                    <option value="Zinder">Zinder</option>
-                                    <option value="Tahoua">Tahoua</option>
+                                <label>Genre</label>
+                                <select id="editDoctorGender" class="form-input">
+                                    <option value="">Sélectionner</option>
+                                    <option value="M">Masculin</option>
+                                    <option value="F">Féminin</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>Code Postal</label>
-                                <input type="text" id="editPharmacyPostalCode" class="form-input">
+                                <label>Date de naissance</label>
+                                <input type="date" id="editDoctorDateOfBirth" class="form-input">
                             </div>
                         </div>
+                    </div>
 
+                    <div class="form-section">
+                        <h3>Informations Professionnelles</h3>
                         <div class="form-group">
-                            <label>Email</label>
-                            <input type="email" id="editPharmacyEmail" class="form-input">
+                            <label>Numéro de Licence *</label>
+                            <input type="text" id="editDoctorLicense" class="form-input" required>
                         </div>
-
                         <div class="form-row">
                             <div class="form-group">
-                                <label>Latitude</label>
-                                <input type="number" step="0.0001" id="editPharmacyLatitude" class="form-input">
+                                <label>Spécialité Principale *</label>
+                                <select id="editDoctorSpecialty" class="form-input" required>
+                                    <option value="">Sélectionner une spécialité</option>
+                                </select>
                             </div>
                             <div class="form-group">
-                                <label>Longitude</label>
-                                <input type="number" step="0.0001" id="editPharmacyLongitude" class="form-input">
+                                <label>Années d'expérience</label>
+                                <input type="number" id="editDoctorExperience" class="form-input" min="0">
                             </div>
                         </div>
+                    </div>
 
-                        <div class="form-group">
-                            <label class="checkbox-label">
-                                <input type="checkbox" id="editPharmacy247">
-                                <span>Ouvert 24h/24 et 7j/7</span>
-                            </label>
+                    <div class="form-section">
+                        <h3>Consultation</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Tarif Consultation (FCFA)</label>
+                                <input type="number" id="editDoctorFee" class="form-input" min="0" step="100">
+                            </div>
+                            <div class="form-group">
+                                <label>Durée (minutes)</label>
+                                <input type="number" id="editDoctorDuration" class="form-input" min="15" step="15">
+                            </div>
                         </div>
                         <div class="form-group">
                             <label class="checkbox-label">
-                                <input type="checkbox" id="editPharmacyParking">
-                                <span>Parking disponible</span>
+                                <input type="checkbox" id="editDoctorAcceptsNewPatients">
+                                <span>Accepte de nouveaux patients</span>
                             </label>
                         </div>
                     </div>
                 </div>
 
                 <div class="modal-actions">
-                    <button type="button" onclick="closeEditPharmacyModal()" class="btn-secondary">Annuler</button>
+                    <button type="button" onclick="closeEditDoctorModal()" class="btn-secondary">Annuler</button>
                     <button type="submit" class="btn-primary">Enregistrer</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Modal Delete Pharmacy -->
-    <div id="deletePharmacyModal" class="modal">
+    <!-- Modal Delete Doctor -->
+    <div id="deleteDoctorModal" class="modal">
         <div class="modal-content modal-danger">
             <div class="modal-header">
                 <h2>Confirmer la suppression</h2>
-                <button onclick="closeDeletePharmacyModal()" class="modal-close">&times;</button>
+                <button onclick="closeDeleteDoctorModal()" class="modal-close">&times;</button>
             </div>
             <div class="modal-body">
-                <p>Êtes-vous sûr de vouloir supprimer la pharmacie <strong id="deletePharmacyName"></strong> ?</p>
+                <p>Êtes-vous sûr de vouloir supprimer le médecin <strong id="deleteDoctorName"></strong> ?</p>
                 <p style="color: #EF4444; font-size: 14px; margin-top: 12px;">
-                    ⚠️ Cette action est irréversible et supprimera également tous les produits, réservations et avis
-                    associés.
+                    ⚠️ Cette action est irréversible et supprimera également tous les rendez-vous associés.
                 </p>
             </div>
             <div class="modal-actions">
-                <button onclick="closeDeletePharmacyModal()" class="btn-secondary">Annuler</button>
-                <button id="confirmDeletePharmacyBtn" class="btn-danger">Supprimer</button>
+                <button onclick="closeDeleteDoctorModal()" class="btn-secondary">Annuler</button>
+                <button id="confirmDeleteDoctorBtn" class="btn-danger">Supprimer</button>
             </div>
         </div>
     </div>
@@ -474,7 +468,8 @@
     <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-client.js"></script>
-    <script src="super-admin-pharmacies.js"></script>
+    <script src="specialties.js"></script>
+    <script src="super-admin-doctors.js"></script>
 
     <style>
         /* Super Admin Theme */
@@ -520,15 +515,45 @@
             min-width: 180px;
         }
 
-        /* Service Badges */
-        .service-badge {
+        /* Specialty Badges */
+        .specialty-badge {
             padding: 4px 8px;
             border-radius: 6px;
             font-size: 12px;
-            background: #F3F4F6;
-            color: #374151;
+            background: #EEF2FF;
+            color: #4F46E5;
             margin-right: 4px;
             display: inline-block;
+        }
+
+        /* Status Badges */
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            display: inline-block;
+            margin-right: 4px;
+        }
+
+        .status-badge.verified {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+
+        .status-badge.not-verified {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .status-badge.active {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+
+        .status-badge.inactive {
+            background: #F3F4F6;
+            color: #6B7280;
         }
 
         /* Form Sections */
@@ -556,6 +581,40 @@
 
         .modal-large {
             max-width: 700px;
+        }
+
+        /* Doctor Info */
+        .doctor-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .doctor-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8B5CF6, #7C3AED);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .doctor-details {
+            flex: 1;
+        }
+
+        .doctor-name {
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .doctor-license {
+            font-size: 12px;
+            color: #6B7280;
         }
 
         /* Responsive */
