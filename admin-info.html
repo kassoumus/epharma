@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informations - Espace Pharmacie</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="admin-body">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar" id="adminSidebar">
+        <div class="admin-sidebar-header">
+            <div class="logo">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z"
+                        stroke="currentColor" stroke-width="2" />
+                    <path d="M12 8V16M8 12H16" stroke="currentColor" stroke-width="2" />
+                </svg>
+                <span class="logo-text">Epharma</span>
+            </div>
+            <button class="admin-sidebar-toggle" id="sidebarToggle">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M3 12H21M3 6H21M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+            </button>
+        </div>
+
+        <div class="admin-pharmacy-info">
+            <div class="admin-pharmacy-name" id="pharmacyName">Pharmacie de la République</div>
+            <div class="admin-pharmacy-email" id="pharmacyEmail">contact@pharmacie-republique.fr</div>
+        </div>
+
+        <nav class="admin-nav">
+            <a href="admin-dashboard.html" class="admin-nav-item">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="2" />
+                    <rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="2" />
+                    <rect x="14" y="14" width="7" height="7" stroke="currentColor" stroke-width="2" />
+                    <rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="2" />
+                </svg>
+                <span>Dashboard</span>
+            </a>
+            <a href="admin-stock.html" class="admin-nav-item">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M20 7H4C2.89543 7 2 7.89543 2 9V19C2 20.1046 2.89543 21 4 21H20C21.1046 21 22 20.1046 22 19V9C22 7.89543 21.1046 7 20 7Z"
+                        stroke="currentColor" stroke-width="2" />
+                    <path
+                        d="M16 21V5C16 4.46957 15.7893 3.96086 15.4142 3.58579C15.0391 3.21071 14.5304 3 14 3H10C9.46957 3 8.96086 3.21071 8.58579 3.58579C8.21071 3.96086 8 4.46957 8 5V21"
+                        stroke="currentColor" stroke-width="2" />
+                </svg>
+                <span>Gestion du stock</span>
+            </a>
+            <a href="admin-info.html" class="admin-nav-item active">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+                        stroke="currentColor" stroke-width="2" />
+                    <path d="M12 16V12M12 8H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+                <span>Informations</span>
+            </a>
+        </nav>
+
+        <div class="admin-sidebar-footer">
+            <button class="admin-logout-btn" id="logoutBtn">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9M16 17L21 12M21 12L16 7M21 12H9"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+                <span>Déconnexion</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+        <!-- Header -->
+        <header class="admin-header">
+            <div class="admin-header-left">
+                <h1>Informations de la pharmacie</h1>
+                <p>Gérez les informations de votre pharmacie</p>
+            </div>
+            <div class="admin-header-right">
+                <button class="admin-btn-primary" id="saveAllBtn">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M19 21H5C3.89543 21 3 20.1046 3 19V5C3 3.89543 3.89543 3 5 3H16L21 8V19C21 20.1046 20.1046 21 19 21Z"
+                            stroke="currentColor" stroke-width="2" />
+                        <path d="M17 21V13H7V21M7 3V8H15" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    Enregistrer les modifications
+                </button>
+            </div>
+        </header>
+
+        <!-- Tabs Navigation -->
+        <div class="admin-tabs">
+            <button class="admin-tab-btn active" data-tab="general">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M19 21V5C19 3.89543 18.1046 3 17 3H7C5.89543 3 5 3.89543 5 5V21" stroke="currentColor"
+                        stroke-width="2" />
+                    <path d="M12 7H12.01M12 11H12.01M12 15H12.01" stroke="currentColor" stroke-width="2" />
+                </svg>
+                Général
+            </button>
+            <button class="admin-tab-btn" data-tab="contact">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M22 16.92V19.92C22 20.4696 21.5523 20.9167 21.0027 20.9201C18.9478 21.0388 16.9006 20.6805 15.0275 19.9477C13.2739 19.1731 11.7101 18.0217 10.4543 16.5789C9.19854 15.1361 8.28128 13.4422 7.76712 11.6184C6.93339 9.74319 6.57473 7.69352 6.72028 5.64692C6.75447 5.08481 7.22953 4.63806 7.79275 4.63904H10.7928C11.3549 4.63393 11.8313 5.05152 11.8928 5.60904C11.9478 6.13604 12.0478 6.65704 12.1928 7.16704C12.3478 7.72904 12.1678 8.33104 11.7328 8.71104L10.4628 9.98104C11.5628 11.8151 13.1778 13.4301 15.0128 14.5301L16.2828 13.2601C16.6628 12.8251 17.2648 12.6451 17.8268 12.8001C18.3368 12.9451 18.8578 13.0451 19.3848 13.1001C19.9478 13.1616 20.3678 13.6451 20.3628 14.2101V16.92H22Z"
+                        stroke="currentColor" stroke-width="2" />
+                </svg>
+                Contact
+            </button>
+            <button class="admin-tab-btn" data-tab="hours">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
+                    <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+                Horaires
+            </button>
+            <button class="admin-tab-btn" data-tab="services">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M9 11L12 14L22 4M21 12V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H16"
+                        stroke="currentColor" stroke-width="2" />
+                </svg>
+                Services
+            </button>
+        </div>
+
+        <!-- Tab Content: General -->
+        <div class="admin-tab-content active" id="generalTab">
+            <div class="admin-card">
+                <h3 class="admin-card-title">Informations générales</h3>
+                <form class="admin-form" id="generalForm">
+                    <div class="admin-form-row">
+                        <div class="admin-form-group">
+                            <label for="pharmacyNameInput">Nom de la pharmacie *</label>
+                            <input type="text" id="pharmacyNameInput" class="admin-form-input" required>
+                        </div>
+                        <div class="admin-form-group">
+                            <label for="registrationNumber">Numéro d'agrément *</label>
+                            <input type="text" id="registrationNumber" class="admin-form-input" required>
+                        </div>
+                    </div>
+
+                    <div class="admin-form-row">
+                        <div class="admin-form-group">
+                            <label for="address">Adresse complète *</label>
+                            <input type="text" id="address" class="admin-form-input" required>
+                        </div>
+                    </div>
+
+                    <div class="admin-form-row">
+                        <div class="admin-form-group">
+                            <label for="city">Ville *</label>
+                            <input type="text" id="city" class="admin-form-input" required>
+                        </div>
+                        <div class="admin-form-group">
+                            <label for="postalCode">Code postal</label>
+                            <input type="text" id="postalCode" class="admin-form-input">
+                        </div>
+                    </div>
+
+                    <div class="admin-form-group">
+                        <label for="description">Description</label>
+                        <textarea id="description" class="admin-form-textarea" rows="4"
+                            placeholder="Décrivez votre pharmacie..."></textarea>
+                    </div>
+
+                    <div class="admin-form-row">
+                        <div class="admin-form-group">
+                            <label for="latitude">Latitude</label>
+                            <input type="number" step="0.000001" id="latitude" class="admin-form-input"
+                                placeholder="13.5137">
+                        </div>
+                        <div class="admin-form-group">
+                            <label for="longitude">Longitude</label>
+                            <input type="number" step="0.000001" id="longitude" class="admin-form-input"
+                                placeholder="2.1098">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tab Content: Contact -->
+        <div class="admin-tab-content" id="contactTab">
+            <div class="admin-card">
+                <h3 class="admin-card-title">Informations de contact</h3>
+                <form class="admin-form" id="contactForm">
+                    <div class="admin-form-row">
+                        <div class="admin-form-group">
+                            <label for="phone">Téléphone *</label>
+                            <input type="tel" id="phone" class="admin-form-input" required
+                                placeholder="(+227) 20 XX XX XX">
+                        </div>
+                        <div class="admin-form-group">
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" class="admin-form-input" required>
+                        </div>
+                    </div>
+
+                    <div class="admin-form-row">
+                        <div class="admin-form-group">
+                            <label for="website">Site web</label>
+                            <input type="url" id="website" class="admin-form-input"
+                                placeholder="https://www.votre-pharmacie.com">
+                        </div>
+                        <div class="admin-form-group">
+                            <label for="facebook">Facebook</label>
+                            <input type="text" id="facebook" class="admin-form-input" placeholder="@votre-pharmacie">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tab Content: Hours -->
+        <div class="admin-tab-content" id="hoursTab">
+            <div class="admin-card">
+                <h3 class="admin-card-title">Horaires d'ouverture</h3>
+                <form class="admin-form" id="hoursForm">
+                    <div class="hours-grid" id="hoursGrid">
+                        <!-- Hours will be generated by JavaScript -->
+                    </div>
+
+                    <div class="admin-form-group" style="margin-top: 1.5rem;">
+                        <label class="admin-checkbox">
+                            <input type="checkbox" id="nightShift">
+                            <span>Garde de nuit disponible</span>
+                        </label>
+                    </div>
+
+                    <div class="admin-form-group">
+                        <label for="specialNotes">Notes spéciales</label>
+                        <textarea id="specialNotes" class="admin-form-textarea" rows="3"
+                            placeholder="Ex: Fermé les jours fériés, garde le dimanche..."></textarea>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tab Content: Services -->
+        <div class="admin-tab-content" id="servicesTab">
+            <div class="admin-card">
+                <h3 class="admin-card-title">Services disponibles</h3>
+                <form class="admin-form" id="servicesForm">
+                    <div class="services-grid">
+                        <label class="service-checkbox-card">
+                            <input type="checkbox" id="serviceNightShift" name="services">
+                            <div class="service-card-content">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor"
+                                        stroke-width="2" />
+                                </svg>
+                                <span>Garde de nuit</span>
+                            </div>
+                        </label>
+
+                        <label class="service-checkbox-card">
+                            <input type="checkbox" id="serviceDelivery" name="services">
+                            <div class="service-card-content">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M16 3H1V16H16V3Z" stroke="currentColor" stroke-width="2" />
+                                    <path d="M16 8H20L23 11V16H16V8Z" stroke="currentColor" stroke-width="2" />
+                                    <circle cx="5.5" cy="18.5" r="2.5" stroke="currentColor" stroke-width="2" />
+                                    <circle cx="18.5" cy="18.5" r="2.5" stroke="currentColor" stroke-width="2" />
+                                </svg>
+                                <span>Livraison à domicile</span>
+                            </div>
+                        </label>
+
+                        <label class="service-checkbox-card">
+                            <input type="checkbox" id="serviceParking" name="services">
+                            <div class="service-card-content">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path
+                                        d="M5 17H4C2.89543 17 2 16.1046 2 15V11L4.48 5.212C4.79 4.452 5.53 4 6.35 4H17.65C18.47 4 19.21 4.452 19.52 5.212L22 11V15C22 16.1046 21.1046 17 20 17H19"
+                                        stroke="currentColor" stroke-width="2" />
+                                    <circle cx="7" cy="17" r="2" stroke="currentColor" stroke-width="2" />
+                                    <circle cx="17" cy="17" r="2" stroke="currentColor" stroke-width="2" />
+                                </svg>
+                                <span>Parking</span>
+                            </div>
+                        </label>
+
+                        <label class="service-checkbox-card">
+                            <input type="checkbox" id="serviceCreditCard" name="services">
+                            <div class="service-card-content">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <rect x="1" y="4" width="22" height="16" rx="2" stroke="currentColor"
+                                        stroke-width="2" />
+                                    <path d="M1 10H23" stroke="currentColor" stroke-width="2" />
+                                </svg>
+                                <span>Paiement carte</span>
+                            </div>
+                        </label>
+
+                        <label class="service-checkbox-card">
+                            <input type="checkbox" id="serviceTiersPayant" name="services">
+                            <div class="service-card-content">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path
+                                        d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z"
+                                        stroke="currentColor" stroke-width="2" />
+                                    <path d="M14 2V8H20M16 13H8M16 17H8M10 9H8" stroke="currentColor"
+                                        stroke-width="2" />
+                                </svg>
+                                <span>Tiers payant</span>
+                            </div>
+                        </label>
+
+                        <label class="service-checkbox-card">
+                            <input type="checkbox" id="serviceCovidTests" name="services">
+                            <div class="service-card-content">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M12 22C12 22 20 18 20 12V5L12 2L4 5V12C4 18 12 22 12 22Z"
+                                        stroke="currentColor" stroke-width="2" />
+                                </svg>
+                                <span>Tests COVID</span>
+                            </div>
+                        </label>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Success Message -->
+        <div class="admin-toast" id="successToast">
+            <svg viewBox="0 0 24 24" fill="none">
+                <path
+                    d="M9 11L12 14L22 4M21 12V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H16"
+                    stroke="currentColor" stroke-width="2" />
+            </svg>
+            <span id="toastMessage">Modifications enregistrées avec succès !</span>
+        </div>
+    </main>
+
+    <script src="admin.js"></script>
+    <script src="admin-info.js"></script>
+</body>
+
+</html>
