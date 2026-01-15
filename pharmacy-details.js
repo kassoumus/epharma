@@ -274,6 +274,7 @@ const pharmaciesData = {
 const urlParams = new URLSearchParams(window.location.search);
 const pharmacyId = parseInt(urlParams.get('id')) || 1;
 const pharmacy = pharmaciesData[pharmacyId] || pharmaciesData[1];
+const searchedMedicaments = urlParams.get('medicaments')?.split(',').map(m => m.trim().toLowerCase()) || [];
 
 // === INITIALIZE PAGE ===
 document.addEventListener('DOMContentLoaded', () => {
@@ -372,24 +373,72 @@ function getServiceIcon(iconName) {
 function renderProducts() {
     const productsContainer = document.getElementById('productsList');
 
+    // Filtrer les produits si une recherche est active
+    let productsToDisplay = pharmacy.products;
+    if (searchedMedicaments.length > 0) {
+        productsToDisplay = pharmacy.products.filter(product => {
+            const productName = product.name.toLowerCase();
+            return searchedMedicaments.some(searched =>
+                productName.includes(searched)
+            );
+        });
+    }
+
     let productsHTML = '';
-    pharmacy.products.forEach(product => {
-        productsHTML += `
-            <div class="product-item">
-                <div class="product-info">
-                    <div class="product-name">${product.name}</div>
-                    <div class="product-stock">
-                        <svg viewBox="0 0 24 24" fill="none">
-                            <path d="M9 11L12 14L22 4M21 12V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H16" stroke="currentColor" stroke-width="2"/>
-                        </svg>
-                        <span>${product.stock} en stock</span>
-                    </div>
-                </div>
-                <!-- Prix masqué -->
+
+    // Afficher un message si aucun produit trouvé après filtrage
+    if (productsToDisplay.length === 0 && searchedMedicaments.length > 0) {
+        productsHTML = `
+            <div class="no-products" style="padding: 2rem; text-align: center; color: #64748b;">
+                <svg viewBox="0 0 24 24" fill="none" style="width: 48px; height: 48px; margin: 0 auto 1rem; color: #cbd5e1;">
+                    <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <p style="margin: 0; font-size: 1rem; font-weight: 500;">Aucun des produits recherchés n'est disponible dans cette pharmacie.</p>
             </div>
         `;
-    });
+    } else {
+        productsToDisplay.forEach(product => {
+            productsHTML += `
+                <div class="product-item">
+                    <div class="product-info">
+                        <div class="product-name">${product.name}</div>
+                        <div class="product-stock">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M9 11L12 14L22 4M21 12V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H16" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                            <span>${product.stock} en stock</span>
+                        </div>
+                    </div>
+                    <!-- Prix masqué -->
+                </div>
+            `;
+        });
+    }
+
     productsContainer.innerHTML = productsHTML;
+
+    // Ajouter un indicateur visuel si les produits sont filtrés
+    updateFilterIndicator(productsToDisplay.length, pharmacy.products.length);
+}
+
+// === UPDATE FILTER INDICATOR ===
+function updateFilterIndicator(displayedCount, totalCount) {
+    const titleElement = document.querySelector('#productsList').closest('.details-card').querySelector('.details-card-title');
+
+    // Supprimer l'ancien indicateur s'il existe
+    const oldIndicator = titleElement.querySelector('.filter-indicator');
+    if (oldIndicator) {
+        oldIndicator.remove();
+    }
+
+    // Ajouter un nouvel indicateur si les produits sont filtrés
+    if (searchedMedicaments.length > 0) {
+        const indicator = document.createElement('span');
+        indicator.className = 'filter-indicator';
+        indicator.style.cssText = 'margin-left: 0.5rem; font-size: 0.875rem; font-weight: 400; color: #3b82f6;';
+        indicator.textContent = `(${displayedCount} sur ${totalCount} produits)`;
+        titleElement.appendChild(indicator);
+    }
 }
 
 // === RENDER REVIEWS ===

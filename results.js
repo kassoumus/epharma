@@ -323,7 +323,15 @@ function initializeSearch() {
 
 // === PHARMACY ACTIONS ===
 function viewPharmacy(id) {
-    window.location.href = `pharmacy-details.html?id=${id}`;
+    const params = new URLSearchParams();
+    params.set('id', id);
+
+    // Ajouter les produits recherchés si disponibles
+    if (searchedMedicaments && searchedMedicaments.length > 0) {
+        params.set('medicaments', searchedMedicaments.join(','));
+    }
+
+    window.location.href = `pharmacy-details.html?${params.toString()}`;
 }
 
 function getDirections(id) {
