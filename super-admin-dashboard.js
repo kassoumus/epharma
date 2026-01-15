@@ -1,8 +1,10 @@
 // ========================================
-// SUPER ADMIN DASHBOARD - USER MANAGEMENT
+// SUPER ADMIN DASHBOARD - USER MANAGEMENT & STATISTICS
 // ========================================
 
 let currentEditingUserId = null;
+let registrationsChart = null;
+let roleDistributionChart = null;
 
 // === INITIALIZATION ===
 document.addEventListener('DOMContentLoaded', () => {
@@ -25,7 +27,94 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(updateTime, 1000);
 });
 
-// === LOAD STATISTICS ===
+// === SETUP EVENT LISTENERS ===
+function setupEventListeners() {
+    // Navigation between sections
+    document.querySelectorAll('.admin-nav-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            const section = item.dataset.section;
+            switchSection(section);
+        });
+    });
+
+    // Search
+    document.getElementById('searchUsers').addEventListener('input', applyFilters);
+
+    // Filters
+    document.getElementById('roleFilter').addEventListener('change', applyFilters);
+    document.getElementById('statusFilter').addEventListener('change', applyFilters);
+
+    // Add user button
+    document.getElementById('addUserBtn').addEventListener('click', openAddUserModal);
+
+    // Modal close
+    document.getElementById('closeModal').addEventListener('click', closeModal);
+    document.getElementById('cancelBtn').addEventListener('click', closeModal);
+
+    // Form submit
+    document.getElementById('userForm').addEventListener('submit', handleUserFormSubmit);
+
+    // Close modal on outside click
+    document.getElementById('userModal').addEventListener('click', (e) => {
+        if (e.target.id === 'userModal') {
+            closeModal();
+        }
+    });
+
+    // Stats period filter
+    const statsPeriodSelect = document.getElementById('statsPeriod');
+    if (statsPeriodSelect) {
+        statsPeriodSelect.addEventListener('change', () => {
+            loadStatisticsSection();
+        });
+    }
+}
+
+// === SECTION NAVIGATION ===
+function switchSection(section) {
+    // Hide all sections
+    const sections = ['usersSection', 'statsSection'];
+    sections.forEach(s => {
+        const element = document.getElementById(s);
+        if (element) {
+            element.style.display = 'none';
+        }
+    });
+
+    // Show selected section
+    const sectionElement = document.getElementById(`${section}Section`);
+    if (sectionElement) {
+        sectionElement.style.display = 'block';
+    }
+
+    // Update navigation active state
+    document.querySelectorAll('.admin-nav-item').forEach(item => {
+        item.classList.remove('active');
+    });
+    const activeNav = document.querySelector(`[data-section="${section}"]`);
+    if (activeNav) {
+        activeNav.classList.add('active');
+    }
+
+    // Update header title
+    const headerTitle = document.querySelector('.admin-header-left h1');
+    const headerSubtitle = document.querySelector('.admin-header-left p');
+
+    if (section === 'stats') {
+        headerTitle.textContent = 'Statistiques';
+        headerSubtitle.textContent = 'Vue d\'ensemble des activités de la plateforme';
+        loadStatisticsSection();
+    } else if (section === 'users') {
+        headerTitle.textContent = 'Gestion des Utilisateurs';
+        headerSubtitle.textContent = 'Gérez tous les utilisateurs de la plateforme';
+    } else if (section === 'roles') {
+        headerTitle.textContent = 'Rôles & Permissions';
+        headerSubtitle.textContent = 'Gérez les rôles et permissions';
+    }
+}
+
+// === LOAD STATISTICS (for cards) ===
 function loadStatistics() {
     const stats = getStatistics();
 
@@ -33,6 +122,262 @@ function loadStatistics() {
     document.getElementById('activeUsers').textContent = stats.activeUsers;
     document.getElementById('pharmacyCount').textContent = stats.pharmacies;
     document.getElementById('doctorCount').textContent = stats.doctors;
+}
+
+// === LOAD STATISTICS SECTION ===
+async function loadStatisticsSection() {
+    const period = document.getElementById('statsPeriod').value;
+
+    // Get statistics data
+    const stats = getDetailedStatistics(period);
+
+    // Update stat cards
+    document.getElementById('statsTotalUsers').textContent = stats.totalUsers;
+    document.getElementById('statsPharmacies').textContent = stats.pharmacies.total;
+    document.getElementById('statsDoctors').textContent = stats.doctors.total;
+    document.getElementById('statsHealthCenters').textContent = stats.healthCenters.total;
+
+    document.getElementById('approvedPharmacies').textContent = stats.pharmacies.approved;
+    document.getElementById('pendingPharmacies').textContent = stats.pharmacies.pending;
+    document.getElementById('activeDoctors').textContent = stats.doctors.active;
+    document.getElementById('approvedHealthCenters').textContent = stats.healthCenters.approved;
+
+    // Update trend
+    const trendElement = document.getElementById('usersTrend');
+    const trendPercent = stats.usersTrend;
+    const trendIcon = trendPercent >= 0 ? '↑' : '↓';
+    const trendColor = trendPercent >= 0 ? '#10b981' : '#ef4444';
+    trendElement.style.color = trendColor;
+    trendElement.innerHTML = `<span>${trendIcon} ${Math.abs(trendPercent)}%</span> vs période précédente`;
+
+    // Create charts
+    createRegistrationsChart(stats.registrations);
+    createRoleDistributionChart(stats.roleDistribution);
+
+    // Load recent activity
+    loadRecentActivity();
+}
+
+// === CREATE REGISTRATIONS CHART ===
+function createRegistrationsChart(data) {
+    const ctx = document.getElementById('registrationsChart');
+    if (!ctx) return;
+
+    // Destroy existing chart
+    if (registrationsChart) {
+        registrationsChart.destroy();
+    }
+
+    registrationsChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: data.labels,
+            datasets: [{
+                label: 'Nouvelles inscriptions',
+                data: data.values,
+                borderColor: '#3b82f6',
+                backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                tension: 0.4,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
+                    }
+                }
+            }
+        }
+    });
+}
+
+// === CREATE ROLE DISTRIBUTION CHART ===
+function createRoleDistributionChart(data) {
+    const ctx = document.getElementById('roleDistributionChart');
+    if (!ctx) return;
+
+    // Destroy existing chart
+    if (roleDistributionChart) {
+        roleDistributionChart.destroy();
+    }
+
+    roleDistributionChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: data.labels,
+            datasets: [{
+                data: data.values,
+                backgroundColor: [
+                    '#3b82f6',
+                    '#f59e0b',
+                    '#8b5cf6',
+                    '#10b981',
+                    '#ef4444'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+}
+
+// === LOAD RECENT ACTIVITY ===
+function loadRecentActivity() {
+    const activities = getRecentActivity();
+    const tbody = document.getElementById('recentActivityTable');
+
+    if (!tbody) return;
+
+    tbody.innerHTML = '';
+
+    activities.forEach(activity => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td><strong>${activity.user}</strong></td>
+            <td>${activity.action}</td>
+            <td><span class="role-badge role-${activity.type}">${activity.type}</span></td>
+            <td>${formatDateTime(activity.date)}</td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+// === GET DETAILED STATISTICS ===
+function getDetailedStatistics(period) {
+    const users = getUsers();
+    const pharmacies = getPharmacies();
+    const doctors = getDoctors();
+    const healthCenters = getHealthCenters();
+
+    // Calculate registrations over time
+    const now = new Date();
+    const daysAgo = parseInt(period);
+    const registrations = {
+        labels: [],
+        values: []
+    };
+
+    for (let i = daysAgo - 1; i >= 0; i--) {
+        const date = new Date(now);
+        date.setDate(date.getDate() - i);
+        const dateStr = date.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' });
+        registrations.labels.push(dateStr);
+
+        // Count users registered on this day (simulated)
+        const count = Math.floor(Math.random() * 5);
+        registrations.values.push(count);
+    }
+
+    // Calculate role distribution
+    const roleCounts = {};
+    users.forEach(user => {
+        roleCounts[user.role] = (roleCounts[user.role] || 0) + 1;
+    });
+
+    const roleDistribution = {
+        labels: Object.keys(roleCounts).map(role => getRoleLabel(role)),
+        values: Object.values(roleCounts)
+    };
+
+    // Calculate trend
+    const previousPeriodUsers = Math.max(1, users.length - Math.floor(Math.random() * 10));
+    const usersTrend = Math.round(((users.length - previousPeriodUsers) / previousPeriodUsers) * 100);
+
+    return {
+        totalUsers: users.length,
+        pharmacies: {
+            total: pharmacies.length,
+            approved: pharmacies.filter(p => p.status === 'approved').length,
+            pending: pharmacies.filter(p => p.status === 'pending').length
+        },
+        doctors: {
+            total: doctors.length,
+            active: doctors.filter(d => d.status === 'active').length
+        },
+        healthCenters: {
+            total: healthCenters.length,
+            approved: healthCenters.filter(h => h.status === 'approved').length
+        },
+        usersTrend,
+        registrations,
+        roleDistribution
+    };
+}
+
+// === GET RECENT ACTIVITY ===
+function getRecentActivity() {
+    return [
+        {
+            user: 'Dr. Amadou Diallo',
+            action: 'Nouvelle inscription',
+            type: 'doctor',
+            date: new Date(Date.now() - 1000 * 60 * 15)
+        },
+        {
+            user: 'Pharmacie Sabo',
+            action: 'Profil mis à jour',
+            type: 'pharmacy',
+            date: new Date(Date.now() - 1000 * 60 * 45)
+        },
+        {
+            user: 'Centre de Santé Niamey',
+            action: 'Nouvelle inscription',
+            type: 'health_center',
+            date: new Date(Date.now() - 1000 * 60 * 120)
+        },
+        {
+            user: 'Fatima Ibrahim',
+            action: 'Compte activé',
+            type: 'patient',
+            date: new Date(Date.now() - 1000 * 60 * 180)
+        },
+        {
+            user: 'Pharmacie Air',
+            action: 'Approuvée',
+            type: 'pharmacy',
+            date: new Date(Date.now() - 1000 * 60 * 240)
+        }
+    ];
+}
+
+// === DUMMY DATA GETTERS ===
+function getPharmacies() {
+    return [
+        { id: 1, name: 'Pharmacie Sabo', status: 'approved' },
+        { id: 2, name: 'Pharmacie Air', status: 'approved' },
+        { id: 3, name: 'Pharmacie Ar-Rahma', status: 'pending' }
+    ];
+}
+
+function getDoctors() {
+    return [
+        { id: 1, name: 'Dr. Amadou', status: 'active' },
+        { id: 2, name: 'Dr. Fatouma', status: 'active' }
+    ];
+}
+
+function getHealthCenters() {
+    return [
+        { id: 1, name: 'Centre Niamey', status: 'approved' },
+        { id: 2, name: 'Centre Dosso', status: 'approved' }
+    ];
 }
 
 // === LOAD USERS ===
@@ -99,38 +444,6 @@ function renderUsersTable(users) {
             </td>
         `;
         tbody.appendChild(row);
-    });
-}
-
-// === SETUP EVENT LISTENERS ===
-function setupEventListeners() {
-    // Logout
-    document.getElementById('logoutBtn').addEventListener('click', superAdminLogout);
-
-    // Search
-    document.getElementById('searchUsers').addEventListener('input', () => {
-        applyFilters();
-    });
-
-    // Filters
-    document.getElementById('roleFilter').addEventListener('change', applyFilters);
-    document.getElementById('statusFilter').addEventListener('change', applyFilters);
-
-    // Add user button
-    document.getElementById('addUserBtn').addEventListener('click', openAddUserModal);
-
-    // Modal close
-    document.getElementById('closeModal').addEventListener('click', closeModal);
-    document.getElementById('cancelBtn').addEventListener('click', closeModal);
-
-    // Form submit
-    document.getElementById('userForm').addEventListener('submit', handleUserFormSubmit);
-
-    // Close modal on outside click
-    document.getElementById('userModal').addEventListener('click', (e) => {
-        if (e.target.id === 'userModal') {
-            closeModal();
-        }
     });
 }
 
@@ -224,7 +537,8 @@ function getRoleLabel(role) {
         'admin_moderator': 'Admin Modérateur',
         'pharmacy': 'Pharmacien',
         'doctor': 'Médecin',
-        'patient': 'Patient'
+        'patient': 'Patient',
+        'health_center': 'Centre de Santé'
     };
     return labels[role] || role;
 }
@@ -232,6 +546,21 @@ function getRoleLabel(role) {
 function formatDate(dateString) {
     if (!dateString) return '-';
     const date = new Date(dateString);
+    return date.toLocaleDateString('fr-FR');
+}
+
+function formatDateTime(date) {
+    if (!date) return '-';
+    const now = new Date();
+    const diff = now - date;
+    const minutes = Math.floor(diff / 60000);
+    const hours = Math.floor(diff / 3600000);
+    const days = Math.floor(diff / 86400000);
+
+    if (minutes < 1) return 'À l\'instant';
+    if (minutes < 60) return `Il y a ${minutes} min`;
+    if (hours < 24) return `Il y a ${hours}h`;
+    if (days < 7) return `Il y a ${days}j`;
     return date.toLocaleDateString('fr-FR');
 }
 
@@ -259,4 +588,4 @@ window.editUser = editUser;
 window.toggleStatus = toggleStatus;
 window.deleteUserConfirm = deleteUserConfirm;
 
-console.log('👥 Super Admin Dashboard initialized');
+console.log('🎯 Super Admin Dashboard initialized');
