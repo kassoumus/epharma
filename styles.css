@@ -3180,3 +3180,246 @@ body {
 }
 
 
+
+/* ========================================
+   CALENDAR STYLES
+   ======================================== */
+
+.calendar-grid {
+    background: white;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    border: 1px solid var(--gray-200);
+}
+
+.calendar-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    background: var(--gray-50);
+    border-bottom: 2px solid var(--gray-200);
+}
+
+.calendar-day-name {
+    padding: 1rem;
+    text-align: center;
+    font-weight: 600;
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.calendar-cell {
+    min-height: 100px;
+    padding: 0.75rem;
+    border: 1px solid var(--gray-200);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    background: white;
+}
+
+.calendar-cell:hover {
+    background: var(--primary-50);
+    border-color: var(--primary-300);
+}
+
+.calendar-cell.empty {
+    background: var(--gray-50);
+    cursor: default;
+}
+
+.calendar-cell.empty:hover {
+    background: var(--gray-50);
+    border-color: var(--gray-200);
+}
+
+.calendar-cell.today {
+    background: var(--primary-50);
+    border-color: var(--primary-400);
+}
+
+.calendar-date {
+    font-weight: 600;
+    font-size: var(--font-size-sm);
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.calendar-cell.today .calendar-date {
+    color: var(--primary-600);
+    font-weight: 700;
+}
+
+.calendar-appointments {
+    margin-top: 0.5rem;
+}
+
+.calendar-appointment-count {
+    font-size: var(--font-size-xs);
+    padding: 0.25rem 0.5rem;
+    background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+    color: white;
+    border-radius: var(--radius-md);
+    text-align: center;
+    font-weight: 600;
+}
+
+.admin-search-input {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--gray-300);
+    border-radius: var(--radius-lg);
+    font-size: var(--font-size-sm);
+    min-width: 250px;
+    transition: all var(--transition-fast);
+}
+
+.admin-search-input:focus {
+    outline: none;
+    border-color: var(--primary-500);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.admin-select {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--gray-300);
+    border-radius: var(--radius-lg);
+    font-size: var(--font-size-sm);
+    background: white;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.admin-select:focus {
+    outline: none;
+    border-color: var(--primary-500);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.admin-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.admin-form-group {
+    margin-bottom: 1rem;
+}
+
+.admin-form-group label {
+    display: block;
+    font-weight: 500;
+    font-size: var(--font-size-sm);
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.admin-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--gray-300);
+    border-radius: var(--radius-lg);
+    font-size: var(--font-size-base);
+    transition: all var(--transition-fast);
+}
+
+.admin-input:focus {
+    outline: none;
+    border-color: var(--primary-500);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.admin-input[type=" textarea\] {
+ resize: vertical;
+ min-height: 100px;
+}
+
+/* Profile Photo Styles */
+.profile-photo-large {
+    width: 150px;
+    height: 150px;
+    border-radius: var(--radius-full);
+    background: linear-gradient(135deg, var(--primary-400), var(--secondary-400));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+}
+
+.profile-photo-large svg {
+    width: 60px;
+    height: 60px;
+}
+
+.profile-photo-upload-btn {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 40px;
+    height: 40px;
+    background: var(--primary-600);
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    box-shadow: var(--shadow-md);
+}
+
+.profile-photo-upload-btn:hover {
+    background: var(--primary-700);
+    transform: scale(1.1);
+}
+
+.profile-photo-upload-btn svg {
+    width: 20px;
+    height: 20px;
+    color: white;
+}
+
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.checkbox-label input[type=" checkbox\] {
+ width: 18px;
+ height: 18px;
+ cursor: pointer;
+}
+
+.availability-day {
+ padding: 1.5rem;
+ background: var(--gray-50);
+ border-radius: var(--radius-lg);
+ margin-bottom: 1rem;
+ border: 1px solid var(--gray-200);
+}
+
+.time-slot {
+ margin-bottom: 1rem;
+ padding: 1rem;
+ background: white;
+ border-radius: var(--radius-md);
+ border: 1px solid var(--gray-200);
+}
+
+.time-slot:last-child {
+ margin-bottom: 0;
+}

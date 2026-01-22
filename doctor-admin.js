@@ -154,6 +154,34 @@ function getPatients(doctorId) {
     return stored ? JSON.parse(stored) : demoPatients;
 }
 
+function savePatients(doctorId, patients) {
+    localStorage.setItem(`doctor_${doctorId}_patients`, JSON.stringify(patients));
+}
+
+function getDoctorProfile(doctorId) {
+    const stored = localStorage.getItem(`doctor_${doctorId}_profile`);
+    if (stored) {
+        return JSON.parse(stored);
+    }
+    // Return demo doctor data as default
+    return {
+        ...demoDoctor,
+        availability: {
+            monday: [{ start: '08:00', end: '12:00' }, { start: '14:00', end: '18:00' }],
+            tuesday: [{ start: '08:00', end: '12:00' }, { start: '14:00', end: '18:00' }],
+            wednesday: [{ start: '08:00', end: '12:00' }],
+            thursday: [{ start: '08:00', end: '12:00' }, { start: '14:00', end: '18:00' }],
+            friday: [{ start: '08:00', end: '12:00' }, { start: '14:00', end: '18:00' }],
+            saturday: [],
+            sunday: []
+        }
+    };
+}
+
+function updateDoctorProfile(doctorId, profileData) {
+    localStorage.setItem(`doctor_${doctorId}_profile`, JSON.stringify(profileData));
+}
+
 function updateAppointmentStatus(appointmentId, newStatus) {
     const session = requireAuth();
     if (!session) return;
