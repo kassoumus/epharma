@@ -1,5 +1,5 @@
 // ========================================
-// DOCTOR PROFILE - PROFILE MANAGEMENT
+// DOCTOR PROFILE - PROFILE MANAGEMENT (SUPABASE VERSION)
 // ========================================
 
 const session = requireAuth();
@@ -11,13 +11,13 @@ if (!session) {
     });
 }
 
-function initializeProfile() {
+async function initializeProfile() {
     // Update doctor info
     document.getElementById('doctorName').textContent = session.doctorName;
     document.getElementById('doctorSpecialty').textContent = session.specialty;
 
     // Load profile data
-    loadProfileData();
+    await loadProfileData();
 
     // Setup tabs
     setupTabs();
@@ -51,57 +51,28 @@ function setupTabs() {
     });
 }
 
-function loadProfileData() {
-    const profile = getDoctorProfile(session.doctorId);
+async function loadProfileData() {
+    const profile = await getDoctorProfile(session.doctorId);
+
+    if (!profile) {
+        showToast('Erreur lors du chargement du profil', 'error');
+        return;
+    }
 
     // Personal Information
-    if (profile.firstName) {
-        const names = profile.name.split(' ');
-        document.getElementById('firstName').value = names[0] || '';
-        document.getElementById('lastName').value = names.slice(1).join(' ') || '';
-    }
+    const names = profile.name.split(' ');
+    document.getElementById('firstName').value = names[0] || '';
+    document.getElementById('lastName').value = names.slice(1).join(' ') || '';
     document.getElementById('email').value = profile.email || session.email;
     document.getElementById('phone').value = profile.phone || '';
-    document.getElementById('dateOfBirth').value = profile.dateOfBirth || '';
-    document.getElementById('gender').value = profile.gender || '';
     document.getElementById('address').value = profile.address || '';
 
     // Professional Information
     document.getElementById('specialty').value = profile.specialty || session.specialty;
-    document.getElementById('licenseNumber').value = profile.licenseNumber || '';
-    document.getElementById('experience').value = profile.experience || 0;
-    document.getElementById('bio').value = profile.bio || '';
-
-    // Languages
-    if (profile.languages && profile.languages.length > 0) {
-        document.querySelectorAll('#languagesContainer input[type="checkbox"]').forEach(checkbox => {
-            if (profile.languages.includes(checkbox.value)) {
-                checkbox.checked = true;
-            }
-        });
-    }
 
     // Consultation
-    document.getElementById('consultationFee').value = profile.consultationPrice || 25;
-    document.getElementById('consultationDuration').value = profile.consultationDuration || 30;
+    document.getElementById('consultationFee').value = profile.consultationPrice || 25000;
     document.getElementById('acceptsNewPatients').checked = profile.acceptsNewPatients !== false;
-    document.getElementById('onlineConsultation').checked = profile.isAvailableOnline || false;
-    document.getElementById('onlineConsultationFee').value = profile.onlineConsultationFee || '';
-    document.getElementById('healthCenter').value = profile.healthCenter || '';
-
-    // Services
-    if (profile.services && profile.services.length > 0) {
-        document.querySelectorAll('.admin-tab-content[data-tab="consultation"] .checkbox-group input[type="checkbox"]').forEach(checkbox => {
-            if (profile.services.includes(checkbox.value)) {
-                checkbox.checked = true;
-            }
-        });
-    }
-
-    // Profile photo
-    if (profile.profilePhoto) {
-        displayProfilePhoto(profile.profilePhoto);
-    }
 
     toggleOnlineFeeField();
 }
@@ -130,10 +101,8 @@ function toggleOnlineFeeField() {
     const isOnline = document.getElementById('onlineConsultation').checked;
     const feeGroup = document.getElementById('onlineFeeGroup');
 
-    if (isOnline) {
-        feeGroup.style.display = 'block';
-    } else {
-        feeGroup.style.display = 'none';
+    if (feeGroup) {
+        feeGroup.style.display = isOnline ? 'block' : 'none';
     }
 }
 
@@ -149,12 +118,7 @@ function generateAvailabilitySchedule() {
         { key: 'sunday', label: 'Dimanche' }
     ];
 
-    const profile = getDoctorProfile(session.doctorId);
-    const availability = profile.availability || {};
-
     days.forEach(day => {
-        const daySlots = availability[day.key] || [];
-
         const dayHTML = `
             <div class="availability-day" data-day="${day.key}">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
@@ -167,17 +131,12 @@ function generateAvailabilitySchedule() {
                     </button>
                 </div>
                 <div class="time-slots-container" id="slots-${day.key}">
-                    ${daySlots.length === 0 ? '<p style="color: var(--text-secondary); font-size: var(--font-size-sm);">Aucune plage horaire définie</p>' : ''}
+                    <p style="color: var(--text-secondary); font-size: var(--font-size-sm);">Aucune plage horaire définie</p>
                 </div>
             </div>
         `;
 
         container.insertAdjacentHTML('beforeend', dayHTML);
-
-        // Add existing slots
-        daySlots.forEach((slot, index) => {
-            addTimeSlotWithData(day.key, slot.start, slot.end, index);
-        });
     });
 }
 
@@ -229,7 +188,7 @@ function removeTimeSlot(button) {
     }
 }
 
-function saveProfile(e) {
+async function saveProfile(e) {
     e.preventDefault();
 
     // Collect form data
@@ -237,103 +196,57 @@ function saveProfile(e) {
     const lastName = document.getElementById('lastName').value;
     const fullName = `${firstName} ${lastName}`;
 
-    // Collect languages
-    const languages = [];
-    document.querySelectorAll('#languagesContainer input[type="checkbox"]:checked').forEach(checkbox => {
-        languages.push(checkbox.value);
-    });
-
-    // Collect services
-    const services = [];
-    document.querySelectorAll('.admin-tab-content[data-tab="consultation"] .checkbox-group input[type="checkbox"]:checked').forEach(checkbox => {
-        services.push(checkbox.value);
-    });
-
-    // Collect availability
-    const availability = {};
-    document.querySelectorAll('.availability-day').forEach(dayElement => {
-        const day = dayElement.dataset.day;
-        const slots = [];
-
-        dayElement.querySelectorAll('.time-slot').forEach(slotElement => {
-            const start = slotElement.querySelector('.slot-start').value;
-            const end = slotElement.querySelector('.slot-end').value;
-            if (start && end) {
-                slots.push({ start, end });
-            }
-        });
-
-        availability[day] = slots;
-    });
-
-    // Get profile photo if changed
-    const photoPreview = document.getElementById('profilePhotoPreview');
-    const profilePhoto = photoPreview.style.backgroundImage ?
-        photoPreview.style.backgroundImage.slice(5, -2) : null;
-
     const profileData = {
         name: fullName,
-        firstName: firstName,
-        lastName: lastName,
         email: document.getElementById('email').value,
         phone: document.getElementById('phone').value,
-        dateOfBirth: document.getElementById('dateOfBirth').value,
-        gender: document.getElementById('gender').value,
         address: document.getElementById('address').value,
         specialty: document.getElementById('specialty').value,
-        licenseNumber: document.getElementById('licenseNumber').value,
-        experience: parseInt(document.getElementById('experience').value) || 0,
-        bio: document.getElementById('bio').value,
-        languages: languages,
         consultationPrice: parseFloat(document.getElementById('consultationFee').value) || 0,
-        consultationDuration: parseInt(document.getElementById('consultationDuration').value) || 30,
-        acceptsNewPatients: document.getElementById('acceptsNewPatients').checked,
-        isAvailableOnline: document.getElementById('onlineConsultation').checked,
-        onlineConsultationFee: parseFloat(document.getElementById('onlineConsultationFee').value) || 0,
-        healthCenter: document.getElementById('healthCenter').value,
-        services: services,
-        availability: availability,
-        profilePhoto: profilePhoto
+        acceptsNewPatients: document.getElementById('acceptsNewPatients').checked
     };
 
     // Update profile
-    updateDoctorProfile(session.doctorId, profileData);
+    const result = await updateDoctorProfile(session.doctorId, profileData);
 
-    // Update session
-    session.doctorName = fullName;
-    session.specialty = profileData.specialty;
-    localStorage.setItem('doctorSession', JSON.stringify(session));
+    if (result.success) {
+        // Update session
+        session.doctorName = fullName;
+        session.specialty = profileData.specialty;
+        localStorage.setItem('doctorSession', JSON.stringify(session));
 
-    // Update sidebar
-    document.getElementById('doctorName').textContent = fullName;
-    document.getElementById('doctorSpecialty').textContent = profileData.specialty;
+        // Update sidebar
+        document.getElementById('doctorName').textContent = fullName;
+        document.getElementById('doctorSpecialty').textContent = profileData.specialty;
 
-    showToast('Profil mis à jour avec succès', 'success');
+        showToast('Profil mis à jour avec succès', 'success');
+    } else {
+        showToast('Erreur lors de la mise à jour du profil', 'error');
+    }
 }
 
 function showToast(message, type = 'info') {
     const toast = document.createElement('div');
-    toast.className = `admin-toast admin-toast-${type}`;
-    toast.textContent = message;
-    toast.style.cssText = `
-        position: fixed;
-        bottom: 2rem;
-        right: 2rem;
-        padding: 1rem 1.5rem;
-        background: ${type === 'success' ? 'var(--success)' : 'var(--primary-600)'};
-        color: white;
-        border-radius: var(--radius-lg);
-        box-shadow: var(--shadow-xl);
-        z-index: 10000;
-        animation: slideIn 0.3s ease-out;
+    toast.className = 'admin-toast';
+    if (type === 'error') toast.classList.add('error');
+
+    toast.innerHTML = `
+        <svg viewBox="0 0 24 24" fill="none">
+            ${type === 'success' ?
+            '<path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2"/>' :
+            '<path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2"/>'
+        }
+        </svg>
+        <span>${message}</span>
     `;
 
     document.body.appendChild(toast);
 
+    setTimeout(() => toast.classList.add('show'), 100);
     setTimeout(() => {
-        toast.style.animation = 'slideOut 0.3s ease-out';
+        toast.classList.remove('show');
         setTimeout(() => toast.remove(), 300);
     }, 3000);
 }
 
-console.log('👤 Doctor profile initialized');
+console.log('👤 Doctor profile initialized (Supabase)');

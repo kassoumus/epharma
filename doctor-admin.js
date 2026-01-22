@@ -1,131 +1,37 @@
 // ========================================
-// DOCTOR ADMIN - AUTHENTICATION & DATA
+// DOCTOR ADMIN - AUTHENTICATION & DATA (SUPABASE VERSION)
 // ========================================
 
-// === DEMO DOCTOR DATA ===
-const demoDoctor = {
-    id: 1,
-    email: 'dr.dubois@cabinet-sante.fr',
-    password: 'demo123',
-    name: 'Dr. Marie Dubois',
-    specialty: 'Médecin généraliste',
-    phone: '01 45 67 89 01',
-    address: '45 Rue de la Santé, 75014 Paris',
-    sector: 1,
-    consultationPrice: 25,
-    experience: 15,
-    languages: ['Français', 'Anglais'],
-    services: ['Cabinet', 'Téléconsultation', 'Visite à domicile']
-};
-
-// === DEMO APPOINTMENTS ===
-const demoAppointments = [
-    {
-        id: 1,
-        patientName: 'Jean Dupont',
-        date: '2025-12-05',
-        time: '09:00',
-        duration: 30,
-        type: 'Consultation',
-        status: 'confirmed',
-        reason: 'Consultation de suivi',
-        phone: '06 12 34 56 78'
-    },
-    {
-        id: 2,
-        patientName: 'Marie Martin',
-        date: '2025-12-05',
-        time: '10:00',
-        duration: 30,
-        type: 'Première consultation',
-        status: 'confirmed',
-        reason: 'Douleurs abdominales',
-        phone: '06 23 45 67 89'
-    },
-    {
-        id: 3,
-        patientName: 'Pierre Leroy',
-        date: '2025-12-05',
-        time: '14:30',
-        duration: 30,
-        type: 'Téléconsultation',
-        status: 'pending',
-        reason: 'Renouvellement ordonnance',
-        phone: '06 34 56 78 90'
-    },
-    {
-        id: 4,
-        patientName: 'Sophie Bernard',
-        date: '2025-12-06',
-        time: '09:30',
-        duration: 30,
-        type: 'Consultation',
-        status: 'confirmed',
-        reason: 'Certificat médical',
-        phone: '06 45 67 89 01'
-    },
-    {
-        id: 5,
-        patientName: 'Luc Moreau',
-        date: '2025-12-06',
-        time: '11:00',
-        duration: 45,
-        type: 'Consultation',
-        status: 'confirmed',
-        reason: 'Bilan de santé',
-        phone: '06 56 78 90 12'
-    }
-];
-
-// === DEMO PATIENTS ===
-const demoPatients = [
-    {
-        id: 1,
-        name: 'Jean Dupont',
-        age: 45,
-        lastVisit: '2025-11-20',
-        nextAppointment: '2025-12-05',
-        phone: '06 12 34 56 78',
-        email: 'jean.dupont@email.fr'
-    },
-    {
-        id: 2,
-        name: 'Marie Martin',
-        age: 32,
-        lastVisit: '2025-10-15',
-        nextAppointment: '2025-12-05',
-        phone: '06 23 45 67 89',
-        email: 'marie.martin@email.fr'
-    },
-    {
-        id: 3,
-        name: 'Pierre Leroy',
-        age: 58,
-        lastVisit: '2025-11-30',
-        nextAppointment: '2025-12-05',
-        phone: '06 34 56 78 90',
-        email: 'pierre.leroy@email.fr'
-    }
-];
-
 // === AUTHENTICATION ===
-function login(email, password) {
-    if (email === demoDoctor.email && password === demoDoctor.password) {
+async function login(email, password) {
+    const result = await window.supabaseAPI.signIn(email, password);
+
+    if (result.success) {
+        // Get doctor profile
+        const doctorProfile = await window.supabaseAPI.getDoctorProfileByUserId(result.user.id);
+
+        if (!doctorProfile) {
+            return null;
+        }
+
         const session = {
-            doctorId: demoDoctor.id,
-            doctorName: demoDoctor.name,
-            email: demoDoctor.email,
-            specialty: demoDoctor.specialty,
+            doctorId: doctorProfile.id,
+            userId: result.user.id,
+            doctorName: doctorProfile.name,
+            email: result.user.email,
+            specialty: doctorProfile.specialty,
             loginTime: new Date().toISOString()
         };
 
         localStorage.setItem('doctorSession', JSON.stringify(session));
         return session;
     }
+
     return null;
 }
 
 function logout() {
+    window.supabaseAPI.signOut();
     localStorage.removeItem('doctorSession');
     window.location.href = 'doctor-login.html';
 }
@@ -139,106 +45,232 @@ function requireAuth() {
     return JSON.parse(sessionData);
 }
 
-// === DATA MANAGEMENT ===
-function getAppointments(doctorId) {
-    const stored = localStorage.getItem(`doctor_${doctorId}_appointments`);
-    return stored ? JSON.parse(stored) : demoAppointments;
-}
-
-function saveAppointments(doctorId, appointments) {
-    localStorage.setItem(`doctor_${doctorId}_appointments`, JSON.stringify(appointments));
-}
-
-function getPatients(doctorId) {
-    const stored = localStorage.getItem(`doctor_${doctorId}_patients`);
-    return stored ? JSON.parse(stored) : demoPatients;
-}
-
-function savePatients(doctorId, patients) {
-    localStorage.setItem(`doctor_${doctorId}_patients`, JSON.stringify(patients));
-}
-
-function getDoctorProfile(doctorId) {
-    const stored = localStorage.getItem(`doctor_${doctorId}_profile`);
-    if (stored) {
-        return JSON.parse(stored);
+// === DATA MANAGEMENT (SUPABASE) ===
+async function getAppointments(doctorId) {
+    try {
+        const appointments = await window.supabaseAPI.getAppointmentsByDoctor(doctorId);
+        return appointments.map(appt => ({
+            id: appt.id,
+            patientName: appt.patient_name,
+            phone: appt.patient_phone,
+            email: appt.patient_email,
+            date: appt.appointment_date,
+            time: appt.appointment_time,
+            duration: appt.duration,
+            type: appt.type,
+            reason: appt.reason,
+            notes: appt.notes || '',
+            status: appt.status
+        }));
+    } catch (error) {
+        console.error('Error fetching appointments:', error);
+        return [];
     }
-    // Return demo doctor data as default
-    return {
-        ...demoDoctor,
-        availability: {
-            monday: [{ start: '08:00', end: '12:00' }, { start: '14:00', end: '18:00' }],
-            tuesday: [{ start: '08:00', end: '12:00' }, { start: '14:00', end: '18:00' }],
-            wednesday: [{ start: '08:00', end: '12:00' }],
-            thursday: [{ start: '08:00', end: '12:00' }, { start: '14:00', end: '18:00' }],
-            friday: [{ start: '08:00', end: '12:00' }, { start: '14:00', end: '18:00' }],
-            saturday: [],
-            sunday: []
-        }
+}
+
+async function saveAppointments(doctorId, appointments) {
+    // This function is deprecated - use createAppointment or updateAppointment instead
+    console.warn('saveAppointments is deprecated. Use createAppointment or updateAppointment.');
+}
+
+async function createAppointmentRecord(doctorId, appointmentData) {
+    const data = {
+        doctor_id: doctorId,
+        patient_name: appointmentData.patientName,
+        patient_phone: appointmentData.phone,
+        patient_email: appointmentData.email || null,
+        appointment_date: appointmentData.date,
+        appointment_time: appointmentData.time,
+        duration: appointmentData.duration,
+        type: appointmentData.type,
+        reason: appointmentData.reason,
+        notes: appointmentData.notes || null,
+        status: appointmentData.status || 'pending'
     };
+
+    return await window.supabaseAPI.createAppointment(data);
 }
 
-function updateDoctorProfile(doctorId, profileData) {
-    localStorage.setItem(`doctor_${doctorId}_profile`, JSON.stringify(profileData));
+async function updateAppointmentRecord(appointmentId, updates) {
+    const data = {};
+
+    if (updates.patientName) data.patient_name = updates.patientName;
+    if (updates.phone) data.patient_phone = updates.phone;
+    if (updates.email) data.patient_email = updates.email;
+    if (updates.date) data.appointment_date = updates.date;
+    if (updates.time) data.appointment_time = updates.time;
+    if (updates.duration) data.duration = updates.duration;
+    if (updates.type) data.type = updates.type;
+    if (updates.reason) data.reason = updates.reason;
+    if (updates.notes !== undefined) data.notes = updates.notes;
+    if (updates.status) data.status = updates.status;
+
+    return await window.supabaseAPI.updateAppointment(appointmentId, data);
 }
 
-function updateAppointmentStatus(appointmentId, newStatus) {
-    const session = requireAuth();
-    if (!session) return;
-
-    const appointments = getAppointments(session.doctorId);
-    const appointment = appointments.find(a => a.id === appointmentId);
-    if (appointment) {
-        appointment.status = newStatus;
-        saveAppointments(session.doctorId, appointments);
+async function getPatients(doctorId) {
+    try {
+        const patients = await window.supabaseAPI.getPatientsByDoctor(doctorId);
+        return patients.map(patient => ({
+            id: patient.id,
+            name: patient.name,
+            age: patient.age,
+            phone: patient.phone,
+            email: patient.email,
+            lastVisit: patient.last_visit,
+            nextAppointment: patient.next_appointment
+        }));
+    } catch (error) {
+        console.error('Error fetching patients:', error);
+        return [];
     }
 }
 
-function deleteAppointment(appointmentId) {
-    const session = requireAuth();
-    if (!session) return;
+async function savePatients(doctorId, patients) {
+    // This function is deprecated - use createPatient or updatePatient instead
+    console.warn('savePatients is deprecated. Use createPatient or updatePatient.');
+}
 
-    const appointments = getAppointments(session.doctorId);
-    const filtered = appointments.filter(a => a.id !== appointmentId);
-    saveAppointments(session.doctorId, filtered);
+async function createPatientRecord(doctorId, patientData) {
+    const data = {
+        doctor_id: doctorId,
+        name: patientData.name,
+        age: patientData.age || null,
+        phone: patientData.phone,
+        email: patientData.email || null,
+        last_visit: patientData.lastVisit || new Date().toISOString().split('T')[0],
+        next_appointment: patientData.nextAppointment || null
+    };
+
+    return await window.supabaseAPI.createPatient(data);
+}
+
+async function updatePatientRecord(patientId, updates) {
+    const data = {};
+
+    if (updates.name) data.name = updates.name;
+    if (updates.age !== undefined) data.age = updates.age;
+    if (updates.phone) data.phone = updates.phone;
+    if (updates.email !== undefined) data.email = updates.email;
+    if (updates.lastVisit) data.last_visit = updates.lastVisit;
+    if (updates.nextAppointment !== undefined) data.next_appointment = updates.nextAppointment;
+
+    return await window.supabaseAPI.updatePatient(patientId, data);
+}
+
+async function getDoctorProfile(doctorId) {
+    try {
+        const profile = await window.supabaseAPI.getDoctorProfile(doctorId);
+        if (!profile) return null;
+
+        return {
+            id: profile.id,
+            userId: profile.user_id,
+            name: profile.name,
+            specialty: profile.specialty,
+            type: profile.type,
+            gender: profile.gender,
+            address: profile.address,
+            city: profile.city,
+            postalCode: profile.postal_code,
+            phone: profile.phone,
+            email: profile.email,
+            sector: profile.sector,
+            consultationPrice: profile.consultation_price,
+            acceptsNewPatients: profile.accepts_new_patients,
+            experienceYears: profile.experience_years,
+            rating: profile.rating,
+            reviewsCount: profile.reviews_count
+        };
+    } catch (error) {
+        console.error('Error fetching doctor profile:', error);
+        return null;
+    }
+}
+
+async function updateDoctorProfile(doctorId, profileData) {
+    const data = {};
+
+    if (profileData.name) data.name = profileData.name;
+    if (profileData.specialty) data.specialty = profileData.specialty;
+    if (profileData.type) data.type = profileData.type;
+    if (profileData.gender) data.gender = profileData.gender;
+    if (profileData.address) data.address = profileData.address;
+    if (profileData.city) data.city = profileData.city;
+    if (profileData.postalCode) data.postal_code = profileData.postalCode;
+    if (profileData.phone) data.phone = profileData.phone;
+    if (profileData.email) data.email = profileData.email;
+    if (profileData.sector !== undefined) data.sector = profileData.sector;
+    if (profileData.consultationPrice !== undefined) data.consultation_price = profileData.consultationPrice;
+    if (profileData.acceptsNewPatients !== undefined) data.accepts_new_patients = profileData.acceptsNewPatients;
+    if (profileData.experienceYears !== undefined) data.experience_years = profileData.experienceYears;
+
+    return await window.supabaseAPI.updateDoctorProfile(doctorId, data);
+}
+
+async function updateAppointmentStatus(appointmentId, newStatus) {
+    return await window.supabaseAPI.updateAppointmentStatus(appointmentId, newStatus);
+}
+
+async function deleteAppointment(appointmentId) {
+    return await window.supabaseAPI.deleteAppointment(appointmentId);
 }
 
 // === STATISTICS ===
-function getStatistics(doctorId) {
-    const appointments = getAppointments(doctorId);
-    const patients = getPatients(doctorId);
+async function getStatistics(doctorId) {
+    try {
+        const appointments = await getAppointments(doctorId);
+        const patients = await getPatients(doctorId);
 
-    const today = new Date().toISOString().split('T')[0];
-    const todayAppointments = appointments.filter(a => a.date === today);
-    const confirmedToday = todayAppointments.filter(a => a.status === 'confirmed').length;
-    const pendingAppointments = appointments.filter(a => a.status === 'pending').length;
+        const today = new Date().toISOString().split('T')[0];
+        const todayAppointments = appointments.filter(a => a.date === today);
+        const confirmedToday = todayAppointments.filter(a => a.status === 'confirmed').length;
+        const pendingAppointments = appointments.filter(a => a.status === 'pending').length;
 
-    return {
-        totalPatients: patients.length,
-        todayAppointments: todayAppointments.length,
-        confirmedToday: confirmedToday,
-        pendingAppointments: pendingAppointments,
-        weekAppointments: appointments.length,
-        averageRating: 4.8
-    };
+        return {
+            totalPatients: patients.length,
+            todayAppointments: todayAppointments.length,
+            confirmedToday: confirmedToday,
+            pendingAppointments: pendingAppointments,
+            weekAppointments: appointments.length,
+            averageRating: 4.8
+        };
+    } catch (error) {
+        console.error('Error calculating statistics:', error);
+        return {
+            totalPatients: 0,
+            todayAppointments: 0,
+            confirmedToday: 0,
+            pendingAppointments: 0,
+            weekAppointments: 0,
+            averageRating: 0
+        };
+    }
 }
 
 // === LOGIN FORM HANDLER ===
 if (document.getElementById('doctorLoginForm')) {
-    document.getElementById('doctorLoginForm').addEventListener('submit', (e) => {
+    document.getElementById('doctorLoginForm').addEventListener('submit', async (e) => {
         e.preventDefault();
 
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
+        const submitBtn = e.target.querySelector('button[type="submit"]');
 
-        const session = login(email, password);
+        // Disable button and show loading
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Connexion...';
+
+        const session = await login(email, password);
 
         if (session) {
             window.location.href = 'doctor-dashboard.html';
         } else {
             alert('Email ou mot de passe incorrect');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Se connecter';
         }
     });
 }
 
-console.log('👨‍⚕️ Doctor admin system initialized');
+console.log('👨‍⚕️ Doctor admin system initialized (Supabase)');

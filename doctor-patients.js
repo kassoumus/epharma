@@ -1,5 +1,5 @@
 // ========================================
-// DOCTOR PATIENTS - PATIENT MANAGEMENT
+// DOCTOR PATIENTS - PATIENT MANAGEMENT (SUPABASE VERSION)
 // ========================================
 
 const session = requireAuth();
@@ -12,17 +12,18 @@ if (!session) {
 }
 
 let currentPatient = null;
+let allPatients = [];
 
-function initializePatients() {
+async function initializePatients() {
     // Update doctor info
     document.getElementById('doctorName').textContent = session.doctorName;
     document.getElementById('doctorSpecialty').textContent = session.specialty;
 
     // Load statistics
-    loadStatistics();
+    await loadStatistics();
 
     // Load patients list
-    loadPatientsList();
+    await loadPatientsList();
 
     // Setup event listeners
     document.getElementById('logoutBtn').addEventListener('click', logout);
@@ -39,13 +40,13 @@ function initializePatients() {
     });
 }
 
-function loadStatistics() {
-    const patients = getPatients(session.doctorId);
-    const appointments = getAppointments(session.doctorId);
+async function loadStatistics() {
+    const patients = await getPatients(session.doctorId);
+    const appointments = await getAppointments(session.doctorId);
 
     const today = new Date();
     const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-    const startOfYear = new Date(today.getFullYear(), 0, 1);
+    const todayStr = today.toISOString().split('T')[0];
 
     // Total patients
     const totalPatients = patients.length;
@@ -58,7 +59,6 @@ function loadStatistics() {
     }).length;
 
     // Upcoming appointments
-    const todayStr = today.toISOString().split('T')[0];
     const upcomingAppointments = appointments.filter(a => {
         return a.date >= todayStr && a.status !== 'cancelled';
     }).length;
@@ -75,12 +75,57 @@ function loadStatistics() {
     document.getElementById('statConsultations').textContent = consultationsThisMonth;
 }
 
-function loadPatientsList() {
-    const patients = getPatients(session.doctorId);
+async function loadPatientsList() {
+    allPatients = await getPatients(session.doctorId);
+    filterPatients();
+}
+
+function filterPatients() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const periodFilter = document.getElementById('filterPeriod').value;
+
+    const today = new Date();
+    let startDate;
+
+    switch (periodFilter) {
+        case 'week':
+            startDate = new Date(today);
+            startDate.setDate(today.getDate() - 7);
+            break;
+        case 'month':
+            startDate = new Date(today.getFullYear(), today.getMonth(), 1);
+            break;
+        case 'year':
+            startDate = new Date(today.getFullYear(), 0, 1);
+            break;
+        default:
+            startDate = null;
+    }
+
+    const filtered = allPatients.filter(patient => {
+        const matchesSearch = patient.name.toLowerCase().includes(searchTerm) ||
+            patient.phone.includes(searchTerm) ||
+            (patient.email && patient.email.toLowerCase().includes(searchTerm));
+
+        let matchesPeriod = true;
+        if (startDate && patient.lastVisit) {
+            const visitDate = new Date(patient.lastVisit);
+            matchesPeriod = visitDate >= startDate;
+        } else if (startDate && !patient.lastVisit) {
+            matchesPeriod = false;
+        }
+
+        return matchesSearch && matchesPeriod;
+    });
+
+    displayPatientsList(filtered);
+}
+
+function displayPatientsList(patients) {
     const tableBody = document.getElementById('patientsTable');
 
     if (patients.length === 0) {
-        tableBody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 2rem; color: var(--text-secondary);">Aucun patient</td></tr>';
+        tableBody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 2rem; color: var(--text-secondary);">Aucun patient trouvé</td></tr>';
         return;
     }
 
@@ -131,7 +176,7 @@ function createPatientRow(patient) {
         <td>${nextAppointment}</td>
         <td>
             <div class="admin-table-actions">
-                <button class="admin-action-btn admin-action-view" onclick="viewPatientDetails(${patient.id})" title="Voir détails">
+                <button class="admin-action-btn admin-action-view" onclick="viewPatientDetails('${patient.id}')" title="Voir détails">
                     <svg viewBox="0 0 24 24" fill="none">
                         <path d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z" stroke="currentColor" stroke-width="2"/>
                         <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
@@ -150,61 +195,8 @@ function createPatientRow(patient) {
     return row;
 }
 
-function filterPatients() {
-    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-    const periodFilter = document.getElementById('filterPeriod').value;
-    const patients = getPatients(session.doctorId);
-
-    const today = new Date();
-    let startDate;
-
-    switch (periodFilter) {
-        case 'week':
-            startDate = new Date(today);
-            startDate.setDate(today.getDate() - 7);
-            break;
-        case 'month':
-            startDate = new Date(today.getFullYear(), today.getMonth(), 1);
-            break;
-        case 'year':
-            startDate = new Date(today.getFullYear(), 0, 1);
-            break;
-        default:
-            startDate = null;
-    }
-
-    const filtered = patients.filter(patient => {
-        const matchesSearch = patient.name.toLowerCase().includes(searchTerm) ||
-            patient.phone.includes(searchTerm) ||
-            (patient.email && patient.email.toLowerCase().includes(searchTerm));
-
-        let matchesPeriod = true;
-        if (startDate && patient.lastVisit) {
-            const visitDate = new Date(patient.lastVisit);
-            matchesPeriod = visitDate >= startDate;
-        } else if (startDate && !patient.lastVisit) {
-            matchesPeriod = false;
-        }
-
-        return matchesSearch && matchesPeriod;
-    });
-
-    const tableBody = document.getElementById('patientsTable');
-    if (filtered.length === 0) {
-        tableBody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 2rem; color: var(--text-secondary);">Aucun patient trouvé</td></tr>';
-        return;
-    }
-
-    tableBody.innerHTML = '';
-    filtered.forEach(patient => {
-        const row = createPatientRow(patient);
-        tableBody.appendChild(row);
-    });
-}
-
-function viewPatientDetails(patientId) {
-    const patients = getPatients(session.doctorId);
-    const patient = patients.find(p => p.id === patientId);
+async function viewPatientDetails(patientId) {
+    const patient = allPatients.find(p => p.id === patientId);
 
     if (!patient) return;
 
@@ -217,17 +209,17 @@ function viewPatientDetails(patientId) {
     document.getElementById('patientEmail').textContent = patient.email || 'Non renseigné';
 
     // Load consultation history
-    loadConsultationHistory(patient);
+    await loadConsultationHistory(patient);
 
     // Load upcoming appointments
-    loadUpcomingAppointments(patient);
+    await loadUpcomingAppointments(patient);
 
     // Show modal
     document.getElementById('patientModal').classList.add('active');
 }
 
-function loadConsultationHistory(patient) {
-    const appointments = getAppointments(session.doctorId);
+async function loadConsultationHistory(patient) {
+    const appointments = await getAppointments(session.doctorId);
     const today = new Date().toISOString().split('T')[0];
 
     // Get past confirmed appointments for this patient
@@ -278,8 +270,8 @@ function loadConsultationHistory(patient) {
     container.innerHTML = tableHTML;
 }
 
-function loadUpcomingAppointments(patient) {
-    const appointments = getAppointments(session.doctorId);
+async function loadUpcomingAppointments(patient) {
+    const appointments = await getAppointments(session.doctorId);
     const today = new Date().toISOString().split('T')[0];
 
     // Get future appointments for this patient
@@ -338,4 +330,4 @@ function closeModal() {
     currentPatient = null;
 }
 
-console.log('👥 Doctor patients initialized');
+console.log('👥 Doctor patients initialized (Supabase)');

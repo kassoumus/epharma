@@ -352,6 +352,169 @@ async function createReview(reviewData) {
     return { success: true, review: data[0] };
 }
 
+// ========================================
+// PATIENTS FUNCTIONS
+// ========================================
+
+async function getPatientsByDoctor(doctorId) {
+    const { data, error } = await supabase
+        .from('patients')
+        .select('*')
+        .eq('doctor_id', doctorId)
+        .order('last_visit', { ascending: false });
+
+    if (error) {
+        console.error('Error fetching patients:', error);
+        return [];
+    }
+
+    return data;
+}
+
+async function createPatient(patientData) {
+    const { data, error } = await supabase
+        .from('patients')
+        .insert([patientData])
+        .select();
+
+    if (error) {
+        console.error('Error creating patient:', error);
+        return { success: false, error: error.message };
+    }
+
+    return { success: true, patient: data[0] };
+}
+
+async function updatePatient(patientId, updates) {
+    const { data, error } = await supabase
+        .from('patients')
+        .update(updates)
+        .eq('id', patientId)
+        .select();
+
+    if (error) {
+        console.error('Error updating patient:', error);
+        return { success: false, error: error.message };
+    }
+
+    return { success: true, patient: data[0] };
+}
+
+async function deletePatient(patientId) {
+    const { error } = await supabase
+        .from('patients')
+        .delete()
+        .eq('id', patientId);
+
+    if (error) {
+        console.error('Error deleting patient:', error);
+        return { success: false, error: error.message };
+    }
+
+    return { success: true };
+}
+
+async function getPatientById(patientId) {
+    const { data, error } = await supabase
+        .from('patients')
+        .select('*')
+        .eq('id', patientId)
+        .single();
+
+    if (error) {
+        console.error('Error fetching patient:', error);
+        return null;
+    }
+
+    return data;
+}
+
+// ========================================
+// ENHANCED APPOINTMENTS FUNCTIONS
+// ========================================
+
+async function updateAppointment(appointmentId, updates) {
+    const { data, error } = await supabase
+        .from('appointments')
+        .update(updates)
+        .eq('id', appointmentId)
+        .select();
+
+    if (error) {
+        console.error('Error updating appointment:', error);
+        return { success: false, error: error.message };
+    }
+
+    return { success: true, appointment: data[0] };
+}
+
+async function getAppointmentsByDateRange(doctorId, startDate, endDate) {
+    const { data, error } = await supabase
+        .from('appointments')
+        .select('*')
+        .eq('doctor_id', doctorId)
+        .gte('appointment_date', startDate)
+        .lte('appointment_date', endDate)
+        .order('appointment_date', { ascending: true })
+        .order('appointment_time', { ascending: true });
+
+    if (error) {
+        console.error('Error fetching appointments by date range:', error);
+        return [];
+    }
+
+    return data;
+}
+
+// ========================================
+// DOCTOR PROFILE FUNCTIONS
+// ========================================
+
+async function getDoctorProfile(doctorId) {
+    const { data, error } = await supabase
+        .from('doctors')
+        .select('*')
+        .eq('id', doctorId)
+        .single();
+
+    if (error) {
+        console.error('Error fetching doctor profile:', error);
+        return null;
+    }
+
+    return data;
+}
+
+async function getDoctorProfileByUserId(userId) {
+    const { data, error } = await supabase
+        .from('doctors')
+        .select('*')
+        .eq('user_id', userId)
+        .single();
+
+    if (error) {
+        console.error('Error fetching doctor profile by user ID:', error);
+        return null;
+    }
+
+    return data;
+}
+
+async function updateDoctorProfile(doctorId, profileData) {
+    const { data, error } = await supabase
+        .from('doctors')
+        .update(profileData)
+        .eq('id', doctorId)
+        .select();
+
+    if (error) {
+        console.error('Error updating doctor profile:', error);
+        return { success: false, error: error.message };
+    }
+
+    return { success: true, profile: data[0] };
+}
+
 // Export functions
 window.supabaseAPI = {
     // Auth
@@ -371,12 +534,24 @@ window.supabaseAPI = {
     // Doctors
     getDoctors,
     getDoctorById,
+    getDoctorProfile,
+    getDoctorProfileByUserId,
+    updateDoctorProfile,
 
     // Appointments
     createAppointment,
     getAppointmentsByDoctor,
     updateAppointmentStatus,
+    updateAppointment,
     deleteAppointment,
+    getAppointmentsByDateRange,
+
+    // Patients
+    getPatientsByDoctor,
+    createPatient,
+    updatePatient,
+    deletePatient,
+    getPatientById,
 
     // Products
     getProductsByPharmacy,
