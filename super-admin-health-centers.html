@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Centres de Santé - Super Admin</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="admin-body">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar super-admin-sidebar">
+        <div class="admin-sidebar-header">
+            <div class="logo">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z"
+                        stroke="currentColor" stroke-width="2" />
+                    <path d="M12 8V16M8 12H16" stroke="currentColor" stroke-width="2" />
+                </svg>
+                <span class="logo-text">Epharma</span>
+            </div>
+        </div>
+
+        <div class="admin-pharmacy-info">
+            <div class="admin-pharmacy-name">Super Admin</div>
+            <div class="admin-pharmacy-email">Gestion Globale</div>
+        </div>
+
+        <nav class="admin-nav">
+            <a href="super-admin-dashboard.html" class="admin-nav-item">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="2" />
+                    <rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="2" />
+                    <rect x="14" y="14" width="7" height="7" stroke="currentColor" stroke-width="2" />
+                    <rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="2" />
+                </svg>
+                <span>Dashboard</span>
+            </a>
+            <a href="super-admin-users.html" class="admin-nav-item">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21"
+                        stroke="currentColor" stroke-width="2" />
+                    <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2" />
+                    <path d="M23 21V19C23 18.1 22.7 17.2 22.2 16.5" stroke="currentColor" stroke-width="2" />
+                    <path
+                        d="M16 3.13C16.8604 3.35031 17.623 3.85071 18.1676 4.55232C18.7122 5.25392 19.0078 6.11683 19.0078 7.005C19.0078 7.89318 18.7122 8.75608 18.1676 9.45769C17.623 10.1593 16.8604 10.6597 16 10.88"
+                        stroke="currentColor" stroke-width="2" />
+                </svg>
+                <span>Utilisateurs</span>
+            </a>
+            <a href="super-admin-pharmacies.html" class="admin-nav-item">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z"
+                        stroke="currentColor" stroke-width="2" />
+                    <path d="M12 8V16M8 12H16" stroke="currentColor" stroke-width="2" />
+                </svg>
+                <span>Pharmacies</span>
+            </a>
+            <a href="super-admin-doctors.html" class="admin-nav-item">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21"
+                        stroke="currentColor" stroke-width="2" />
+                    <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" />
+                </svg>
+                <span>Médecins</span>
+            </a>
+            <a href="super-admin-health-centers.html" class="admin-nav-item active">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z"
+                        stroke="currentColor" stroke-width="2" />
+                    <path d="M9 22V12H15V22" stroke="currentColor" stroke-width="2" />
+                </svg>
+                <span>Centres de Santé</span>
+            </a>
+        </nav>
+
+        <div class="admin-sidebar-footer">
+            <button class="admin-logout-btn" onclick="window.location.href='index.html'">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9M16 17L21 12M21 12L16 7M21 12H9"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+                <span>Déconnexion</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+        <!-- Header -->
+        <div class="admin-header">
+            <h1 class="admin-page-title">Gestion des Centres de Santé</h1>
+            <div class="admin-header-actions">
+                <button onclick="openCreateHealthCenterModal()" class="btn-primary">
+                    <svg viewBox="0 0 24 24" fill="none" width="20" height="20">
+                        <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>Ajouter un centre</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="admin-stats-grid">
+            <div class="admin-stat-card">
+                <div class="admin-stat-icon" style="background: linear-gradient(135deg, #3b82f620, #3b82f610);">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z"
+                            stroke="currentColor" stroke-width="2" />
+                    </svg>
+                </div>
+                <div class="admin-stat-content">
+                    <div class="admin-stat-label">Total Centres</div>
+                    <div class="admin-stat-value" id="totalHealthCenters">0</div>
+                </div>
+            </div>
+
+            <div class="admin-stat-card">
+                <div class="admin-stat-icon" style="background: linear-gradient(135deg, #10b98120, #10b98110);">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
+                            stroke="currentColor" stroke-width="2" />
+                    </svg>
+                </div>
+                <div class="admin-stat-content">
+                    <div class="admin-stat-label">Approuvés</div>
+                    <div class="admin-stat-value" id="approvedHealthCenters">0</div>
+                </div>
+            </div>
+
+            <div class="admin-stat-card">
+                <div class="admin-stat-icon" style="background: linear-gradient(135deg, #f59e0b20, #f59e0b10);">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
+                        <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                </div>
+                <div class="admin-stat-content">
+                    <div class="admin-stat-label">Actifs</div>
+                    <div class="admin-stat-value" id="activeHealthCenters">0</div>
+                </div>
+            </div>
+
+            <div class="admin-stat-card">
+                <div class="admin-stat-icon" style="background: linear-gradient(135deg, #ef444420, #ef444410);">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
+                            stroke="currentColor" stroke-width="2" />
+                    </svg>
+                </div>
+                <div class="admin-stat-content">
+                    <div class="admin-stat-label">Avec Urgences</div>
+                    <div class="admin-stat-value" id="emergencyHealthCenters">0</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="admin-section">
+            <div class="filters-container">
+                <div class="search-box">
+                    <svg viewBox="0 0 24 24" fill="none" width="20" height="20">
+                        <path
+                            d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
+                            stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <input type="text" id="searchHealthCenters" placeholder="Rechercher par nom, ville ou type..."
+                        class="search-input">
+                </div>
+
+                <select id="filterType" class="filter-select">
+                    <option value="all">Tous les types</option>
+                    <option value="hospital">Hôpital</option>
+                    <option value="clinic">Clinique</option>
+                    <option value="community_health_center">Centre Communautaire</option>
+                    <option value="specialized_center">Centre Spécialisé</option>
+                    <option value="maternity">Maternité</option>
+                    <option value="dispensary">Dispensaire</option>
+                </select>
+
+                <select id="filterCity" class="filter-select">
+                    <option value="all">Toutes les villes</option>
+                    <option value="Niamey">Niamey</option>
+                    <option value="Maradi">Maradi</option>
+                    <option value="Zinder">Zinder</option>
+                    <option value="Tahoua">Tahoua</option>
+                </select>
+
+                <select id="filterStatus" class="filter-select">
+                    <option value="all">Tous les statuts</option>
+                    <option value="active">Actifs</option>
+                    <option value="inactive">Inactifs</option>
+                </select>
+
+                <select id="filterApproved" class="filter-select">
+                    <option value="all">Tous</option>
+                    <option value="approved">Approuvés</option>
+                    <option value="not_approved">Non approuvés</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Health Centers Table -->
+        <div class="admin-section">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <span id="resultsCount" style="color: #6B7280; font-size: 14px;">Chargement...</span>
+            </div>
+
+            <div class="admin-table-container">
+                <table class="admin-table" id="healthCentersTable">
+                    <thead>
+                        <tr>
+                            <th>Centre</th>
+                            <th>Type</th>
+                            <th>Ville</th>
+                            <th>Capacité</th>
+                            <th>Équipements</th>
+                            <th>Gérant</th>
+                            <th>Statut</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="healthCentersTableBody">
+                        <tr>
+                            <td colspan="8" style="text-align: center; padding: 40px;">
+                                Chargement des centres de santé...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div id="pagination" class="pagination-container"></div>
+        </div>
+    </main>
+
+    <!-- Modal Create Health Center -->
+    <div id="createHealthCenterModal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2>Créer un Centre de Santé</h2>
+                <button onclick="closeCreateHealthCenterModal()" class="modal-close">&times;</button>
+            </div>
+            <form id="createHealthCenterForm">
+                <div class="modal-body">
+                    <!-- Manager Selection -->
+                    <div class="form-section">
+                        <h3>1. Gérant</h3>
+                        <div class="form-group">
+                            <label>Type d'utilisateur</label>
+                            <select id="managerSelectionType" class="form-input" onchange="toggleManagerSelection()">
+                                <option value="existing">Sélectionner un utilisateur existant</option>
+                                <option value="new">Créer un nouvel utilisateur</option>
+                            </select>
+                        </div>
+
+                        <div id="existingManagerSection">
+                            <div class="form-group">
+                                <label>Utilisateur</label>
+                                <select id="existingManagerId" class="form-input">
+                                    <option value="">Chargement...</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div id="newManagerSection" style="display: none;">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" id="newManagerEmail" class="form-input"
+                                    placeholder="gerant@example.com">
+                            </div>
+                            <div class="form-group">
+                                <label>Mot de passe</label>
+                                <input type="password" id="newManagerPassword" class="form-input"
+                                    placeholder="Minimum 8 caractères">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Basic Info -->
+                    <div class="form-section">
+                        <h3>2. Informations de Base</h3>
+                        <div class="form-group">
+                            <label>Nom du Centre *</label>
+                            <input type="text" id="centerName" class="form-input" required
+                                placeholder="Hôpital National de Niamey">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Type *</label>
+                                <select id="centerType" class="form-input" required>
+                                    <option value="">Sélectionner un type</option>
+                                    <option value="hospital">Hôpital</option>
+                                    <option value="clinic">Clinique</option>
+                                    <option value="community_health_center">Centre de Santé Communautaire</option>
+                                    <option value="specialized_center">Centre Spécialisé</option>
+                                    <option value="maternity">Maternité</option>
+                                    <option value="dispensary">Dispensaire</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Ville *</label>
+                                <select id="centerCity" class="form-input" required>
+                                    <option value="Niamey">Niamey</option>
+                                    <option value="Maradi">Maradi</option>
+                                    <option value="Zinder">Zinder</option>
+                                    <option value="Tahoua">Tahoua</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Adresse *</label>
+                            <input type="text" id="centerAddress" class="form-input" required
+                                placeholder="Avenue de la République">
+                        </div>
+                    </div>
+
+                    <!-- Contact Info -->
+                    <div class="form-section">
+                        <h3>3. Contact</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Téléphone *</label>
+                                <input type="tel" id="centerPhone" class="form-input" required
+                                    placeholder="+227 20 12 34 56">
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" id="centerEmail" class="form-input"
+                                    placeholder="contact@hopital.com">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Equipment -->
+                    <div class="form-section">
+                        <h3>4. Équipements</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="centerEmergency">
+                                    <span>🚑 Service d'urgences</span>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="centerAmbulance">
+                                    <span>🚑 Ambulance</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="centerLaboratory">
+                                    <span>🔬 Laboratoire</span>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="centerPharmacy">
+                                    <span>💊 Pharmacie</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="centerRadiology">
+                                <span>📡 Radiologie</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Capacity -->
+                    <div class="form-section">
+                        <h3>5. Capacité</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Nombre de lits</label>
+                                <input type="number" id="centerBedCapacity" class="form-input" min="0" value="0"
+                                    placeholder="50">
+                            </div>
+                            <div class="form-group">
+                                <label>Lits soins intensifs</label>
+                                <input type="number" id="centerIcuBeds" class="form-input" min="0" value="0"
+                                    placeholder="10">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" onclick="closeCreateHealthCenterModal()"
+                        class="btn-secondary">Annuler</button>
+                    <button type="submit" class="btn-primary">Créer le centre</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Edit Health Center -->
+    <div id="editHealthCenterModal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2>Modifier le Centre de Santé</h2>
+                <button onclick="closeEditHealthCenterModal()" class="modal-close">&times;</button>
+            </div>
+            <form id="editHealthCenterForm">
+                <input type="hidden" id="editCenterId">
+                <div class="modal-body">
+                    <div class="form-section">
+                        <h3>Informations de Base</h3>
+                        <div class="form-group">
+                            <label>Nom du Centre *</label>
+                            <input type="text" id="editCenterName" class="form-input" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Type *</label>
+                                <select id="editCenterType" class="form-input" required>
+                                    <option value="hospital">Hôpital</option>
+                                    <option value="clinic">Clinique</option>
+                                    <option value="community_health_center">Centre de Santé Communautaire</option>
+                                    <option value="specialized_center">Centre Spécialisé</option>
+                                    <option value="maternity">Maternité</option>
+                                    <option value="dispensary">Dispensaire</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Ville *</label>
+                                <select id="editCenterCity" class="form-input" required>
+                                    <option value="Niamey">Niamey</option>
+                                    <option value="Maradi">Maradi</option>
+                                    <option value="Zinder">Zinder</option>
+                                    <option value="Tahoua">Tahoua</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Adresse *</label>
+                            <input type="text" id="editCenterAddress" class="form-input" required>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Contact</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Téléphone *</label>
+                                <input type="tel" id="editCenterPhone" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" id="editCenterEmail" class="form-input">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Équipements</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="editCenterEmergency">
+                                    <span>🚑 Service d'urgences</span>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="editCenterAmbulance">
+                                    <span>🚑 Ambulance</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="editCenterLaboratory">
+                                    <span>🔬 Laboratoire</span>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="editCenterPharmacy">
+                                    <span>💊 Pharmacie</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="editCenterRadiology">
+                                <span>📡 Radiologie</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Capacité</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Nombre de lits</label>
+                                <input type="number" id="editCenterBedCapacity" class="form-input" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label>Lits soins intensifs</label>
+                                <input type="number" id="editCenterIcuBeds" class="form-input" min="0">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" onclick="closeEditHealthCenterModal()" class="btn-secondary">Annuler</button>
+                    <button type="submit" class="btn-primary">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Delete Health Center -->
+    <div id="deleteHealthCenterModal" class="modal">
+        <div class="modal-content modal-danger">
+            <div class="modal-header">
+                <h2>Confirmer la suppression</h2>
+                <button onclick="closeDeleteHealthCenterModal()" class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Êtes-vous sûr de vouloir supprimer le centre <strong id="deleteHealthCenterName"></strong> ?</p>
+                <p style="color: #EF4444; font-size: 14px; margin-top: 12px;">
+                    ⚠️ Cette action est irréversible et peut affecter les médecins liés à ce centre.
+                </p>
+            </div>
+            <div class="modal-actions">
+                <button onclick="closeDeleteHealthCenterModal()" class="btn-secondary">Annuler</button>
+                <button id="confirmDeleteHealthCenterBtn" class="btn-danger">Supprimer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-client.js"></script>
+    <script src="super-admin-health-centers.js"></script>
+
+    <style>
+        /* Super Admin Theme */
+        .super-admin-sidebar {
+            background: linear-gradient(180deg, #8B5CF6 0%, #7C3AED 100%) !important;
+        }
+
+        /* Filters */
+        .filters-container {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 300px;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-box svg {
+            position: absolute;
+            left: 16px;
+            color: #9CA3AF;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px 12px 48px;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .filter-select {
+            padding: 12px 16px;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            font-size: 14px;
+            min-width: 180px;
+        }
+
+        /* Equipment Badges */
+        .equipment-badge {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            background: #F3F4F6;
+            color: #374151;
+            margin-right: 4px;
+            display: inline-block;
+            margin-bottom: 4px;
+        }
+
+        /* Status Badges */
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            display: inline-block;
+            margin-right: 4px;
+        }
+
+        .status-badge.approved {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+
+        .status-badge.not-approved {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .status-badge.active {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+
+        .status-badge.inactive {
+            background: #F3F4F6;
+            color: #6B7280;
+        }
+
+        /* Form Sections */
+        .form-section {
+            margin-bottom: 24px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #E5E7EB;
+        }
+
+        .form-section:last-child {
+            border-bottom: none;
+        }
+
+        .form-section h3 {
+            margin: 0 0 16px 0;
+            font-size: 16px;
+            color: #111827;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .modal-large {
+            max-width: 700px;
+        }
+
+        /* Type Badge */
+        .type-badge {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            background: #EEF2FF;
+            color: #4F46E5;
+            font-weight: 500;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</body>
+
+</html>

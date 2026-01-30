@@ -134,9 +134,28 @@ async function getHealthCenters(filters = {}) {
         query = query.eq('type', filters.type);
     }
 
+    if (filters.city) {
+        query = query.eq('city', filters.city);
+    }
+
     if (filters.has_emergency) {
         query = query.eq('has_emergency', true);
     }
+
+    if (filters.is_approved !== undefined) {
+        query = query.eq('is_approved', filters.is_approved);
+    }
+
+    if (filters.is_active !== undefined) {
+        query = query.eq('is_active', filters.is_active);
+    }
+
+    // For public pages, only show approved and active centers
+    if (filters.publicOnly) {
+        query = query.eq('is_approved', true).eq('is_active', true);
+    }
+
+    query = query.order('created_at', { ascending: false });
 
     const { data, error } = await query;
 
@@ -147,6 +166,109 @@ async function getHealthCenters(filters = {}) {
 
     return data;
 }
+
+async function getHealthCenterById(id) {
+    const { data, error } = await supabase
+        .from('health_centers')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+    if (error) {
+        console.error('Error fetching health center:', error);
+        return null;
+    }
+
+    return data;
+}
+
+async function createHealthCenter(centerData) {
+    const { data, error } = await supabase
+        .from('health_centers')
+        .insert([centerData])
+        .select();
+
+    if (error) {
+        console.error('Error creating health center:', error);
+        return { success: false, error: error.message };
+    }
+
+    return { success: true, center: data[0] };
+}
+
+async function updateHealthCenter(centerId, updates) {
+    const { data, error } = await supabase
+        .from('health_centers')
+        .update(updates)
+        .eq('id', centerId)
+        .select();
+
+    if (error) {
+        console.error('Error updating health center:', error);
+        return { success: false, error: error.message };
+    }
+
+    return { success: true, center: data[0] };
+}
+
+async function deleteHealthCenter(centerId) {
+    const { error } = await supabase
+        .from('health_centers')
+        .delete()
+        .eq('id', centerId);
+
+    if (error) {
+        console.error('Error deleting health center:', error);
+        return { success: false, error: error.message };
+    }
+
+    return { success: true };
+}
+
+async function approveHealthCenter(centerId, adminId) {
+    const { data, error } = await supabase.rpc('approve_health_center', {
+        p_health_center_id: centerId,
+        p_admin_id: adminId
+    });
+
+    if (error) {
+        console.error('Error approving health center:', error);
+        return { success: false, error: error.message };
+    }
+
+    return { success: true, data };
+}
+
+async function toggleHealthCenterStatus(centerId, isActive, adminId) {
+    const { data, error } = await supabase.rpc('toggle_health_center_status', {
+        p_health_center_id: centerId,
+        p_is_active: isActive,
+        p_admin_id: adminId
+    });
+
+    if (error) {
+        console.error('Error toggling health center status:', error);
+        return { success: false, error: error.message };
+    }
+
+    return { success: true, data };
+}
+
+async function changeHealthCenterManager(centerId, newManagerId, adminId) {
+    const { data, error } = await supabase.rpc('change_health_center_manager', {
+        p_health_center_id: centerId,
+        p_new_manager_id: newManagerId,
+        p_admin_id: adminId
+    });
+
+    if (error) {
+        console.error('Error changing health center manager:', error);
+        return { success: false, error: error.message };
+    }
+
+    return { success: true, data };
+}
+
 
 // ========================================
 // DOCTORS FUNCTIONS
@@ -530,6 +652,13 @@ window.supabaseAPI = {
 
     // Health Centers
     getHealthCenters,
+    getHealthCenterById,
+    createHealthCenter,
+    updateHealthCenter,
+    deleteHealthCenter,
+    approveHealthCenter,
+    toggleHealthCenterStatus,
+    changeHealthCenterManager,
 
     // Doctors
     getDoctors,

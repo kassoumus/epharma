@@ -3,193 +3,129 @@
 // ========================================
 
 // === HEALTH CENTERS DATA - NIAMEY, NIGER ===
-const healthCenters = [
-    {
-        id: 1,
-        name: "Hôpital National de Niamey",
-        type: "hospital",
-        category: "public",
-        address: "Avenue de l'Indépendance, Niamey",
-        lat: 13.5137,
-        lng: 2.1098,
-        distance: 0.3,
-        phone: "(+227) 20 72 22 53",
-        email: "honani@intnet.ne",
-        services: ["Urgences 24/7", "Chirurgie", "Cardiologie", "Maternité", "Radiologie"],
-        specialties: ["Cardiologie", "Chirurgie générale", "Oncologie", "Traumatologie"],
-        hasEmergency: true,
-        hasParking: true,
-        rating: 4.2,
-        reviewsCount: 523
-    },
-    {
-        id: 2,
-        name: "Hôpital National de Lamordé (CHU)",
-        type: "hospital",
-        category: "public",
-        address: "Rue de la Libération, Niamey",
-        lat: 13.5089,
-        lng: 2.1234,
-        distance: 0.8,
-        phone: "(+227) 20 73 47 27",
-        email: "hopnala@intnet.ne",
-        services: ["Urgences 24/7", "Maternité", "Pédiatrie", "Néonatologie"],
-        specialties: ["Obstétrique", "Gynécologie", "Pédiatrie", "Néonatologie"],
-        hasEmergency: true,
-        hasParking: true,
-        rating: 4.3,
-        reviewsCount: 412
-    },
-    {
-        id: 3,
-        name: "Hôpital Général de Référence",
-        type: "hospital",
-        category: "public",
-        address: "Quartier Tchangarey, Niamey",
-        lat: 13.5245,
-        lng: 2.0985,
-        distance: 1.2,
-        phone: "(+227) 81 32 32 96",
-        email: "contact@hgr-niamey.ne",
-        services: ["Urgences 24/7", "Chirurgie", "Réanimation", "Laboratoire"],
-        specialties: ["Urgences", "Réanimation", "Chirurgie"],
-        hasEmergency: true,
-        hasParking: true,
-        rating: 4.1,
-        reviewsCount: 389
-    },
-    {
-        id: 4,
-        name: "Polyclinique Iran",
-        type: "clinic",
-        category: "private",
-        address: "Rue YN-27, Niamey",
-        lat: 13.5198,
-        lng: 2.1156,
-        distance: 0.6,
-        phone: "(+227) 20 72 50 84",
-        email: "contact@polyclinique-iran.ne",
-        services: ["Consultations", "Chirurgie", "Imagerie médicale", "Analyses"],
-        specialties: ["Chirurgie générale", "Radiologie", "Médecine interne"],
-        hasEmergency: false,
-        hasParking: true,
-        rating: 4.5,
-        reviewsCount: 267
-    },
-    {
-        id: 5,
-        name: "Polyclinique Lahiya",
-        type: "clinic",
-        category: "private",
-        address: "Niamey",
-        lat: 13.5067,
-        lng: 2.1189,
-        distance: 0.9,
-        phone: "(+227) 20 74 09 68",
-        email: "lahiya@intnet.ne",
-        services: ["Consultations", "Analyses", "Échographie", "Kinésithérapie"],
-        specialties: ["Médecine générale", "Échographie", "Kinésithérapie"],
-        hasEmergency: false,
-        hasParking: true,
-        rating: 4.4,
-        reviewsCount: 198
-    },
-    {
-        id: 6,
-        name: "Clinique Gamkalley",
-        type: "clinic",
-        category: "private",
-        address: "Rue Hali Koda, Niamey",
-        lat: 13.5118,
-        lng: 2.1436,
-        distance: 1.5,
-        phone: "(+227) 20 73 20 33",
-        email: "gamkalleyco@gmail.com",
-        services: ["Urgences", "Consultations", "Hospitalisation", "Laboratoire"],
-        specialties: ["Médecine générale", "Chirurgie", "Urgences"],
-        hasEmergency: true,
-        hasParking: true,
-        rating: 4.6,
-        reviewsCount: 312
-    },
-    {
-        id: 7,
-        name: "Clinique Jean Kaba",
-        type: "clinic",
-        category: "private",
-        address: "Rue du Président Henrich Lubke, Gaweye, Niamey",
-        lat: 13.5334,
-        lng: 2.0976,
-        distance: 1.8,
-        phone: "(+227) 20 73 21 08",
-        email: "contact@clinique-kaba.com",
-        services: ["Consultations", "Chirurgie", "Laboratoire", "Radiologie"],
-        specialties: ["Chirurgie", "Médecine générale", "Radiologie"],
-        hasEmergency: false,
-        hasParking: true,
-        rating: 4.7,
-        reviewsCount: 245
-    },
-    {
-        id: 8,
-        name: "Clinique Bani Koubey",
-        type: "medical-center",
-        category: "private",
-        address: "Boulevard Tanimoune, Niamey",
-        lat: 13.5156,
-        lng: 2.1089,
-        distance: 0.5,
-        phone: "(+227) 20 32 05 16",
-        email: "contact@banikoubey.com",
-        services: ["Diabétologie", "Pédiatrie", "Consultations", "Analyses"],
-        specialties: ["Diabétologie", "Pédiatrie", "Médecine générale"],
-        hasEmergency: false,
-        hasParking: false,
-        rating: 4.5,
-        reviewsCount: 187
-    },
-    {
-        id: 9,
-        name: "Clinique du Plateau",
-        type: "clinic",
-        category: "private",
-        address: "Quartier Plateau, Niamey",
-        lat: 13.5289,
-        lng: 2.1123,
-        distance: 1.0,
-        phone: "(+227) 20 75 34 72",
-        email: "contact@clinique-plateau.ne",
-        services: ["Consultations", "Chirurgie", "Maternité", "Imagerie"],
-        specialties: ["Obstétrique", "Chirurgie", "Médecine générale"],
-        hasEmergency: false,
-        hasParking: true,
-        rating: 4.6,
-        reviewsCount: 223
-    },
-    {
-        id: 10,
-        name: "Centre Médical Al-Fayçal",
-        type: "medical-center",
-        category: "private",
-        address: "Niamey",
-        lat: 13.5178,
-        lng: 2.1267,
-        distance: 0.7,
-        phone: "(+227) 20 73 44 20",
-        email: "contact@alfaycal.ne",
-        services: ["Consultations", "Analyses", "Radiologie", "Échographie"],
-        specialties: ["Médecine générale", "Radiologie", "Analyses médicales"],
-        hasEmergency: false,
-        hasParking: false,
-        rating: 4.3,
-        reviewsCount: 156
-    }
-];
+let healthCenters = [];
+let isLoading = false;
 
 // === MAP INITIALIZATION ===
 let map;
 let markers = [];
 let currentFilter = 'all';
+
+// === LOAD HEALTH CENTERS FROM SUPABASE ===
+async function loadHealthCenters() {
+    if (isLoading) return;
+
+    isLoading = true;
+    showLoadingState(true);
+
+    try {
+        const data = await window.supabaseAPI.getHealthCenters({
+            publicOnly: true // Only show approved and active centers
+        });
+
+        // Map Supabase data to UI format
+        healthCenters = data.map((center, index) => ({
+            id: center.id,
+            name: center.name,
+            type: mapCenterType(center.type),
+            category: center.type === 'hospital' ? 'public' : 'private',
+            address: center.address,
+            lat: parseFloat(center.latitude) || 13.5137,
+            lng: parseFloat(center.longitude) || 2.1098,
+            distance: calculateDistance(center.latitude, center.longitude), // Calculate from default location
+            phone: center.phone,
+            email: center.email || '',
+            services: Array.isArray(center.services) ? center.services : [],
+            specialties: Array.isArray(center.specialties) ? center.specialties : [],
+            hasEmergency: center.has_emergency || false,
+            hasParking: true, // Default value
+            rating: 4.0 + (Math.random() * 0.8), // Mock rating for now
+            reviewsCount: Math.floor(100 + Math.random() * 400)
+        }));
+
+        console.log(`✅ ${healthCenters.length} centres de santé chargés depuis Supabase`);
+
+        // Initialize map and render centers
+        if (!map) {
+            initMap();
+        }
+        renderHealthCenters();
+
+    } catch (error) {
+        console.error('❌ Erreur chargement centres:', error);
+        showErrorMessage('Impossible de charger les centres de santé. Veuillez réessayer.');
+    } finally {
+        isLoading = false;
+        showLoadingState(false);
+    }
+}
+
+// Helper function to map center type from schema to UI
+function mapCenterType(schemaType) {
+    const typeMapping = {
+        'hospital': 'hospital',
+        'clinic': 'clinic',
+        'community_health_center': 'clinic',
+        'specialized_center': 'medical-center',
+        'maternity': 'clinic',
+        'dispensary': 'clinic'
+    };
+    return typeMapping[schemaType] || 'clinic';
+}
+
+// Helper function to calculate distance (rough estimation)
+function calculateDistance(lat, lng) {
+    if (!lat || !lng) return 0;
+
+    // Default center: Niamey (13.5137, 2.1098)
+    const defaultLat = 13.5137;
+    const defaultLng = 2.1098;
+
+    const R = 6371; // Earth's radius in km
+    const dLat = (lat - defaultLat) * Math.PI / 180;
+    const dLng = (lng - defaultLng) * Math.PI / 180;
+
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(defaultLat * Math.PI / 180) * Math.cos(lat * Math.PI / 180) *
+        Math.sin(dLng / 2) * Math.sin(dLng / 2);
+
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = R * c;
+
+    return Math.round(distance * 10) / 10; // Round to 1 decimal
+}
+
+// Show/hide loading state
+function showLoadingState(show) {
+    const container = document.getElementById('healthCentersList');
+    if (!container) return;
+
+    if (show) {
+        container.innerHTML = `
+            <div style="text-align: center; padding: 60px 20px; color: #6B7280;">
+                <div style="font-size: 48px; margin-bottom: 16px;">⏳</div>
+                <div style="font-size: 18px; font-weight: 500;">Chargement des centres de santé...</div>
+            </div>
+        `;
+    }
+}
+
+// Show error message
+function showErrorMessage(message) {
+    const container = document.getElementById('healthCentersList');
+    if (!container) return;
+
+    container.innerHTML = `
+        <div style="text-align: center; padding: 60px 20px; color: #EF4444;">
+            <div style="font-size: 48px; margin-bottom: 16px;">⚠️</div>
+            <div style="font-size: 18px; font-weight: 500; margin-bottom: 12px;">${message}</div>
+            <button onclick="loadHealthCenters()" style="padding: 12px 24px; background: #3B82F6; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px;">
+                Réessayer
+            </button>
+        </div>
+    `;
+}
+
 
 // Initialize map
 function initMap() {
@@ -311,8 +247,8 @@ function filterHealthCenters() {
 
 // === EVENT LISTENERS ===
 document.addEventListener('DOMContentLoaded', () => {
-    initMap();
-    renderHealthCenters();
+    // Load health centers from Supabase
+    loadHealthCenters();
 
     // Filter buttons
     document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -340,4 +276,5 @@ function highlightHealthCenter(id) {
     }
 }
 
-console.log('🏥 Health Centers page initialized - NIAMEY, NIGER');
+console.log('🏥 Health Centers page initialized with Supabase - NIAMEY, NIGER');
+
