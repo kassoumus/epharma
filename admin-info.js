@@ -1,31 +1,20 @@
 // ========================================
-// PHARMACY ADMIN - INFORMATION PAGE
+// PHARMACY ADMIN - INFORMATION PAGE - SUPABASE INTEGRATION
 // ========================================
 
 const DAYS_OF_WEEK = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+let currentPharmacyId = null;
 
 // === INITIALIZATION ===
-document.addEventListener('DOMContentLoaded', () => {
-    // Check authentication (optional - allow page to work for testing)
-    try {
-        if (typeof requirePharmacyAuth === 'function') {
-            const session = requirePharmacyAuth();
-            if (!session) {
-                console.warn('No pharmacy session found, using demo mode');
-            }
-        }
-    } catch (error) {
-        console.warn('Authentication check failed, using demo mode:', error);
-    }
-
+document.addEventListener('DOMContentLoaded', async () => {
     // Setup tabs
     setupTabs();
 
     // Generate hours form
     generateHoursForm();
 
-    // Load pharmacy data
-    loadPharmacyInfo();
+    // Load pharmacy data from Supabase
+    await loadPharmacyInfo();
 
     // Setup event listeners
     setupEventListeners();
@@ -107,66 +96,121 @@ function setupEventListeners() {
     }
 
     // Logout
-    document.getElementById('logoutBtn').addEventListener('click', () => {
-        if (typeof logout === 'function') {
-            logout();
-        }
+    document.getElementById('logoutBtn')?.addEventListener('click', async () => {
+        await window.supabaseAPI.signOut();
         window.location.href = 'admin-login.html';
     });
 }
 
-// === LOAD PHARMACY INFO ===
+// === LOAD PHARMACY INFO FROM SUPABASE ===
 async function loadPharmacyInfo() {
     try {
-        const pharmacyId = getPharmacyId();
+        // Get current user
+        const user = await window.supabaseAPI.getCurrentUser();
+        if (!user) {
+            window.location.href = 'admin-login.html';
+            return;
+        }
 
-        // In production, fetch from Supabase
-        // const { data, error } = await supabase
-        //     .from('pharmacies')
-        //     .select('*')
-        //     .eq('id', pharmacyId)
-        //     .single();
+        // Get pharmacy for current user
+        const pharmacy = await window.supabaseAPI.getPharmacyByUserId(user.id);
+        if (!pharmacy) {
+            showToast('Aucune pharmacie associée à cet utilisateur', 'error');
+            return;
+        }
 
-        // Mock data for now
-        const data = {
-            name: 'Pharmacie de la République',
-            registration_number: 'PH-NIA-2024-001',
-            address: '45 Avenue de la République',
-            city: 'Niamey',
-            postal_code: '',
-            description: 'Pharmacie moderne au cœur de Niamey, offrant un service de qualité et des conseils personnalisés.',
-            latitude: 13.5137,
-            longitude: 2.1098,
-            phone: '(+227) 20 35 01 99',
-            email: 'contact@pharmacie-republique.ne',
-            website: 'https://www.pharmacie-republique.ne',
-            facebook: '@pharmacierepublique',
-            hours: {
-                0: { open: true, open_time: '08:00', close_time: '20:00' },
-                1: { open: true, open_time: '08:00', close_time: '20:00' },
-                2: { open: true, open_time: '08:00', close_time: '20:00' },
-                3: { open: true, open_time: '08:00', close_time: '20:00' },
-                4: { open: true, open_time: '08:00', close_time: '20:00' },
-                5: { open: true, open_time: '09:00', close_time: '19:00' },
-                6: { open: false, open_time: '', close_time: '' }
-            },
-            night_shift: true,
-            special_notes: 'Garde le dimanche sur rendez-vous',
-            services: {
-                night_shift: true,
-                delivery: true,
-                parking: true,
-                credit_card: true,
-                tiers_payant: true,
-                covid_tests: false
-            }
-        };
+        currentPharmacyId = pharmacy.id;
+
+        // Map Supabase data to UI format
+        const data = mapSupabaseToUI(pharmacy);
 
         populateForms(data);
+        console.log('✅ Pharmacy info loaded from Supabase');
     } catch (error) {
         console.error('Error loading pharmacy info:', error);
         showToast('Erreur lors du chargement des informations', 'error');
     }
+}
+
+// === MAP SUPABASE DATA TO UI FORMAT ===
+function mapSupabaseToUI(pharmacy) {
+    // Parse hours from JSONB if exists
+    let hours = {};
+    if (pharmacy.opening_hours) {
+        try {
+            const hoursData = typeof pharmacy.opening_hours === 'string'
+                ? JSON.parse(pharmacy.opening_hours)
+                : pharmacy.opening_hours;
+
+            // Convert to UI format
+            Object.keys(hoursData).forEach(day => {
+                const dayNum = parseInt(day);
+                hours[dayNum] = {
+                    open: hoursData[day].open || false,
+                    open_time: hoursData[day].open_time || '08:00',
+                    close_time: hoursData[day].close_time || '19:00'
+                };
+            });
+        } catch (e) {
+            console.warn('Error parsing hours:', e);
+        }
+    }
+
+    // Default hours if none exist
+    if (Object.keys(hours).length === 0) {
+        for (let i = 0; i < 7; i++) {
+            hours[i] = {
+                open: i < 6, // Mon-Sat open by default
+                open_time: '08:00',
+                close_time: '19:00'
+            };
+        }
+    }
+
+    // Parse services from JSONB array to object
+    let services = {
+        night_shift: false,
+        delivery: false,
+        parking: pharmacy.has_parking || false,
+        credit_card: false,
+        tiers_payant: false,
+        covid_tests: false
+    };
+
+    if (pharmacy.services) {
+        try {
+            const servicesArray = typeof pharmacy.services === 'string'
+                ? JSON.parse(pharmacy.services)
+                : pharmacy.services;
+
+            if (Array.isArray(servicesArray)) {
+                servicesArray.forEach(service => {
+                    services[service] = true;
+                });
+            }
+        } catch (e) {
+            console.warn('Error parsing services:', e);
+        }
+    }
+
+    return {
+        name: pharmacy.name || '',
+        registration_number: pharmacy.registration_number || '',
+        address: pharmacy.address || '',
+        city: pharmacy.city || '',
+        postal_code: pharmacy.postal_code || '',
+        description: pharmacy.description || '',
+        latitude: pharmacy.latitude || null,
+        longitude: pharmacy.longitude || null,
+        phone: pharmacy.phone || '',
+        email: pharmacy.email || '',
+        website: pharmacy.website || '',
+        facebook: pharmacy.facebook || '',
+        hours: hours,
+        night_shift: pharmacy.is_open_24_7 || false,
+        special_notes: pharmacy.special_notes || '',
+        services: services
+    };
 }
 
 // === POPULATE FORMS ===
@@ -225,27 +269,7 @@ function populateForms(data) {
 
 // === COLLECT FORM DATA ===
 function collectFormData() {
-    // General info
-    const generalData = {
-        name: document.getElementById('pharmacyNameInput').value,
-        registration_number: document.getElementById('registrationNumber').value,
-        address: document.getElementById('address').value,
-        city: document.getElementById('city').value,
-        postal_code: document.getElementById('postalCode').value,
-        description: document.getElementById('description').value,
-        latitude: parseFloat(document.getElementById('latitude').value) || null,
-        longitude: parseFloat(document.getElementById('longitude').value) || null
-    };
-
-    // Contact info
-    const contactData = {
-        phone: document.getElementById('phone').value,
-        email: document.getElementById('email').value,
-        website: document.getElementById('website').value,
-        facebook: document.getElementById('facebook').value
-    };
-
-    // Hours
+    // Hours in UI format
     const hours = {};
     DAYS_OF_WEEK.forEach((day, index) => {
         const checkbox = document.getElementById(`open_${index}`);
@@ -259,29 +283,33 @@ function collectFormData() {
         };
     });
 
-    const hoursData = {
-        hours: hours,
-        night_shift: document.getElementById('nightShift').checked,
-        special_notes: document.getElementById('specialNotes').value
-    };
-
-    // Services
-    const servicesData = {
-        services: {
-            night_shift: document.getElementById('serviceNightShift').checked,
-            delivery: document.getElementById('serviceDelivery').checked,
-            parking: document.getElementById('serviceParking').checked,
-            credit_card: document.getElementById('serviceCreditCard').checked,
-            tiers_payant: document.getElementById('serviceTiersPayant').checked,
-            covid_tests: document.getElementById('serviceCovidTests').checked
-        }
-    };
+    // Services as array
+    const services = [];
+    if (document.getElementById('serviceNightShift').checked) services.push('night_shift');
+    if (document.getElementById('serviceDelivery').checked) services.push('delivery');
+    if (document.getElementById('serviceParking').checked) services.push('parking');
+    if (document.getElementById('serviceCreditCard').checked) services.push('credit_card');
+    if (document.getElementById('serviceTiersPayant').checked) services.push('tiers_payant');
+    if (document.getElementById('serviceCovidTests').checked) services.push('covid_tests');
 
     return {
-        ...generalData,
-        ...contactData,
-        ...hoursData,
-        ...servicesData
+        name: document.getElementById('pharmacyNameInput').value,
+        registration_number: document.getElementById('registrationNumber').value,
+        address: document.getElementById('address').value,
+        city: document.getElementById('city').value,
+        postal_code: document.getElementById('postalCode').value || null,
+        description: document.getElementById('description').value || null,
+        latitude: parseFloat(document.getElementById('latitude').value) || null,
+        longitude: parseFloat(document.getElementById('longitude').value) || null,
+        phone: document.getElementById('phone').value,
+        email: document.getElementById('email').value,
+        website: document.getElementById('website').value || null,
+        facebook: document.getElementById('facebook').value || null,
+        opening_hours: hours, // This will be stored as JSONB
+        is_open_24_7: document.getElementById('nightShift').checked,
+        special_notes: document.getElementById('specialNotes').value || null,
+        services: services, // This will be stored as JSONB array
+        has_parking: services.includes('parking')
     };
 }
 
@@ -312,9 +340,14 @@ function validateData(data) {
     return true;
 }
 
-// === SAVE ALL INFO ===
+// === SAVE ALL INFO TO SUPABASE ===
 async function saveAllInfo() {
     try {
+        if (!currentPharmacyId) {
+            showToast('Aucune pharmacie sélectionnée', 'error');
+            return;
+        }
+
         // Collect data
         const data = collectFormData();
 
@@ -329,15 +362,12 @@ async function saveAllInfo() {
         saveBtn.disabled = true;
         saveBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" style="animation: spin 1s linear infinite;"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" opacity="0.25"/><path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" stroke-width="4"/></svg> Enregistrement...';
 
-        // In production, save to Supabase
-        // const pharmacyId = getPharmacyId();
-        // const { error } = await supabase
-        //     .from('pharmacies')
-        //     .update(data)
-        //     .eq('id', pharmacyId);
+        // Save to Supabase using updatePharmacy RPC
+        const result = await window.supabaseAPI.updatePharmacy(currentPharmacyId, data);
 
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        if (!result.success) {
+            throw new Error(result.error);
+        }
 
         // Update sidebar
         document.getElementById('pharmacyName').textContent = data.name;
@@ -350,9 +380,16 @@ async function saveAllInfo() {
         saveBtn.disabled = false;
         saveBtn.innerHTML = originalText;
 
+        console.log('✅ Pharmacy info saved to Supabase');
+
     } catch (error) {
         console.error('Error saving pharmacy info:', error);
-        showToast('Erreur lors de l\'enregistrement', 'error');
+        showToast('Erreur lors de l\'enregistrement: ' + error.message, 'error');
+
+        // Restore button
+        const saveBtn = document.getElementById('saveAllBtn');
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = saveBtn.dataset.originalText || 'Enregistrer les modifications';
     }
 }
 
@@ -370,10 +407,4 @@ function showToast(message, type = 'success') {
     }, 3000);
 }
 
-// === HELPER FUNCTIONS ===
-function getPharmacyId() {
-    // In production, get from session
-    return localStorage.getItem('pharmacyId') || 1;
-}
-
-console.log('💊 Pharmacy Info Page initialized');
+console.log('💊 Pharmacy Info Page initialized with Supabase');
