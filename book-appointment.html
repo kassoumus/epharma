@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prendre Rendez-vous - E-Pharma</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        .booking-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .booking-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .booking-header h1 {
+            font-size: 2rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .booking-header p {
+            color: var(--text-secondary);
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .progress-steps::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #e5e7eb;
+            z-index: 0;
+        }
+
+        .progress-line {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+            z-index: 1;
+        }
+
+        .step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.5rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .step.active .step-circle {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+        }
+
+        .step.completed .step-circle {
+            border-color: var(--success);
+            background: var(--success);
+            color: white;
+        }
+
+        .step-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .step.active .step-label {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .booking-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+
+        .booking-card.active {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .calendar-day:hover:not(.disabled):not(.empty) {
+            border-color: var(--primary);
+            background: rgba(74, 144, 226, 0.1);
+        }
+
+        .calendar-day.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .calendar-day.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .calendar-day.empty {
+            border: none;
+        }
+
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+
+        .time-slot {
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .time-slot:hover:not(.disabled) {
+            border-color: var(--primary);
+            background: rgba(74, 144, 226, 0.1);
+        }
+
+        .time-slot.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .time-slot.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            text-decoration: line-through;
+        }
+
+        .doctor-card {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+        }
+
+        .doctor-card.selected {
+            border-color: var(--primary);
+            background: rgba(74, 144, 226, 0.05);
+        }
+
+        .doctor-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-right: 1rem;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 0.875rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex: 1;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #e5e7eb;
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background: #d1d5db;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--success);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem;
+            background: #f9fafb;
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+        }
+
+        .summary-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .summary-value {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="booking-container">
+        <div class="booking-header">
+            <h1>📅 Prendre Rendez-vous</h1>
+            <p>Réservez votre consultation en quelques clics</p>
+        </div>
+
+        <!-- Progress Steps -->
+        <div class="progress-steps">
+            <div class="progress-line" id="progressLine"></div>
+            <div class="step active" data-step="1">
+                <div class="step-circle">1</div>
+                <div class="step-label">Médecin</div>
+            </div>
+            <div class="step" data-step="2">
+                <div class="step-circle">2</div>
+                <div class="step-label">Date & Heure</div>
+            </div>
+            <div class="step" data-step="3">
+                <div class="step-circle">3</div>
+                <div class="step-label">Vos informations</div>
+            </div>
+            <div class="step" data-step="4">
+                <div class="step-circle">4</div>
+                <div class="step-label">Confirmation</div>
+            </div>
+        </div>
+
+        <!-- Step 1: Select Doctor -->
+        <div class="booking-card active" id="step1">
+            <h2>Choisissez votre médecin</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Sélectionnez le médecin avec qui vous
+                souhaitez consulter</p>
+
+            <div id="doctorsList">
+                <p style="text-align: center; padding: 2rem; color: var(--text-secondary);">⏳ Chargement...</p>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn btn-primary" id="step1Next" disabled>Continuer</button>
+            </div>
+        </div>
+
+        <!-- Step 2: Select Date & Time -->
+        <div class="booking-card" id="step2">
+            <h2>Choisissez la date et l'heure</h2>
+            <div id="doctorInfo" style="margin-bottom: 1.5rem;"></div>
+
+            <div style="margin-bottom: 2rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Date du rendez-vous</label>
+                <input type="date" id="appointmentDate" class="admin-form-input" style="width: 100%;">
+            </div>
+
+            <div id="timeSlotsContainer" style="display: none;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Créneaux disponibles</label>
+                <div class="time-slots" id="timeSlots"></div>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn btn-secondary" id="step2Back">Retour</button>
+                <button class="btn btn-primary" id="step2Next" disabled>Continuer</button>
+            </div>
+        </div>
+
+        <!-- Step 3: Patient Information -->
+        <div class="booking-card" id="step3">
+            <h2>Vos informations</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Renseignez vos coordonnées</p>
+
+            <form id="patientForm">
+                <div class="admin-form-group">
+                    <label for="patientName">Nom complet *</label>
+                    <input type="text" id="patientName" class="admin-form-input" required>
+                </div>
+
+                <div class="admin-form-group">
+                    <label for="patientPhone">Téléphone *</label>
+                    <input type="tel" id="patientPhone" class="admin-form-input" placeholder="(+227) 90 XX XX XX"
+                        required>
+                </div>
+
+                <div class="admin-form-group">
+                    <label for="patientEmail">Email</label>
+                    <input type="email" id="patientEmail" class="admin-form-input">
+                </div>
+
+                <div class="admin-form-group">
+                    <label for="consultationType">Type de consultation</label>
+                    <select id="consultationType" class="admin-form-input">
+                        <option>Consultation générale</option>
+                        <option>Consultation de suivi</option>
+                        <option>Urgence</option>
+                        <option>Autre</option>
+                    </select>
+                </div>
+
+                <div class="admin-form-group">
+                    <label for="consultationReason">Motif de consultation</label>
+                    <textarea id="consultationReason" class="admin-form-textarea" rows="3"
+                        placeholder="Décrivez brièvement votre motif..."></textarea>
+                </div>
+            </form>
+
+            <div class="form-actions">
+                <button class="btn btn-secondary" id="step3Back">Retour</button>
+                <button class="btn btn-primary" id="step3Next">Continuer</button>
+            </div>
+        </div>
+
+        <!-- Step 4: Confirmation -->
+        <div class="booking-card" id="step4">
+            <h2>Récapitulatif du rendez-vous</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Vérifiez les informations avant de confirmer
+            </p>
+
+            <div id="bookingSummary"></div>
+
+            <div class="form-actions">
+                <button class="btn btn-secondary" id="step4Back">Retour</button>
+                <button class="btn btn-primary" id="confirmBooking">
+                    <span id="confirmText">Confirmer le rendez-vous</span>
+                    <span id="confirmLoading" style="display: none;">⏳ Réservation...</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 5: Success -->
+        <div class="booking-card" id="stepSuccess">
+            <div style="text-align: center;">
+                <div class="success-icon">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
+                        <path d="M20 6L9 17L4 12" stroke="white" stroke-width="3" stroke-linecap="round" />
+                    </svg>
+                </div>
+                <h2>✅ Rendez-vous confirmé!</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 2rem;">Votre rendez-vous a été enregistré avec
+                    succès</p>
+
+                <div id="successDetails" style="max-width: 500px; margin: 0 auto 2rem;"></div>
+
+                <div class="admin-toast" style="position: relative; display: inline-block; margin-bottom: 1rem;">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor"
+                            stroke-width="2" />
+                    </svg>
+                    <span>Vous recevrez une confirmation par SMS</span>
+                </div>
+
+                <div class="form-actions" style="max-width: 400px; margin: 0 auto;">
+                    <button class="btn btn-primary" onclick="window.location.href='index.html'">Retour à
+                        l'accueil</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-client.js"></script>
+
+    <script src="book-appointment.js"></script>
+</body>
+
+</html>

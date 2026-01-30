@@ -360,7 +360,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function viewDoctor(id) {
-    alert(`Prise de rendez-vous avec le médecin ${id} - À implémenter`);
+    // Redirect to booking page with doctor ID
+    window.location.href = `book-appointment.html?doctor=${id}`;
 }
 
 function highlightDoctor(id) {
