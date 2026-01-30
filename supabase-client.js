@@ -102,6 +102,140 @@ async function getPharmacyById(id) {
     return data;
 }
 
+async function getPharmacyByUserId(userId) {
+    const { data, error } = await supabase
+        .from('pharmacies')
+        .select('*')
+        .eq('user_id', userId)
+        .single();
+
+    if (error) {
+        console.error('Error fetching pharmacy by user:', error);
+        return null;
+    }
+
+    return data;
+}
+
+async function createPharmacyWithUser(userId, pharmacyData) {
+    const { data, error } = await supabase.rpc('create_pharmacy_with_user', {
+        p_user_id: userId,
+        p_pharmacy_name: pharmacyData.name,
+        p_address: pharmacyData.address,
+        p_city: pharmacyData.city,
+        p_phone: pharmacyData.phone,
+        p_postal_code: pharmacyData.postal_code || null,
+        p_email: pharmacyData.email || null,
+        p_latitude: pharmacyData.latitude || null,
+        p_longitude: pharmacyData.longitude || null,
+        p_is_open_24_7: pharmacyData.is_open_24_7 || false,
+        p_has_parking: pharmacyData.has_parking || false
+    });
+
+    if (error) {
+        console.error('Error creating pharmacy with user:', error);
+        return { success: false, error: error.message };
+    }
+
+    return { success: true, pharmacyId: data };
+}
+
+async function createPharmacyStandalone(pharmacyData) {
+    const { data, error } = await supabase.rpc('create_pharmacy_standalone', {
+        p_pharmacy_name: pharmacyData.name,
+        p_address: pharmacyData.address,
+        p_city: pharmacyData.city,
+        p_phone: pharmacyData.phone,
+        p_postal_code: pharmacyData.postal_code || null,
+        p_email: pharmacyData.email || null,
+        p_latitude: pharmacyData.latitude || null,
+        p_longitude: pharmacyData.longitude || null,
+        p_is_open_24_7: pharmacyData.is_open_24_7 || false,
+        p_has_parking: pharmacyData.has_parking || false
+    });
+
+    if (error) {
+        console.error('Error creating standalone pharmacy:', error);
+        return { success: false, error: error.message };
+    }
+
+    return { success: true, pharmacyId: data };
+}
+
+async function updatePharmacy(pharmacyId, updates) {
+    const { data, error } = await supabase.rpc('update_pharmacy', {
+        p_pharmacy_id: pharmacyId,
+        p_name: updates.name || null,
+        p_address: updates.address || null,
+        p_city: updates.city || null,
+        p_postal_code: updates.postal_code || null,
+        p_phone: updates.phone || null,
+        p_email: updates.email || null,
+        p_latitude: updates.latitude || null,
+        p_longitude: updates.longitude || null,
+        p_is_open_24_7: updates.is_open_24_7 !== undefined ? updates.is_open_24_7 : null,
+        p_has_parking: updates.has_parking !== undefined ? updates.has_parking : null
+    });
+
+    if (error) {
+        console.error('Error updating pharmacy:', error);
+        return { success: false, error: error.message };
+    }
+
+    return { success: true, data };
+}
+
+async function assignUserToPharmacy(pharmacyId, userId) {
+    const { data, error } = await supabase.rpc('assign_user_to_pharmacy', {
+        p_pharmacy_id: pharmacyId,
+        p_user_id: userId
+    });
+
+    if (error) {
+        console.error('Error assigning user to pharmacy:', error);
+        return { success: false, error: error.message };
+    }
+
+    return { success: true, data };
+}
+
+async function removeUserFromPharmacy(pharmacyId) {
+    const { data, error } = await supabase.rpc('remove_user_from_pharmacy', {
+        p_pharmacy_id: pharmacyId
+    });
+
+    if (error) {
+        console.error('Error removing user from pharmacy:', error);
+        return { success: false, error: error.message };
+    }
+
+    return { success: true, data };
+}
+
+async function deletePharmacy(pharmacyId) {
+    const { data, error } = await supabase.rpc('delete_pharmacy', {
+        p_pharmacy_id: pharmacyId
+    });
+
+    if (error) {
+        console.error('Error deleting pharmacy:', error);
+        return { success: false, error: error.message };
+    }
+
+    return { success: true, data };
+}
+
+async function getPharmaciesStats() {
+    const { data, error } = await supabase.rpc('get_pharmacies_stats');
+
+    if (error) {
+        console.error('Error fetching pharmacies stats:', error);
+        return null;
+    }
+
+    return data && data.length > 0 ? data[0] : null;
+}
+
 async function searchPharmaciesByProduct(productName, location) {
     // Search for pharmacies that have the product in stock
     const { data, error } = await supabase
@@ -120,6 +254,7 @@ async function searchPharmaciesByProduct(productName, location) {
 
     return data;
 }
+
 
 // ========================================
 // HEALTH CENTERS FUNCTIONS
@@ -648,6 +783,14 @@ window.supabaseAPI = {
     // Pharmacies
     getPharmacies,
     getPharmacyById,
+    getPharmacyByUserId,
+    createPharmacyWithUser,
+    createPharmacyStandalone,
+    updatePharmacy,
+    assignUserToPharmacy,
+    removeUserFromPharmacy,
+    deletePharmacy,
+    getPharmaciesStats,
     searchPharmaciesByProduct,
 
     // Health Centers
