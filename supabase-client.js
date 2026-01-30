@@ -515,6 +515,162 @@ async function deleteAppointment(appointmentId) {
 }
 
 // ========================================
+// APPOINTMENTS RPC FUNCTIONS (FOR BOOKING SYSTEM)
+// ========================================
+
+async function getAvailableSlots(doctorId, date) {
+    const { data, error } = await supabase.rpc('get_available_slots', {
+        p_doctor_id: doctorId,
+        p_date: date
+    });
+
+    if (error) {
+        console.error('Error fetching available slots:', error);
+        return [];
+    }
+
+    return data || [];
+}
+
+async function bookAppointment(doctorId, appointmentData) {
+    const { data, error } = await supabase.rpc('create_appointment_with_validation', {
+        p_doctor_id: doctorId,
+        p_patient_name: appointmentData.patient_name,
+        p_patient_phone: appointmentData.patient_phone,
+        p_patient_email: appointmentData.patient_email || null,
+        p_appointment_date: appointmentData.appointment_date,
+        p_appointment_time: appointmentData.appointment_time,
+        p_type: appointmentData.type || 'Consultation générale',
+        p_reason: appointmentData.reason || null,
+        p_patient_id: appointmentData.patient_id || null,
+        p_created_by: appointmentData.created_by || null
+    });
+
+    if (error) {
+        console.error('Error booking appointment:', error);
+        return { success: false, error: error.message };
+    }
+
+    return { success: true, appointmentId: data };
+}
+
+async function confirmAppointmentRPC(appointmentId, userId) {
+    const { data, error } = await supabase.rpc('confirm_appointment', {
+        p_appointment_id: appointmentId,
+        p_user_id: userId
+    });
+
+    if (error) {
+        console.error('Error confirming appointment:', error);
+        return { success: false, error: error.message };
+    }
+
+    return { success: true };
+}
+
+async function cancelAppointmentRPC(appointmentId, userId, reason = null) {
+    const { data, error } = await supabase.rpc('cancel_appointment', {
+        p_appointment_id: appointmentId,
+        p_user_id: userId,
+        p_reason: reason
+    });
+
+    if (error) {
+        console.error('Error cancelling appointment:', error);
+        return { success: false, error: error.message };
+    }
+
+    return { success: true };
+}
+
+async function completeAppointmentRPC(appointmentId, doctorUserId, notes = null) {
+    const { data, error } = await supabase.rpc('complete_appointment', {
+        p_appointment_id: appointmentId,
+        p_doctor_user_id: doctorUserId,
+        p_notes: notes
+    });
+
+    if (error) {
+        console.error('Error completing appointment:', error);
+        return { success: false, error: error.message };
+    }
+
+    return { success: true };
+}
+
+async function getAppointmentStats(doctorId) {
+    const { data, error } = await supabase.rpc('get_doctor_appointment_stats', {
+        p_doctor_id: doctorId
+    });
+
+    if (error) {
+        console.error('Error fetching appointment stats:', error);
+        return {
+            today_appointments: 0,
+            week_appointments: 0,
+            month_appointments: 0,
+            pending_appointments: 0,
+            upcoming_appointments: 0
+        };
+    }
+
+    return data[0] || {};
+}
+
+async function getMyAppointments() {
+    const user = await getCurrentUser();
+    if (!user) return [];
+
+    const { data, error } = await supabase
+        .from('appointments')
+        .select(`
+            *,
+            doctors (
+                id,
+                first_name,
+                last_name,
+                specialties,
+                health_center_id,
+                health_centers (
+                    name,
+                    address,
+                    city
+                )
+            )
+        `)
+        .or(`patient_id.eq.${user.id},created_by.eq.${user.id}`)
+        .order('appointment_date', { ascending: true })
+        .order('appointment_time', { ascending: true });
+
+    if (error) {
+        console.error('Error fetching my appointments:', error);
+        return [];
+    }
+
+    return data || [];
+}
+
+async function getUpcomingAppointments(doctorId) {
+    const today = new Date().toISOString().split('T')[0];
+
+    const { data, error } = await supabase
+        .from('appointments')
+        .select('*')
+        .eq('doctor_id', doctorId)
+        .gte('appointment_date', today)
+        .in('status', ['pending', 'confirmed'])
+        .order('appointment_date', { ascending: true })
+        .order('appointment_time', { ascending: true });
+
+    if (error) {
+        console.error('Error fetching upcoming appointments:', error);
+        return [];
+    }
+
+    return data || [];
+}
+
+// ========================================
 // PRODUCTS FUNCTIONS
 // ========================================
 
@@ -817,6 +973,15 @@ window.supabaseAPI = {
     updateAppointment,
     deleteAppointment,
     getAppointmentsByDateRange,
+    // Appointment RPC (Booking System)
+    getAvailableSlots,
+    bookAppointment,
+    confirmAppointmentRPC,
+    cancelAppointmentRPC,
+    completeAppointmentRPC,
+    getAppointmentStats,
+    getMyAppointments,
+    getUpcomingAppointments,
 
     // Patients
     getPatientsByDoctor,
