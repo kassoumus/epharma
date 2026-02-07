@@ -44,11 +44,15 @@ patient.test@epharma.ne
 5. Collez-le dans l'éditeur SQL
 6. Cliquez sur **Run** (ou appuyez sur Ctrl+Enter)
 
+> ⚠️ **Note importante**: Assurez-vous d'utiliser la version corrigée du fichier `supabase-roles-schema.sql` qui référence correctement les colonnes de la table `users`.
+
 **Ce que fait ce script:**
 - Crée le type ENUM `user_role` avec les valeurs: super_admin, pharmacy_admin, health_center_admin, doctor, user
 - Ajoute les colonnes `role`, `is_active`, `is_approved` à la table `users`
 - Crée les fonctions utilitaires pour la gestion des rôles
 - Configure les politiques RLS (Row Level Security)
+- Crée la vue `admin_users_view` pour la gestion des utilisateurs
+
 
 ---
 

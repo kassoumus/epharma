@@ -178,6 +178,7 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 -- 5. VUE AMÉLIORÉE POUR LE SUPER ADMIN
 -- ========================================
 
+
 -- Supprimer la vue existante si elle existe
 DROP VIEW IF EXISTS admin_users_view CASCADE;
 
@@ -186,15 +187,15 @@ CREATE OR REPLACE VIEW admin_users_view AS
 SELECT 
     u.id,
     u.email,
-    u.role,
-    u.is_active,
-    u.is_approved,
-    u.approved_at,
-    u.approved_by,
-    approver.email as approved_by_email,
     u.created_at,
     u.last_sign_in_at,
     u.email_confirmed_at,
+    users_table.role,
+    users_table.is_active,
+    users_table.is_approved,
+    users_table.approved_at,
+    users_table.approved_by,
+    approver.email as approved_by_email,
     up.full_name,
     up.phone,
     up.city,
@@ -204,17 +205,18 @@ SELECT
         ELSE 'pending'
     END as email_status,
     -- Compter les entités liées selon le rôle
-    CASE u.role
+    CASE users_table.role
         WHEN 'pharmacy_admin' THEN (SELECT COUNT(*) FROM pharmacies WHERE owner_id = u.id)
         WHEN 'health_center_admin' THEN (SELECT COUNT(*) FROM health_centers WHERE manager_id = u.id)
         WHEN 'doctor' THEN (SELECT COUNT(*) FROM doctors WHERE user_id = u.id)
         ELSE 0
     END as linked_entities_count
 FROM auth.users u
-LEFT JOIN user_profiles up ON u.id = up.user_id
 LEFT JOIN users users_table ON u.id = users_table.id
+LEFT JOIN user_profiles up ON u.id = up.user_id
 LEFT JOIN users approver ON users_table.approved_by = approver.id
 ORDER BY u.created_at DESC;
+
 
 -- ========================================
 -- 6. POLITIQUES RLS MISES À JOUR
