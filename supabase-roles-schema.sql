@@ -182,7 +182,7 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 -- Supprimer la vue existante si elle existe
 DROP VIEW IF EXISTS admin_users_view CASCADE;
 
--- Créer la vue améliorée
+-- Créer la vue améliorée (compatible avec les deux versions du schéma)
 CREATE OR REPLACE VIEW admin_users_view AS
 SELECT 
     u.id,
@@ -205,10 +205,20 @@ SELECT
         ELSE 'pending'
     END as email_status,
     -- Compter les entités liées selon le rôle
+    -- Compatible avec user_id (ancien schéma) et owner_id/manager_id (nouveau schéma)
     CASE users_table.role
-        WHEN 'pharmacy_admin' THEN (SELECT COUNT(*) FROM pharmacies WHERE owner_id = u.id)
-        WHEN 'health_center_admin' THEN (SELECT COUNT(*) FROM health_centers WHERE manager_id = u.id)
-        WHEN 'doctor' THEN (SELECT COUNT(*) FROM doctors WHERE user_id = u.id)
+        WHEN 'pharmacy_admin' THEN (
+            SELECT COUNT(*) FROM pharmacies 
+            WHERE COALESCE(owner_id, user_id) = u.id
+        )
+        WHEN 'health_center_admin' THEN (
+            SELECT COUNT(*) FROM health_centers 
+            WHERE COALESCE(manager_id, user_id) = u.id
+        )
+        WHEN 'doctor' THEN (
+            SELECT COUNT(*) FROM doctors 
+            WHERE user_id = u.id
+        )
         ELSE 0
     END as linked_entities_count
 FROM auth.users u
