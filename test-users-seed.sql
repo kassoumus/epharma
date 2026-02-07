@@ -9,10 +9,44 @@
 -- ========================================
 -- INSTRUCTIONS D'UTILISATION
 -- ========================================
--- 1. Les utilisateurs doivent d'abord être créés dans Supabase Auth
--- 2. Ensuite, exécutez ce script pour créer les profils et entités associées
--- 3. Les mots de passe par défaut sont: Test@2024
+-- ÉTAPE 1: Créer les utilisateurs dans Supabase Auth
+--   - Allez sur votre projet Supabase > Authentication > Users
+--   - Créez chaque utilisateur avec l'email et le mot de passe Test@2024
+--   - Cochez "Auto Confirm User"
+--
+-- ÉTAPE 2: Exécuter le schéma des rôles (SI PAS DÉJÀ FAIT)
+--   - Exécutez d'abord: supabase-roles-schema.sql
+--   - Cela ajoute les colonnes role, is_active, is_approved à la table users
+--
+-- ÉTAPE 3: Exécuter ce script
+--   - Ce script créera les profils et entités associées
 -- ========================================
+
+-- ========================================
+-- VÉRIFICATION: Ajouter les colonnes manquantes si nécessaire
+-- ========================================
+DO $$ 
+BEGIN
+    -- Vérifier si la colonne role existe
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
+                   WHERE table_name='users' AND column_name='role') THEN
+        RAISE EXCEPTION 'ERREUR: La table users n''a pas la colonne "role". Veuillez d''abord exécuter supabase-roles-schema.sql';
+    END IF;
+    
+    -- Vérifier si la colonne is_active existe
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
+                   WHERE table_name='users' AND column_name='is_active') THEN
+        RAISE EXCEPTION 'ERREUR: La table users n''a pas la colonne "is_active". Veuillez d''abord exécuter supabase-roles-schema.sql';
+    END IF;
+    
+    -- Vérifier si la colonne is_approved existe
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
+                   WHERE table_name='users' AND column_name='is_approved') THEN
+        RAISE EXCEPTION 'ERREUR: La table users n''a pas la colonne "is_approved". Veuillez d''abord exécuter supabase-roles-schema.sql';
+    END IF;
+    
+    RAISE NOTICE 'Vérification réussie: La table users a toutes les colonnes nécessaires.';
+END $$;
 
 -- ========================================
 -- 1. SUPER ADMIN
