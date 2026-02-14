@@ -6,14 +6,35 @@
 const SUPABASE_URL = 'https://jdsjpdpdcbbphelrohjr.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impkc2pwZHBkY2JicGhlbHJvaGpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ5NDc3MzUsImV4cCI6MjA4MDUyMzczNX0.0n_xBZWVcR_Y93UC00Pspbov23Df6v3_xffoITDhOJg';
 
-// Initialize Supabase client
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// Initialize Supabase client with error handling
+let supabase;
+try {
+    if (!window.supabase) {
+        throw new Error('Supabase library not loaded. Please ensure the Supabase script is loaded before supabase-client.js');
+    }
+    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    console.log('✅ Supabase client initialized successfully');
+} catch (error) {
+    console.error('❌ Erreur d\'initialisation:', error.message);
+    // Create a dummy supabase object to prevent further errors
+    supabase = null;
+}
 
 // ========================================
 // AUTHENTICATION FUNCTIONS
 // ========================================
 
+// Helper function to check if Supabase is initialized
+function checkSupabaseInitialized() {
+    if (!supabase) {
+        const errorMsg = 'Erreur d\'initialisation: Supabase n\'est pas initialisé. Veuillez recharger la page.';
+        console.error(errorMsg);
+        throw new Error(errorMsg);
+    }
+}
+
 async function signUp(email, password, userData) {
+    checkSupabaseInitialized();
     const { data, error } = await supabase.auth.signUp({
         email: email,
         password: password,
@@ -31,6 +52,7 @@ async function signUp(email, password, userData) {
 }
 
 async function signIn(email, password) {
+    checkSupabaseInitialized();
     const { data, error } = await supabase.auth.signInWithPassword({
         email: email,
         password: password
@@ -45,6 +67,7 @@ async function signIn(email, password) {
 }
 
 async function signOut() {
+    checkSupabaseInitialized();
     const { error } = await supabase.auth.signOut();
 
     if (error) {
@@ -56,6 +79,7 @@ async function signOut() {
 }
 
 async function getCurrentUser() {
+    checkSupabaseInitialized();
     const { data: { user } } = await supabase.auth.getUser();
     return user;
 }
