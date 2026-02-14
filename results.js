@@ -26,7 +26,12 @@ const pharmacies = [
         hours: "8h00 - 20h00",
         isOpen: true,
         hasStock: true,
-        stockQuantity: 15
+        stockQuantity: 15,
+        products: [
+            { name: "Doliprane 1000mg", stock: 15, price: "2500 FCFA" },
+            { name: "Aspégic 500mg", stock: 8, price: "3200 FCFA" },
+            { name: "Ibuprofène 400mg", stock: 12, price: "2800 FCFA" }
+        ]
     },
     {
         id: 2,
@@ -39,7 +44,10 @@ const pharmacies = [
         hours: "8h00 - 19h00",
         isOpen: true,
         hasStock: true,
-        stockQuantity: 12
+        stockQuantity: 12,
+        products: [
+            { name: "Doliprane 1000mg", stock: 12, price: "2500 FCFA" }
+        ]
     },
     {
         id: 3,
@@ -52,7 +60,11 @@ const pharmacies = [
         hours: "8h30 - 19h30",
         isOpen: true,
         hasStock: true,
-        stockQuantity: 10
+        stockQuantity: 10,
+        products: [
+            { name: "Doliprane 1000mg", stock: 10, price: "2500 FCFA" },
+            { name: "Paracétamol 500mg", stock: 20, price: "1500 FCFA" }
+        ]
     },
     {
         id: 4,
@@ -65,7 +77,10 @@ const pharmacies = [
         hours: "9h00 - 20h00",
         isOpen: true,
         hasStock: true,
-        stockQuantity: 8
+        stockQuantity: 8,
+        products: [
+            { name: "Doliprane 1000mg", stock: 8, price: "2500 FCFA" }
+        ]
     },
     {
         id: 5,
@@ -78,7 +93,11 @@ const pharmacies = [
         hours: "8h00 - 19h00",
         isOpen: true,
         hasStock: true,
-        stockQuantity: 18
+        stockQuantity: 18,
+        products: [
+            { name: "Doliprane 1000mg", stock: 18, price: "2500 FCFA" },
+            { name: "Aspégic 500mg", stock: 10, price: "3200 FCFA" }
+        ]
     },
     {
         id: 6,
@@ -91,7 +110,10 @@ const pharmacies = [
         hours: "9h00 - 18h30",
         isOpen: true,
         hasStock: true,
-        stockQuantity: 14
+        stockQuantity: 14,
+        products: [
+            { name: "Doliprane 1000mg", stock: 14, price: "2500 FCFA" }
+        ]
     },
     {
         id: 7,
@@ -104,9 +126,82 @@ const pharmacies = [
         hours: "24h/24 - 7j/7",
         isOpen: true,
         hasStock: true,
-        stockQuantity: 20
+        stockQuantity: 20,
+        products: [
+            { name: "Doliprane 1000mg", stock: 20, price: "2500 FCFA" },
+            { name: "Aspégic 500mg", stock: 15, price: "3200 FCFA" },
+            { name: "Ibuprofène 400mg", stock: 18, price: "2800 FCFA" }
+        ]
     }
 ];
+
+// === CALCULATE PRODUCT AVAILABILITY ===
+/**
+ * Calculates how many of the searched products are available in a pharmacy
+ * @param {Object} pharmacy - The pharmacy object
+ * @param {Array} searchedMedicaments - Array of searched medication names
+ * @returns {Object} - { availableCount, totalSearched, matchedProducts }
+ */
+function calculateProductAvailability(pharmacy, searchedMedicaments) {
+    // If no search terms, return null (will show generic message)
+    if (!searchedMedicaments || searchedMedicaments.length === 0) {
+        return null;
+    }
+
+    // Normalize search terms (lowercase, trim)
+    const normalizedSearch = searchedMedicaments.map(term =>
+        term.toLowerCase().trim()
+    );
+
+    let availableCount = 0;
+    const matchedProducts = [];
+
+    // Check each searched product against pharmacy's products
+    normalizedSearch.forEach(searchTerm => {
+        const found = pharmacy.products.some(product => {
+            const productName = product.name.toLowerCase();
+            // Check if product name contains the search term
+            return productName.includes(searchTerm);
+        });
+
+        if (found) {
+            availableCount++;
+            matchedProducts.push(searchTerm);
+        }
+    });
+
+    return {
+        availableCount: availableCount,
+        totalSearched: normalizedSearch.length,
+        matchedProducts: matchedProducts
+    };
+}
+
+// === GET STOCK DISPLAY TEXT ===
+/**
+ * Generates the appropriate stock display text for a pharmacy card
+ * @param {Object} pharmacy - The pharmacy object
+ * @returns {string} - The display text for stock availability
+ */
+function getStockDisplayText(pharmacy) {
+    const availability = calculateProductAvailability(pharmacy, searchedMedicaments);
+
+    // If no specific search, show generic message
+    if (!availability) {
+        return `En stock (${pharmacy.stockQuantity} disponibles)`;
+    }
+
+    const { availableCount, totalSearched } = availability;
+
+    // Handle singular/plural
+    if (totalSearched === 1) {
+        return availableCount === 1
+            ? `1/1 produit disponible`
+            : `0/1 produit disponible`;
+    } else {
+        return `${availableCount}/${totalSearched} produits disponibles`;
+    }
+}
 
 // === INITIALIZATION ===
 document.addEventListener('DOMContentLoaded', () => {
@@ -247,7 +342,7 @@ function createPharmacyCard(pharmacy) {
             <svg viewBox="0 0 24 24" fill="none">
                 <path d="M9 11L12 14L22 4M21 12V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-            <span class="pharmacy-stock-text">En stock (${pharmacy.stockQuantity} disponibles)</span>
+            <span class="pharmacy-stock-text">${getStockDisplayText(pharmacy)}</span>
         </div>
         
         <div class="pharmacy-actions">
