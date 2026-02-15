@@ -23,11 +23,9 @@ async function loadAllUsers() {
     try {
         showLoading(true);
 
-        // Charger depuis la vue admin_users_view
+        // Utiliser la fonction sécurisée au lieu de la vue vulnérable
         const { data, error } = await supabase
-            .from('admin_users_view')
-            .select('*')
-            .order('created_at', { ascending: false });
+            .rpc('get_admin_users_list');
 
         if (error) throw error;
 
@@ -37,7 +35,7 @@ async function loadAllUsers() {
 
     } catch (error) {
         console.error('Erreur chargement utilisateurs:', error);
-        showError('Erreur lors du chargement des utilisateurs');
+        showError('Erreur lors du chargement des utilisateurs: ' + error.message);
     } finally {
         showLoading(false);
     }
@@ -274,31 +272,41 @@ async function saveUserChanges(event) {
     try {
         showLoading(true);
 
-        // Mettre à jour le rôle via la fonction SQL
+        // Obtenir l'utilisateur actuel (admin)
+        const currentUser = await getCurrentUser();
+        if (!currentUser) {
+            throw new Error('Vous devez être connecté pour effectuer cette action');
+        }
+
+        // Mettre à jour le rôle via la fonction SQL (avec p_admin_id)
         const { error: roleError } = await supabase.rpc('update_user_role', {
             p_user_id: userId,
-            p_new_role: newRole
+            p_new_role: newRole,
+            p_admin_id: currentUser.id  // ✅ Paramètre manquant ajouté
         });
 
         if (roleError) throw roleError;
 
-        // Mettre à jour le statut
-        const { error: statusError } = await supabase.rpc('toggle_user_status', {
+        // Mettre à jour le statut (nom de fonction corrigé)
+        const { error: statusError } = await supabase.rpc('toggle_user_active_status', {  // ✅ Nom corrigé
             p_user_id: userId,
-            p_is_active: isActive
+            p_is_active: isActive,
+            p_admin_id: currentUser.id  // ✅ Paramètre manquant ajouté
         });
 
         if (statusError) throw statusError;
 
-        // Mettre à jour le profil
+        // Mettre à jour ou créer le profil (UPSERT)
         if (fullName || phone) {
             const { error: profileError } = await supabase
                 .from('user_profiles')
-                .update({
-                    full_name: fullName,
-                    phone: phone
-                })
-                .eq('user_id', userId);
+                .upsert({
+                    user_id: userId,
+                    full_name: fullName || null,
+                    phone: phone || null
+                }, {
+                    onConflict: 'user_id'  // ✅ UPSERT au lieu de UPDATE
+                });
 
             if (profileError) throw profileError;
         }
@@ -309,7 +317,7 @@ async function saveUserChanges(event) {
 
     } catch (error) {
         console.error('Erreur mise à jour utilisateur:', error);
-        showError('Erreur lors de la mise à jour');
+        showError('Erreur lors de la mise à jour: ' + error.message);
     } finally {
         showLoading(false);
     }
@@ -326,9 +334,16 @@ async function toggleUserStatus(userId, newStatus) {
     try {
         showLoading(true);
 
-        const { error } = await supabase.rpc('toggle_user_status', {
+        // Obtenir l'utilisateur actuel (admin)
+        const currentUser = await getCurrentUser();
+        if (!currentUser) {
+            throw new Error('Vous devez être connecté pour effectuer cette action');
+        }
+
+        const { error } = await supabase.rpc('toggle_user_active_status', {  // ✅ Nom corrigé
             p_user_id: userId,
-            p_is_active: newStatus
+            p_is_active: newStatus,
+            p_admin_id: currentUser.id  // ✅ Paramètre manquant ajouté
         });
 
         if (error) throw error;
@@ -338,7 +353,7 @@ async function toggleUserStatus(userId, newStatus) {
 
     } catch (error) {
         console.error('Erreur changement statut:', error);
-        showError('Erreur lors du changement de statut');
+        showError('Erreur lors du changement de statut: ' + error.message);
     } finally {
         showLoading(false);
     }
